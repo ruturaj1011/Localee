@@ -25,7 +25,7 @@ function Navbar() {
     }
 
     return ( 
-        <nav className='px-6 py-4 lg:px-8 lg:py-4 bg-white fixed shadow-sm w-full z-50'>
+        <nav className='px-6 py-3.5 lg:px-8 bg-white fixed shadow-sm w-full z-50'>
 
             <div id="nav-cont" className='flex justify-between items-center'>
                 <div><h1 className='nav-logo text-3xl font-semibold text-indigo-600'>Localee</h1></div>
