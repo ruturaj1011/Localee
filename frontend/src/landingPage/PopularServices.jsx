@@ -1,13 +1,10 @@
 import React from 'react';
-import  ServiceCard  from './ServiceCard';
+import  ServiceCard  from '../utils/ServiceCard';
 
 function PopularServices() {
     return ( 
         <div>
-            <div>PopularServices</div>
-            <div>
-                <ServiceCard />
-            </div>
+            <ServiceCard />
         </div>
     );
 }
