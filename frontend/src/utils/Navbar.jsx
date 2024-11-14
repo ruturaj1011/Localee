@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import "../App.css"
 
 function Navbar() {
@@ -25,19 +26,22 @@ function Navbar() {
     }
 
     return ( 
-        <nav className='px-6 py-3.5 lg:px-8 bg-white fixed shadow-sm w-full z-50'>
+        <nav className='px-6 py-3.5 lg:px-8 bg-white fixed shadow-sm w-full z-50 '>
 
             <div id="nav-cont" className='flex justify-between items-center'>
                 <div><h1 className='nav-logo text-3xl font-semibold text-indigo-600'>Localee</h1></div>
 
                 <div className='nav-list list-none flex justify-between items-center text-lg font-sm text-slate-800 gap-8'>
 
-                    <li className='nav-items hover:text-indigo-700'><a href="#">Find Services</a></li>
 
-                    <li className='nav-items hover:text-indigo-700'><a href="#" >Become a Provider</a></li>
+                    <li className='nav-items hover:text-indigo-700'><Link to="/">Home</Link></li>
+
+                    <li className='nav-items hover:text-indigo-700'><Link to="/findServices">Find Services</Link></li>
+
+                    <li className='nav-items hover:text-indigo-700'><Link to="/becomeProvider" >Become a Provider</Link></li>
 
                     <li className='bg-indigo-600 hover:bg-indigo-700 rounded-3xl py-1.5 px-6 text-white'>
-                        <a href="#">Sign In</a>
+                        <Link to="/">Sign In</Link>
                     </li>
 
                 </div>
@@ -50,12 +54,12 @@ function Navbar() {
 
             <div id="ver-Menu" className='list-none items-center text-lg font-sm text-slate-800 hidden'>
 
-                <li className='nav-items hover:text-indigo-700 py-1.5 mt-2'><a href="#">Find Services</a></li>
+                <li className='nav-items hover:text-indigo-700 py-1.5 mt-2'><Link to="/findServices">Find Services</Link></li>
 
-                <li className='nav-items hover:text-indigo-700 py-1.5'><a href="#" >Become a Provider</a></li>
+                <li className='nav-items hover:text-indigo-700 py-1.5'><Link to="/becomeProvider" >Become a Provider</Link></li>
 
                 <li className='bg-indigo-600 hover:bg-indigo-700 rounded-3xl py-1.5 px-6 text-white text-center my-2'>
-                    <a href="#">Sign In</a>
+                    <Link to="/">Sign In</Link>
                 </li>
 
             </div>

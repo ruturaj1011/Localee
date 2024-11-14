@@ -9,7 +9,7 @@ function HowItWorks() {
       <h4 className='text-gray-500 text-2xl mb-3'>Get your service needs met in four simple steps</h4>
 
       
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
+      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 pt-5 max-w-6xl mx-auto">
         
 
         {/* Card 1 - Select Location */}
