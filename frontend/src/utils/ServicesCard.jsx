@@ -1,19 +1,11 @@
 import React from 'react';
-import { Wrench, Camera, Home, Scissors, Car, Heart, ArrowRight, ArrowLeft } from 'lucide-react';
+import {ArrowRight, ArrowLeft} from "lucide-react"
 
-const services = [
-  { icon: Wrench, name: 'Plumbing', count: '250+ Providers' },
-  { icon: Camera, name: 'Photography', count: '180+ Providers' },
-  { icon: Home, name: 'Home Cleaning', count: '320+ Providers' },
-  { icon: Scissors, name: 'Beauty & Wellness', count: '290+ Providers' },
-  { icon: Car, name: 'Auto Services', count: '150+ Providers' },
-  { icon: Heart, name: 'Healthcare', count: '200+ Providers' },
-];
 
-const ServicesCards = () => {
+const ServicesCards = ({services, category, subHeading, eleId}) => {
 
   const scroll = (direction) => {
-    const container = document.getElementById('service-cards');
+    const container = document.getElementById(eleId);
     const scrollAmount = 300;
     container.scrollBy({
       left: direction === 'right' ? scrollAmount : -scrollAmount,
@@ -28,9 +20,9 @@ const ServicesCards = () => {
 
         {/* Section Heading */}
         <div className="text-left">
-          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Popular Services</h2>
+          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{category}</h2>
           <p className="mt-3 text-xl text-gray-500">
-            Discover our most requested services in your area
+            {subHeading}
           </p>
         </div>
 
@@ -38,13 +30,13 @@ const ServicesCards = () => {
         <div className="flex items-center mt-10">
           <button
             onClick={() => scroll('left')}
-            className="bg-indigo-500 p-3 rounded-full text-white hover:bg-indigo-600 focus:outline-none opacity-95"
+            className="bg-indigo-500 p-3 rounded-full text-white hover:bg-indigo-600 focus:outline-none opacity-95 hidden lg:block md:block"
           >
             <ArrowLeft className="h-5 w-5" />
           </button>
 
           <div
-            id="service-cards"
+            id={eleId}
             className="flex overflow-x-scroll gap-4 lg:gap-8 hide-scrollbar py-4 ml-4 mr-4"
           >
             {services.map((service, index) => (
@@ -69,7 +61,7 @@ const ServicesCards = () => {
 
           <button
             onClick={() => scroll('right')}
-            className="bg-indigo-500 p-3 rounded-full text-white hover:bg-indigo-600 focus:outline-none opacity-95"
+            className="bg-indigo-500 p-3 rounded-full text-white hover:bg-indigo-600 focus:outline-none opacity-95 hidden lg:block md:block"
           >
             <ArrowRight className="h-5 w-5" />
           </button>
