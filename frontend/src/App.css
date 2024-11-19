@@ -16,4 +16,8 @@
     nav .hamburger{
         display: block;
     }
+
+    #vendor-sideBar{
+        display: none;
+    }
 }

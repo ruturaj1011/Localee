@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import AccountMenu from './Avatar';
 import "../App.css"
 
+
 function Navbar() {
+
+    const [navOption, setNavOption] = useState(0);
 
     const hamClick = () => {
 
@@ -11,13 +15,13 @@ function Navbar() {
 
         let verMenu = document.getElementById("ver-Menu");
 
-        if(hamIcon.classList.contains("hidden")){
+        if (hamIcon.classList.contains("hidden")) {
             hamIcon.classList.remove("hidden");
 
             verMenu.classList.add("hidden");
             crossIcon.classList.add("hidden");
         }
-        else{
+        else {
             crossIcon.classList.remove("hidden");
             verMenu.classList.remove("hidden");
 
@@ -25,27 +29,28 @@ function Navbar() {
         }
     }
 
-    return ( 
+    return (
         <nav className='px-6 py-3.5 lg:px-8 bg-white fixed shadow-sm w-full z-50 '>
 
             <div id="nav-cont" className='flex justify-between items-center'>
                 <div><h1 className='nav-logo text-3xl font-semibold text-indigo-600'>Localee</h1></div>
 
-                <div className='nav-list list-none flex justify-between items-center text-lg font-sm text-slate-800 gap-8'>
+                <div className='nav-list list-none flex justify-between items-center text-lg font-medium text-slate-800 gap-8'>
 
 
-                    <li className='nav-items hover:text-indigo-700'><Link to="/">Home</Link></li>
+                    <li className='nav-items hover:text-indigo-700' onClick={() => setNavOption(0)}><Link to="/" style={navOption == 0 ? { color: "rgb(79 70 229)" } : {}}>Home</Link></li>
 
-                    <li className='nav-items hover:text-indigo-700'><Link to="/findServices">Find Services</Link></li>
+                    <li className='nav-items hover:text-indigo-700' onClick={() => setNavOption(1)}><Link to="/findServices" style={navOption == 1 ? { color: "rgb(79 70 229)" } : {}}>Find Services</Link></li>
 
-                    <li className='nav-items hover:text-indigo-700'><Link to="/becomeProvider" >Become a Provider</Link></li>
+                    <li className='nav-items hover:text-indigo-700' onClick={() => setNavOption(2)}><Link to="/becomeProvider" style={navOption == 2 ? { color: "rgb(79 70 229)" } : {}} >Become a Provider</Link></li>
 
                     <li className='bg-indigo-600 hover:bg-indigo-700 rounded-3xl py-1.5 px-6 text-white'>
                         <Link to="/">Sign In</Link>
                     </li>
 
+                    <AccountMenu />
                 </div>
-                
+
 
                 <div className='hamburger hidden text-slate-700'>
                     <button id="ham-btn" className='text-xl ' onClick={hamClick} ><i id="hamIcon" className="fa-solid fa-bars p-1 block rounded hover:border-2 hover:border-indigo-700 transition duration-150 ease-in-out"></i> <i id='crossIcon' className=" fa-solid fa-xmark p-1 hidden rounded hover:border-2 hover:border-neutral-800 transition duration-150 ease-in-out"></i></button>
@@ -54,6 +59,8 @@ function Navbar() {
 
             <div id="ver-Menu" className='list-none items-center text-lg font-sm text-slate-800 hidden'>
 
+                <AccountMenu />
+
                 <li className='nav-items hover:text-indigo-700 py-1.5 mt-2'><Link to="/findServices">Find Services</Link></li>
 
                 <li className='nav-items hover:text-indigo-700 py-1.5'><Link to="/becomeProvider" >Become a Provider</Link></li>
@@ -61,7 +68,6 @@ function Navbar() {
                 <li className='bg-indigo-600 hover:bg-indigo-700 rounded-3xl py-1.5 px-6 text-white text-center my-2'>
                     <Link to="/">Sign In</Link>
                 </li>
-
             </div>
         </nav>
     );
