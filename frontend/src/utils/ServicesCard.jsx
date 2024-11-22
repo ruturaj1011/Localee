@@ -1,5 +1,6 @@
 import React from 'react';
 import {ArrowRight, ArrowLeft} from "lucide-react"
+import { Link } from 'react-router-dom';
 
 
 const ServicesCards = ({services, category, subHeading, eleId}) => {
@@ -49,12 +50,14 @@ const ServicesCards = ({services, category, subHeading, eleId}) => {
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900">{service.name}</h3>
                 <p className="text-gray-500 text-sm mt-1 mb-4">{service.count}</p>
-                <button
+
+                <Link
                   className="text-indigo-600 hover:text-indigo-700 font-medium text-sm inline-flex items-center"
+                  to="/services"
                 >
                   Browse Providers
                   <ArrowRight className="ml-2 h-4 w-4" />
-                </button>
+                </Link>
               </div>
             ))}
           </div>

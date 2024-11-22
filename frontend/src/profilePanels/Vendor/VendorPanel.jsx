@@ -7,10 +7,11 @@ import { Link } from "react-router-dom";
 import Bookings from "./Bookings";
 import Profile from "./Profile";
 import YourServices from "./YourServices";
+import EditServiceForm from "./EditService";
 
 const VendorPanel = () => {
 
-    let [selectedMenu, setSelectedMenu] = useState(0);
+    let [selectedMenu, setSelectedMenu] = useState(-1);
 
     const handleMenuClick = (idx) => {
         setSelectedMenu(idx);
@@ -46,6 +47,7 @@ const VendorPanel = () => {
                     <Route path="bookings" element={<Bookings />} />
                     <Route path="profile" element={<Profile />} />
                     <Route path="yourServices" element={<YourServices />} />
+                    <Route path="service/edit" element={<EditServiceForm />} />
                 </Routes>
             </main>
         </div>

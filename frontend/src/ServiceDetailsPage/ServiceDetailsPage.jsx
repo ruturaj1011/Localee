@@ -13,32 +13,30 @@ const ServiceDetailsPage = () => {
       name: 'ABC Electricians',
       location: 'Mumbai, India',
       rating: 4.5,
-      imageUrl: "https://img.freepik.com/free-photo/man-doing-professional-home-cleaning-service_23-2150359014.jpg?t=st=1731408751~exp=1731412351~hmac=e4c53501a1bb2e6596e81ce11e74be606b4be342604f52f38d23aff855a5d82b&w=740",
-      services: ['Wiring', 'Lighting Installation', 'Repairs'],
+      imageUrl: "https://img.freepik.com/free-photo/man-doing-professional-home-cleaning-service_23-2150359014.jpg?t=st=1731408751~exp=1731412351~hmac=e4c53501a1bb2e6596e81ce11e74be606b4be342604f52f38d23aff855a5d82b&w=740"
     },
     {
       id: 2,
       name: 'QuickFix Repairs',
       location: 'Delhi, India',
       rating: 4.7,
-      imageUrl: "https://img.freepik.com/free-photo/man-doing-professional-home-cleaning-service_23-2150359014.jpg?t=st=1731408751~exp=1731412351~hmac=e4c53501a1bb2e6596e81ce11e74be606b4be342604f52f38d23aff855a5d82b&w=740",
-      services: ['AC Repairs', 'Heating System Maintenance', 'Emergency Repairs'],
+      imageUrl: "https://img.freepik.com/free-photo/man-doing-professional-home-cleaning-service_23-2150359014.jpg?t=st=1731408751~exp=1731412351~hmac=e4c53501a1bb2e6596e81ce11e74be606b4be342604f52f38d23aff855a5d82b&w=740"
     },
     {
-      id: 2,
+      id: 4,
       name: 'QuickFix Repairs',
       location: 'Delhi, India',
       rating: 4.7,
-      imageUrl: '/images/provider2.jpg',
-      services: ['AC Repairs', 'Heating System Maintenance', 'Emergency Repairs'],
+      imageUrl: '/images/provider2.jpg'
+
     },
     {
-      id: 2,
+      id: 3,
       name: 'QuickFix Repairs',
       location: 'Delhi, India',
       rating: 4.7,
-      imageUrl: '/images/provider2.jpg',
-      services: ['AC Repairs', 'Heating System Maintenance', 'Emergency Repairs'],
+      imageUrl: '/images/provider2.jpg'
+      
     },
   ];
   
@@ -61,9 +59,9 @@ const ServiceDetailsPage = () => {
        {/* Search section */}
 
         {/* Service Cards - Scrollable */}
-        <div className="mt-4 h-[calc(100vh-50px)] overflow-y-scroll bg-white rounded-lg shadow p-4 space-y-4">
+        <div className="hide-scrollbar mt-2 h-[calc(100vh-50px)] overflow-y-scroll bg-white rounded-lg shadow p-4 space-y-4">
           {serviceProviders.map((provider) => (
-            <ServiceCard key={provider.id} provider={provider} />
+            <ServiceCard key={provider.id} provider={provider}/>
           ))}
         </div>
       </div>

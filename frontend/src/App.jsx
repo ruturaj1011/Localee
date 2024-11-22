@@ -10,6 +10,7 @@ import Navbar from './utils/Navbar';
 import Footer from './utils/Footer';
 import VendorPanel from './profilePanels/Vendor/VendorPanel';
 import ServiceDetailsPage from "./ServiceDetailsPage/ServiceDetailsPage";
+import BecomeAProvider from "./BecomeA_Provider/BecomeAProvider/BecomeAProvider";
 
 function App() {
 
@@ -23,11 +24,12 @@ function App() {
 
           <Route path='/' element={<LandingPage />} />
           <Route path='/findServices' element={<FindServices />} />
-          <Route path='/becomeProvider' element={<VendorInfo />} />
+          <Route path='/becomeProvider' element={<BecomeAProvider />} />
           <Route path='/user/:id' element={<ProfilePage />} />
           <Route path='/vendor/:id/*' element={<VendorPanel />} />
 
-          <Route path='/service' element={<ServiceDetailsPage />} />
+          <Route path='/services' element={<ServiceDetailsPage />} />
+          <Route path='/serviceInfo' element={<VendorInfo />} />
 
       </Routes> 
 

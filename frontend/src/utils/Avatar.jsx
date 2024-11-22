@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Avatar, Menu, MenuItem, Divider, IconButton, Tooltip } from "@mui/material";
 import { Logout } from "@mui/icons-material";
 import { Calendar, User, Logs } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -14,6 +15,13 @@ export default function AccountMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const navigate = useNavigate();
+  
+  const handleOptionClick = (option) =>{
+
+    navigate(`vendor/abc/${option}`)
+    handleClose();
+  }
 
   return (
     <>
@@ -79,15 +87,15 @@ export default function AccountMenu() {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         {/* Menu Items */}
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={() => handleOptionClick("profile")}>
         <User className="w-5 h-5 me-2" />
           Profile
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={() => handleOptionClick("bookings")}>
         <Calendar className="w-5 h-5 me-2" />
           Bookings
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={() => handleOptionClick("yourServices")}>
         <Logs className="w-5 h-5 me-2" />
           Your Services
         </MenuItem>
