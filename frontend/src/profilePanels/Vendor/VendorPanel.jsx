@@ -8,6 +8,7 @@ import Bookings from "./Bookings";
 import Profile from "./Profile";
 import YourServices from "./YourServices";
 import EditServiceForm from "./EditService";
+import AddNewService from "./AddNewService";
 
 const VendorPanel = () => {
 
@@ -47,7 +48,8 @@ const VendorPanel = () => {
                     <Route path="bookings" element={<Bookings />} />
                     <Route path="profile" element={<Profile />} />
                     <Route path="yourServices" element={<YourServices />} />
-                    <Route path="service/edit" element={<EditServiceForm />} />
+                    <Route path="yourServices/service/edit" element={<EditServiceForm />} />
+                    <Route path="yourServices/addNewService" element={<AddNewService />} />
                 </Routes>
             </main>
         </div>

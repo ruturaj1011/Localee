@@ -1,5 +1,16 @@
 import React, { useState } from "react";
 
+const completedBookings = [
+  {
+    id: 1,
+    service: "House Cleaning",
+    vendor: "John Doe Cleaning Co.",
+    date: "2024-11-10",
+    time: "10:00 AM",
+    location: "Downtown, Block A",
+  },
+];
+
 const bookingsData = [
   {
     id: 1,
@@ -19,7 +30,7 @@ const bookingsData = [
     location: "456 Elm Street, City",
     status: "Accepted",
   },
-  
+
 ];
 
 const BookingsHistory = () => {
@@ -59,29 +70,80 @@ const BookingsHistory = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-100">
-      <h2 className="text-2xl font-bold mb-4">Bookings History</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {bookings.map((booking) => (
-          <div
-            key={booking.id}
-            className="bg-white shadow-md rounded-lg p-4 border hover:shadow-lg"
-          >
-            <h3 className="text-xl font-semibold">{booking.service}</h3>
-            <p className="text-gray-700">Vendor: {booking.vendor}</p>
-            <p className="text-gray-700">Date: {booking.date}</p>
-            <p className="text-gray-700">Time: {booking.time}</p>
-            <p className="text-gray-700">Location: {booking.location}</p>
-            <div className="mt-2">Status: {getStatusBadge(booking.status)}</div>
-            <button
-              onClick={() => cancelBooking(booking.id)}
-              className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+    <div>
+      <div className="p-6 mt-16 bg-gray-100">
+        <h2 className="text-2xl font-bold mb-4">My Bookings</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6">
+          {bookings.map((booking) => (
+            <div
+              key={booking.id}
+              className="bg-white shadow-md rounded-md p-4 border hover:shadow-lg flex flex-col justify-between"
             >
-              Cancel Booking
-            </button>
-          </div>
-        ))}
+              {/* Header Section */}
+              <div>
+                <h3 className="text-lg font-semibold mb-2">{booking.service}</h3>
+                <p className="text-gray-600 mb-1">Vendor: {booking.vendor}</p>
+                <p className="text-gray-600 mb-1">Date: {booking.date}</p>
+                <p className="text-gray-600 mb-1">Time: {booking.time}</p>
+                <p className="text-gray-600 mb-2">Location: {booking.location}</p>
+                <div className="text-sm font-medium mb-2">
+                  Status: {getStatusBadge(booking.status)}
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex justify-between">
+                <button
+                  onClick={() => editBooking(booking.id)}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                >
+                  Edit Booking
+                </button>
+                <button
+                  onClick={() => cancelBooking(booking.id)}
+                  className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+                >
+                  Cancel Booking
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
+      <div className="p-6 mt-16 bg-gray-100">
+        <h2 className="text-2xl font-bold mb-4">Booking History</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {completedBookings.map((booking) => (
+            <div
+              key={booking.id}
+              className="bg-white shadow-md rounded-md p-4 border hover:shadow-lg flex flex-col justify-between"
+            >
+              {/* Header Section */}
+              <div>
+                <h3 className="text-lg font-semibold mb-2">{booking.service}</h3>
+                <p className="text-gray-600 mb-1">Vendor: {booking.vendor}</p>
+                <p className="text-gray-600 mb-1">Date: {booking.date}</p>
+                <p className="text-gray-600 mb-1">Time: {booking.time}</p>
+                <p className="text-gray-600 mb-2">Location: {booking.location}</p>
+                <div className="text-sm font-medium mb-2">
+                  Status: <span className="text-green-600 font-semibold">Completed</span>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex justify-between">
+                <button
+                  onClick={() => rateBooking(booking.id)}
+                  className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600"
+                >
+                  Rate Booking
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
     </div>
   );
 };

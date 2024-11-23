@@ -1,11 +1,26 @@
 import React, { useState } from "react";
 
-const EditServiceForm = ({ service, onSave, onCancel }) => {
-  const [formData, setFormData] = useState({
-    name: service.name || "",
-    description: service.description || "",
-    price: service.price || "",
-    category: service.category || "",
+const EditServiceForm = () => {
+
+  const [selectedService, setSelectedService] = useState(null);
+
+
+  const handleSave = (updatedService) => {
+    console.log("Updated Service:", updatedService);
+    setSelectedService(null);
+    // Add logic to update the service in the backend or state.
+  };
+
+  const handleCancel = () => {
+    setSelectedService(null);
+  };
+
+  const [formData, setFormData] = useState({ 
+    id: 1, 
+    name: "Electrician", 
+    description: "Fix electrical issues", 
+    price: 500, 
+    category: "Repair" 
   });
 
   const handleChange = (e) => {
@@ -19,12 +34,12 @@ const EditServiceForm = ({ service, onSave, onCancel }) => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto">
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">Edit Service</h2>
+    <div className="bg-white p-6 rounded-lg shadow-lg max-w-2xl mx-auto mt-16">
+      <h2 className="text-2xl font-semibold text-gray-800 mb-4">Edit Service</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Service Name */}
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="name" className="block text-md font-medium text-gray-700">
             Service Name
           </label>
           <input
@@ -33,14 +48,14 @@ const EditServiceForm = ({ service, onSave, onCancel }) => {
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-md text:sm lg:text-lg"
             required
           />
         </div>
 
         {/* Service Description */}
         <div>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="description" className="block text-md font-medium text-gray-700">
             Description
           </label>
           <textarea
@@ -48,7 +63,7 @@ const EditServiceForm = ({ service, onSave, onCancel }) => {
             name="description"
             value={formData.description}
             onChange={handleChange}
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text:sm lg:text-lg"
             rows="4"
             required
           />
@@ -56,7 +71,7 @@ const EditServiceForm = ({ service, onSave, onCancel }) => {
 
         {/* Service Price */}
         <div>
-          <label htmlFor="price" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="price" className="block text-md font-medium text-gray-700">
             Price
           </label>
           <input
@@ -65,14 +80,14 @@ const EditServiceForm = ({ service, onSave, onCancel }) => {
             name="price"
             value={formData.price}
             onChange={handleChange}
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text:sm lg:text-lg"
             required
           />
         </div>
 
         {/* Service Category */}
         <div>
-          <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="category" className="block text-md font-medium text-gray-700">
             Category
           </label>
           <input
@@ -81,7 +96,7 @@ const EditServiceForm = ({ service, onSave, onCancel }) => {
             name="category"
             value={formData.category}
             onChange={handleChange}
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text:sm lg:text-lg"
           />
         </div>
 
@@ -89,7 +104,7 @@ const EditServiceForm = ({ service, onSave, onCancel }) => {
         <div className="flex justify-end space-x-4">
           <button
             type="button"
-            onClick={onCancel}
+            onClick={handleCancel}
             className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
           >
             Cancel
