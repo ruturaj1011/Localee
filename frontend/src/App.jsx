@@ -31,6 +31,9 @@ function App() {
 
           <Route path='/services' element={<ServiceDetailsPage />} />
           <Route path='/serviceInfo' element={<VendorInfo />} />
+{/* 
+          <Route path='auth/user' element={<RegisterForm role={"user"} />} />
+          <Route path='auth/vendor' element={<RegisterForm role={"vendor"} />} /> */}
 
       </Routes> 
 
