@@ -9,6 +9,8 @@ import Profile from "./Profile";
 import YourServices from "./YourServices";
 import EditServiceForm from "./EditService";
 import AddNewService from "./AddNewService";
+import Navbar from "../../utils/Navbar";
+import Footer from "../../utils/Footer";
 
 const VendorPanel = () => {
 
@@ -19,6 +21,8 @@ const VendorPanel = () => {
     }
 
     return (
+        <>
+        <Navbar/>
         <div className="flex h-screen">
 
             {/* Sidebar */}
@@ -53,6 +57,9 @@ const VendorPanel = () => {
                 </Routes>
             </main>
         </div>
+
+        <Footer />
+        </>
 
     );
 };

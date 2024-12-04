@@ -19,7 +19,7 @@ export default function AccountMenu() {
   
   const handleOptionClick = (option) =>{
 
-    navigate(`vendor/abc/${option}`)
+    navigate(`/vendor/abc/${option}`)
     handleClose();
   }
 

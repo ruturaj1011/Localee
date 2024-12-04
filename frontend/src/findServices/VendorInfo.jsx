@@ -3,6 +3,8 @@ import { Phone, Mail, MessageSquare} from "lucide-react";
 import Reviews from "./Reviews";
 import BookAppointmentForm from "./BookAppointmentForm";
 import BookHomeVisitForm from "./BookHomeVisit";
+import Navbar from "../utils/Navbar";
+import Footer from "../utils/Footer";
 
 const ProviderDetailsPage = () => {
 
@@ -53,6 +55,9 @@ const ProviderDetailsPage = () => {
     }
     
     return (
+        <>
+        
+        <Navbar />
         <div className="min-h-screen bg-gray-50 pt-16">
             <div className=" max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col lg:flex-row gap-8 z-0">
                 {/* Left Section: Provider Details */}
@@ -178,6 +183,9 @@ const ProviderDetailsPage = () => {
             </div>
 
         </div>
+
+        <Footer />
+        </>
     );
 };
 

@@ -3,6 +3,8 @@ import Hero from './Hero';
 import ServicesCards from '../utils/ServicesCard';
 
 import { Wrench, Camera, Home, Scissors, Car, Heart } from 'lucide-react';
+import Navbar from '../utils/Navbar';
+import Footer from '../utils/Footer';
 
 const services = [
     { icon: Wrench, name: 'Plumbing', count: '250+ Providers' },
@@ -16,10 +18,12 @@ const services = [
 function findServices() {
     return ( 
         <div>
+            <Navbar idx={1}/>
             <Hero />
             <ServicesCards services={services} category={"Populer Services"} subHeading={"eskdfjn"} eleId={"populer"} />
             <ServicesCards services={services} category={"Car Services"} subHeading={"eskdfjn"} eleId={"cars"}/>
             <ServicesCards services={services} category={"Home Services"} subHeading={"eskdfjn"} eleId={"home"}/>
+            <Footer />
         </div>
     );
 }

@@ -4,6 +4,8 @@ import Profile from "./Profile";
 import Bookings from "./Bookings";
 import { Route, Routes } from "react-router-dom";
 import { Link } from "react-router-dom";
+import Navbar from "../../utils/Navbar";
+import Footer from "../../utils/Footer";
 
 const UserPanel = () => {
   let [selectedMenu, setSelectedMenu] = useState(-1);
@@ -13,6 +15,9 @@ const UserPanel = () => {
     }
 
     return (
+
+        <>
+        <Navbar ></Navbar>
         <div className="flex h-screen">
 
             {/* Sidebar */}
@@ -40,6 +45,9 @@ const UserPanel = () => {
                 </Routes>
             </main>
         </div>
+
+        <Footer />
+        </>
 
     );
 };

@@ -2,6 +2,8 @@ import React from 'react';
 import ServiceHeading from './components/ServiceHeading';
 import Filters from './components/Filters';
 import ServiceCard from './components/ServiceCard';
+import Navbar from '../utils/Navbar';
+import Footer from '../utils/Footer';
 
 
 
@@ -41,6 +43,8 @@ const ServiceDetailsPage = () => {
   ];
   
   return (
+    <>
+    <Navbar/>
     <div className="bg-gray-100 min-h-screen flex flex-col md:flex-row pt-16">
       {/* Left Section - Filters */}
       <div className="w-full md:w-1/3 p-4 bg-blue-600 shadow-lg">
@@ -66,6 +70,8 @@ const ServiceDetailsPage = () => {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

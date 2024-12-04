@@ -6,6 +6,8 @@ import LandingPage from './landingPage/LandingPage'
 import FindServices from "./findServices/FindServices"
 import VendorInfo from "./findServices/VendorInfo"
 
+import { AuthProvider } from "./contexts/authContext";
+
 import Navbar from './utils/Navbar';
 import Footer from './utils/Footer';
 import VendorPanel from './profilePanels/Vendor/VendorPanel';
@@ -13,13 +15,24 @@ import UserPanel from './profilePanels/UserPanel/UserPanel.jsx';
 import ServiceDetailsPage from "./ServiceDetailsPage/ServiceDetailsPage";
 import BecomeAProvider from "./BecomeA_Provider/BecomeAProvider/BecomeAProvider";
 
+import UserLogin from './authComponents/UserLogin.jsx';
+import VendorLogin from './authComponents/vendorLogin.jsx';
+import UserRegister from './authComponents/UserRegister.jsx';
+import VendorRegister from './authComponents/VendorRegister.jsx';
+
 function App() {
 
+
   return (
+
+    
       
     <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
 
-      <Navbar />
+      <AuthProvider>
+        
+      
+      {/* <Navbar /> */}
 
       <Routes>
 
@@ -31,13 +44,18 @@ function App() {
 
           <Route path='/services' element={<ServiceDetailsPage />} />
           <Route path='/serviceInfo' element={<VendorInfo />} />
-{/* 
-          <Route path='auth/user' element={<RegisterForm role={"user"} />} />
-          <Route path='auth/vendor' element={<RegisterForm role={"vendor"} />} /> */}
+
+          <Route path='/auth/user/login' element={<UserLogin />} />
+          <Route path='/auth/user/register' element={<UserRegister />} />
+
+          <Route path='/auth/vendor/login' element={<VendorLogin />} />
+          <Route path='/auth/vendor/register' element={<VendorRegister />} />
 
       </Routes> 
 
-      <Footer />
+      {/* <Footer /> */}
+
+      </AuthProvider>
 
     </Router>
     
