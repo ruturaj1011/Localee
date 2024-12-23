@@ -34,7 +34,7 @@ const EditServiceForm = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg max-w-2xl mx-auto mt-16">
+    <div className="bg-white p-6 rounded-lg shadow-lg max-w-2xl mx-auto mt-4">
       <h2 className="text-2xl font-semibold text-gray-800 mb-4">Edit Service</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Service Name */}

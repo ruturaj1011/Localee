@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 import Bookings from "./Bookings";
 import Profile from "./Profile";
 import YourServices from "./YourServices";
-import EditServiceForm from "./EditService";
-import AddNewService from "./AddNewService";
+import EditServiceForm from "./utils/EditService";
+import AddNewService from "./utils/AddNewService";
 import Navbar from "../../utils/Navbar";
 import Footer from "../../utils/Footer";
 
@@ -26,7 +26,7 @@ const VendorPanel = () => {
         <div className="flex h-screen">
 
             {/* Sidebar */}
-            <aside id="vendor-sideBar" className="w-64 bg-indigo-600 text-white flex flex-col pt-16 md:relative md:w-48 lg:w-64 mt-4">
+            <aside id="vendor-sideBar" className="w-64 bg-indigo-600 text-white flex flex-col pt-4 md:relative md:w-48 lg:w-64">
                 <div className="p-4 text-center text-xl font-bold border-b border-indigo-500">
                     Vendor Panel
                 </div>

@@ -2,7 +2,7 @@ import { Edit, Mail, Phone, MapPin } from "lucide-react";
 
 const Profile = () => {
   return (
-    <div className="p-6 bg-white shadow-lg rounded-md max-w-3xl mx-auto space-y-6 mt-16">
+    <div className="p-6 bg-white shadow-lg rounded-md max-w-3xl mx-auto space-y-6">
       {/* Profile Header */}
       <div className="flex items-center gap-4">
         <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center text-2xl font-bold text-indigo-600">

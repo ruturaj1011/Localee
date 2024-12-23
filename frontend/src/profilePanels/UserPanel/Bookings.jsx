@@ -1,17 +1,24 @@
 import React, { useState } from "react";
+import { Edit, Trash2, Trash } from "lucide-react";
 
-const completedBookings = [
+const bookingHistory = [
   {
     id: 1,
-    service: "House Cleaning",
-    vendor: "John Doe Cleaning Co.",
+    name: "Alex Brown",
+    service: "Photography",
     date: "2024-11-10",
-    time: "10:00 AM",
-    location: "Downtown, Block A",
+    status: "Completed",
+  },
+  {
+    id: 2,
+    name: "Emily Davis",
+    service: "Beauty & Wellness",
+    date: "2024-11-15",
+    status: "Cancelled",
   },
 ];
 
-const bookingsData = [
+const upcomingBookings = [
   {
     id: 1,
     service: "Plumbing",
@@ -30,14 +37,15 @@ const bookingsData = [
     location: "456 Elm Street, City",
     status: "Accepted",
   },
-
 ];
 
-const BookingsHistory = () => {
-  const [bookings, setBookings] = useState(bookingsData);
+const Bookings = () => {
+  const [bookings, setBookings] = useState(upcomingBookings);
 
   const cancelBooking = (id) => {
-    const confirmCancel = window.confirm("Are you sure you want to cancel this booking?");
+    const confirmCancel = window.confirm(
+      "Are you sure you want to cancel this booking?"
+    );
     if (confirmCancel) {
       setBookings(bookings.filter((booking) => booking.id !== id));
     }
@@ -56,6 +64,12 @@ const BookingsHistory = () => {
       case "Pending":
         badgeClass = "bg-yellow-100 text-yellow-800";
         break;
+      case "Completed":
+          badgeClass = "bg-green-100 text-yellow-800";
+          break;
+      case "Cancelled":
+            badgeClass = "bg-red-100 text-yellow-800";
+            break;
       default:
         badgeClass = "bg-gray-100 text-gray-800";
     }
@@ -71,81 +85,84 @@ const BookingsHistory = () => {
 
   return (
     <div>
-      <div className="p-6 mt-16 bg-gray-100">
-        <h2 className="text-2xl font-bold mb-4">My Bookings</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6">
-          {bookings.map((booking) => (
-            <div
-              key={booking.id}
-              className="bg-white shadow-md rounded-md p-4 border hover:shadow-lg flex flex-col justify-between"
-            >
-              {/* Header Section */}
-              <div>
-                <h3 className="text-lg font-semibold mb-2">{booking.service}</h3>
-                <p className="text-gray-600 mb-1">Vendor: {booking.vendor}</p>
-                <p className="text-gray-600 mb-1">Date: {booking.date}</p>
-                <p className="text-gray-600 mb-1">Time: {booking.time}</p>
-                <p className="text-gray-600 mb-2">Location: {booking.location}</p>
+      <main className="flex-1 bg-gray-100 p-6 mt-4">
+
+        <h1 className="text-2xl font-bold mb-6">Bookings</h1>
+
+        {/* Two Columns for Large Screens */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          {/* Upcoming Bookings */}
+          <div className="bg-white p-4 rounded shadow h-fit">
+
+            <h2 className="text-lg font-semibold mb-4">Upcoming Bookings</h2>
+            {upcomingBookings.map((booking) => (
+
+              <button
+                key={booking.id}
+                className="p-4 shadow-md w-full border-gray-200 text-left hover:shadow-lg mt-1"
+              >
+
+                <div className="flex justify-between">
+                  <h3 className="text-lg font-semibold mb-2">
+                    {booking.service}
+                  </h3>
+
+                  <button
+                    onClick={() => editBooking(booking.id)}
+                    className="text-gray-500 hover:text-gray-700"
+                    title="Edit Booking"
+                  >
+                    <Edit className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <p className="text-gray-700">Vendor : {booking.vendor}</p>
+                <p className="text-gray-600">
+                  {booking.date} at {booking.time}
+                </p>
+                <p className="text-gray-600 mb-2">
+                  Location: {booking.location}
+                </p>
                 <div className="text-sm font-medium mb-2">
                   Status: {getStatusBadge(booking.status)}
                 </div>
-              </div>
+                
+              </button>
+            ))}
+          </div>
 
-              {/* Action Buttons */}
-              <div className="flex justify-between">
-                <button
-                  onClick={() => editBooking(booking.id)}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                >
-                  Edit Booking
-                </button>
-                <button
-                  onClick={() => cancelBooking(booking.id)}
-                  className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-                >
-                  Cancel Booking
-                </button>
-              </div>
+          {/* Booking History */}
+          <div className="bg-white p-4 rounded shadow h-fit">
+            <div className="flex justify-between">
+              <h2 className="text-lg font-semibold mb-4">Booking History</h2>
+              <button className="rounded-2xl w-fit px-2 py-1 h-fit border-2 flex text-sm font-medium hover:border-stone-600">
+                Clear All <Trash2 size={18} className="mt-0.2 ms-1" />
+              </button>
             </div>
-          ))}
-        </div>
-      </div>
-      <div className="p-6 mt-16 bg-gray-100">
-        <h2 className="text-2xl font-bold mb-4">Booking History</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {completedBookings.map((booking) => (
-            <div
-              key={booking.id}
-              className="bg-white shadow-md rounded-md p-4 border hover:shadow-lg flex flex-col justify-between"
-            >
-              {/* Header Section */}
-              <div>
-                <h3 className="text-lg font-semibold mb-2">{booking.service}</h3>
-                <p className="text-gray-600 mb-1">Vendor: {booking.vendor}</p>
-                <p className="text-gray-600 mb-1">Date: {booking.date}</p>
-                <p className="text-gray-600 mb-1">Time: {booking.time}</p>
-                <p className="text-gray-600 mb-2">Location: {booking.location}</p>
+
+            {bookingHistory.map((history) => (
+              <div key={history.id} className="p-4 border-b border-gray-200">
+                <div className="flex justify-between">
+                  <p className="font-medium">{history.name}</p>
+                  <button>
+                    <Trash size={16} strokeWidth={1.25} />
+                  </button>
+                </div>
+                <p className="text-gray-600">{history.service}</p>
+                <p className="text-gray-500">
+                  {history.date}
+                </p>
                 <div className="text-sm font-medium mb-2">
-                  Status: <span className="text-green-600 font-semibold">Completed</span>
+                  Status: {getStatusBadge(history.status)}
                 </div>
               </div>
-
-              {/* Action Buttons */}
-              <div className="flex justify-between">
-                <button
-                  onClick={() => rateBooking(booking.id)}
-                  className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600"
-                >
-                  Rate Booking
-                </button>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-
+      </main>
     </div>
   );
 };
 
-export default BookingsHistory;
+export default Bookings;

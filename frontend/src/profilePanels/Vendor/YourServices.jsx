@@ -8,6 +8,9 @@ const YourServices = () => {
   const handleEditBtn = () => {
     navigate("/vendor/123/yourServices/service/edit");
   };
+  const handleAddService = () => {
+    navigate("/vendor/123/yourServices/addNewService");
+  };
 
   const services = [
     {
@@ -37,11 +40,11 @@ const YourServices = () => {
   ];
 
   return (
-    <div className="p-6 mt-16 bg-white shadow-lg rounded-md max-w-5xl mx-auto space-y-6">
+    <div className="p-6 mt-4 bg-white shadow-lg rounded-md max-w-5xl mx-auto space-y-6">
       {/* Section Header */}
       <div className="flex justify-between">
         <h2 className="text-2xl font-semibold text-gray-800">Your Services</h2>
-        <button className="ml-auto px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2">
+        <button className="ml-auto px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2" onClick={handleAddService}>
             <Plus className="w-6 h-6" />
             Add Service
         </button>
