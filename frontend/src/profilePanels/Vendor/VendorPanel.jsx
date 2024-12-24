@@ -14,6 +14,8 @@ import Footer from "../../utils/Footer";
 
 const VendorPanel = () => {
 
+    useAuth();
+
     let [selectedMenu, setSelectedMenu] = useState(-1);
 
     const handleMenuClick = (idx) => {

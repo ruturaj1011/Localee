@@ -28,6 +28,7 @@ async function fetchGeoLocation(city, state) {
 }
 
 const userRegister = async (req, res) => {
+  
   const { name, email, password, phone, city, state } = req.body;
 
   try {

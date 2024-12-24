@@ -6,7 +6,11 @@ import BookHomeVisitForm from "./BookHomeVisit";
 import Navbar from "../utils/Navbar";
 import Footer from "../utils/Footer";
 
+import useAuth from "../utils/authMiddleware";
+
 const ProviderDetailsPage = () => {
+
+    useAuth();
 
     let [AppointmentFormOpen, setAppointmentFormOpen] = useState(false);
     let [HomeVisitFormOpen, setHomeVisitFormOpen] = useState(false);

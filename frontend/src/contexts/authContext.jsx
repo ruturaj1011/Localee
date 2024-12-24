@@ -10,6 +10,7 @@ const client = axios.create({
 });
 
 export const AuthProvider = ({ children }) => {
+
     const authContext = useContext(AuthContext);
 
     const [userData, setUserData] = useState(authContext);
@@ -46,7 +47,11 @@ export const AuthProvider = ({ children }) => {
 
             if (request.status === httpStatus.OK) {
                 localStorage.setItem("token", request.data.token);
-                router("/");
+                
+                const redirectTo = localStorage.getItem("redirectTo") || "/";
+                localStorage.removeItem("redirectTo");
+
+                router(redirectTo); 
             }
         } catch (e) {
             throw e;
@@ -82,7 +87,11 @@ export const AuthProvider = ({ children }) => {
 
             if (request.status === httpStatus.OK) {
                 localStorage.setItem("token", request.data.token);
-                router("/");
+                
+                const redirectTo = localStorage.getItem("redirectTo") || "/";
+                localStorage.removeItem("redirectTo"); 
+
+                router(redirectTo); 
             }
         } catch (e) {
             throw e;

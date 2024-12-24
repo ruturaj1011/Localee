@@ -2,6 +2,8 @@ import { Router } from "express";
 import { userLogin, userRegister, vendorLogin, vendorRegister } from "../controllers/Auth.contoller.js";
 const router = Router();
 
+import {authMiddleware} from "../middleware.js";
+
 // user
 
 router.route("/user/login")

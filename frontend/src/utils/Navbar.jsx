@@ -45,7 +45,7 @@ function Navbar({idx}) {
                     <li className='nav-items hover:text-indigo-700' onClick={() => setNavOption(2)}><Link to="/becomeProvider" style={navOption == 2 ? { color: "rgb(79 70 229)" } : {}} >Become a Provider</Link></li>
 
                     <li className='bg-indigo-600 hover:bg-indigo-700 rounded-3xl py-1.5 px-6 text-white'>
-                        <Link to="/">Sign In</Link>
+                        <Link to="/auth/user/login">Sign In</Link>
                     </li>
 
                     <AccountMenu />

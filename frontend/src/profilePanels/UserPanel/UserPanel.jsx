@@ -7,7 +7,12 @@ import { Link } from "react-router-dom";
 import Navbar from "../../utils/Navbar";
 import Footer from "../../utils/Footer";
 
+import useAuth from "../../utils/authMiddleware";
+
 const UserPanel = () => {
+
+    useAuth();
+
   let [selectedMenu, setSelectedMenu] = useState(-1);
 
     const handleMenuClick = (idx) => {

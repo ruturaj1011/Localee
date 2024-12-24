@@ -4,7 +4,7 @@ import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 import './App.css'
 import LandingPage from './landingPage/LandingPage'
 import FindServices from "./findServices/FindServices"
-import VendorInfo from "./findServices/VendorInfo"
+import ServiceDetails from "./ServiceDetails/ServiceDetails.jsx"
 
 import { AuthProvider } from "./contexts/authContext";
 
@@ -12,7 +12,7 @@ import Navbar from './utils/Navbar';
 import Footer from './utils/Footer';
 import VendorPanel from './profilePanels/Vendor/VendorPanel';
 import UserPanel from './profilePanels/UserPanel/UserPanel.jsx';
-import ServiceDetailsPage from "./ServiceDetailsPage/ServiceDetailsPage";
+import SelectServiceVendor from "./SelectServiceVendor/SelectServiceVendor.jsx";
 import BecomeAProvider from "./BecomeA_Provider/BecomeAProvider/BecomeAProvider";
 
 import UserLogin from './authComponents/UserLogin.jsx';
@@ -42,8 +42,8 @@ function App() {
           <Route path='/user/:id/*' element={<UserPanel />} />
           <Route path='/vendor/:id/*' element={<VendorPanel />} />
 
-          <Route path='/services' element={<ServiceDetailsPage />} />
-          <Route path='/serviceInfo' element={<VendorInfo />} />
+          <Route path='/services' element={<SelectServiceVendor />} />
+          <Route path='/serviceInfo' element={<ServiceDetails />} />
 
           <Route path='/auth/user/login' element={<UserLogin />} />
           <Route path='/auth/user/register' element={<UserRegister />} />
