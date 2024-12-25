@@ -17,27 +17,23 @@ const useAuth = () => {
     const location = useLocation();
 
     useEffect(() => {
-
         const token = localStorage.getItem("token");
 
         if (!token) {
-
-            localStorage.setItem("redirectTo", location.pathname);
-
+            // Save the page user initially tried to access
+            if (location.pathname !== "/auth/user/login") {
+                localStorage.setItem("redirectTo", location.pathname);
+            }
             navigate("/auth/user/login");
             return;
         }
 
-        try {
-            const decodedToken = decodeToken(token); // Decode JWT
-            if (decodedToken.exp * 1000 < Date.now()) {
-                localStorage.removeItem("token"); // Token expired, remove it
-                navigate("/auth/user/login"); // Redirect to login
-            }
-        } catch (error) {
-            console.error("Invalid token:", error);
+        const decodedToken = decodeToken(token);
+
+        if (!decodedToken || (decodedToken.exp * 1000 < Date.now())) {
+            // Token is invalid or expired
             localStorage.removeItem("token");
-            navigate("/auth/user/login"); // Redirect to login
+            navigate("/auth/user/login");
         }
     }, [navigate, location.pathname]);
 };

@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Avatar, Menu, MenuItem, Divider, IconButton, Tooltip } from "@mui/material";
 import { Logout } from "@mui/icons-material";
 import { Calendar, User, Logs } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+
+import { AuthContext } from "../contexts/authContext.jsx";
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -22,6 +24,8 @@ export default function AccountMenu() {
     navigate(`/vendor/abc/${option}`)
     handleClose();
   }
+
+  const { userData, logout } = useContext(AuthContext);
 
   return (
     <>
@@ -100,8 +104,12 @@ export default function AccountMenu() {
           Your Services
         </MenuItem>
         <Divider sx={{ my: 1 }} />
-        <MenuItem onClick={handleClose} sx={{ color: "error.main", fontWeight: "bold" }}>
-          <Logout fontSize="small" sx={{ mr: 1 }} />
+        <MenuItem onClick={() => { 
+        handleClose(); 
+        logout(); 
+    }}  sx={{ color: "error.main", fontWeight: "bold" }}>
+          <Logout fontSize="small" sx={{ mr: 1 }}
+           />
           Logout
         </MenuItem>
       </Menu>

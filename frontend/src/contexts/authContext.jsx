@@ -16,6 +16,12 @@ export const AuthProvider = ({ children }) => {
     const [userData, setUserData] = useState(authContext);
     const router = useNavigate();
 
+    const logout = () => {
+        localStorage.clear(); // Clears all local storage data
+        setUserData(null);
+        router("/");
+    };
+
     const handleVendorRegister = async (name, email, password, phone, businessName, city, state, address) => {
         try {
             const request = await client.post("/vendor/register", {
@@ -46,7 +52,9 @@ export const AuthProvider = ({ children }) => {
             });
 
             if (request.status === httpStatus.OK) {
+
                 localStorage.setItem("token", request.data.token);
+                setUserData({ role: "vendor", ...request.data.vendorDetails });
                 
                 const redirectTo = localStorage.getItem("redirectTo") || "/";
                 localStorage.removeItem("redirectTo");
@@ -87,8 +95,10 @@ export const AuthProvider = ({ children }) => {
 
             if (request.status === httpStatus.OK) {
                 localStorage.setItem("token", request.data.token);
+                setUserData({ role: "user", ...request.data.userDetails });
                 
                 const redirectTo = localStorage.getItem("redirectTo") || "/";
+                
                 localStorage.removeItem("redirectTo"); 
 
                 router(redirectTo); 
@@ -101,6 +111,7 @@ export const AuthProvider = ({ children }) => {
     const data = {
         userData,
         setUserData,
+        logout,
         handleVendorLogin,
         handleVendorRegister,
         handleUserLogin,

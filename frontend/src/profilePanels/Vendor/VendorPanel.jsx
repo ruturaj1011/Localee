@@ -12,6 +12,8 @@ import AddNewService from "./utils/AddNewService";
 import Navbar from "../../utils/Navbar";
 import Footer from "../../utils/Footer";
 
+import useAuth from "../../utils/authMiddleware";
+
 const VendorPanel = () => {
 
     useAuth();

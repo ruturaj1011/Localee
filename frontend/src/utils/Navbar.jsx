@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AccountMenu from './Avatar';
 import "../App.css"
 
+import { AuthContext } from '../contexts/authContext';
 
 function Navbar({idx}) {
 
@@ -29,6 +30,9 @@ function Navbar({idx}) {
         }
     }
 
+    
+    const {userData} = useContext(AuthContext);
+
     return (
         <nav className='px-6 py-3.5 lg:px-8 bg-white shadow-md w-full z-500 '>
 
@@ -44,11 +48,9 @@ function Navbar({idx}) {
 
                     <li className='nav-items hover:text-indigo-700' onClick={() => setNavOption(2)}><Link to="/becomeProvider" style={navOption == 2 ? { color: "rgb(79 70 229)" } : {}} >Become a Provider</Link></li>
 
-                    <li className='bg-indigo-600 hover:bg-indigo-700 rounded-3xl py-1.5 px-6 text-white'>
+                    {!userData ? <li className='bg-indigo-600 hover:bg-indigo-700 rounded-3xl py-1.5 px-6 text-white'>
                         <Link to="/auth/user/login">Sign In</Link>
-                    </li>
-
-                    <AccountMenu />
+                    </li> : <AccountMenu />}
                 </div>
 
 
@@ -59,15 +61,15 @@ function Navbar({idx}) {
 
             <div id="ver-Menu" className='list-none items-center text-lg font-sm text-slate-800 hidden'>
 
-                <AccountMenu />
+            {!userData ? <li className='bg-indigo-600 hover:bg-indigo-700 rounded-3xl py-1.5 px-6 text-white'>
+                        <Link to="/auth/user/login">Sign In</Link>
+                    </li> : <AccountMenu />}
 
                 <li className='nav-items hover:text-indigo-700 py-1.5 mt-2'><Link to="/findServices">Find Services</Link></li>
 
                 <li className='nav-items hover:text-indigo-700 py-1.5'><Link to="/becomeProvider" >Become a Provider</Link></li>
 
-                <li className='bg-indigo-600 hover:bg-indigo-700 rounded-3xl py-1.5 px-6 text-white text-center my-2'>
-                    <Link to="/">Sign In</Link>
-                </li>
+                
             </div>
         </nav>
     );
