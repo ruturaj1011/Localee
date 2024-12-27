@@ -45,7 +45,7 @@ const ServiceDetailsPage = () => {
   return (
     <>
     <Navbar/>
-    <div className="bg-gray-100 min-h-screen flex flex-col md:flex-row pt-16">
+    <div className="bg-gray-100 min-h-screen flex flex-col md:flex-row">
       {/* Left Section - Filters */}
       <div className="w-full md:w-1/3 p-4 bg-blue-600 shadow-lg">
       {/* Service Heading */}

@@ -11,6 +11,7 @@ import EditServiceForm from "./utils/EditService";
 import AddNewService from "./utils/AddNewService";
 import Navbar from "../../utils/Navbar";
 import Footer from "../../utils/Footer";
+import BookingDetails from "../BookingDetails";
 
 import useAuth from "../../utils/authMiddleware";
 
@@ -58,6 +59,7 @@ const VendorPanel = () => {
                     <Route path="yourServices" element={<YourServices />} />
                     <Route path="yourServices/service/edit" element={<EditServiceForm />} />
                     <Route path="yourServices/addNewService" element={<AddNewService />} />
+                    <Route path="bookings/:id/details" element={<BookingDetails />} />
                 </Routes>
             </main>
         </div>

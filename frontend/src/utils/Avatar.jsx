@@ -20,8 +20,13 @@ export default function AccountMenu() {
   const navigate = useNavigate();
   
   const handleOptionClick = (option) =>{
-
-    navigate(`/vendor/abc/${option}`)
+    
+    if(userData.role == 'vendor'){
+      navigate(`/vendor/abc/${option}`);
+    }
+    else{
+      navigate(`/user/abc/${option}`);
+    }
     handleClose();
   }
 
@@ -99,16 +104,20 @@ export default function AccountMenu() {
         <Calendar className="w-5 h-5 me-2" />
           Bookings
         </MenuItem>
-        <MenuItem onClick={() => handleOptionClick("yourServices")}>
+        
+        {userData.role == 'vendor' && <MenuItem onClick={() => handleOptionClick("yourServices")}>
         <Logs className="w-5 h-5 me-2" />
           Your Services
         </MenuItem>
+        }
+
         <Divider sx={{ my: 1 }} />
         <MenuItem onClick={() => { 
         handleClose(); 
         logout(); 
     }}  sx={{ color: "error.main", fontWeight: "bold" }}>
-          <Logout fontSize="small" sx={{ mr: 1 }}
+          <Logout fontSize="small" sx={{ mr: 1 }
+          }
            />
           Logout
         </MenuItem>

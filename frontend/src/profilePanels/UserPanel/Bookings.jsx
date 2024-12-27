@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Edit, Trash2, Trash } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const bookingHistory = [
   {
@@ -83,6 +84,12 @@ const Bookings = () => {
     );
   };
 
+  const navigate = useNavigate();
+
+  const onBookingClick = (booking) => {
+    navigate(`/user/123/bookings/${booking.id}/details`, { state: booking });
+  };
+
   return (
     <div>
       <main className="flex-1 bg-gray-100 p-6 mt-4">
@@ -98,9 +105,10 @@ const Bookings = () => {
             <h2 className="text-lg font-semibold mb-4">Upcoming Bookings</h2>
             {upcomingBookings.map((booking) => (
 
-              <button
+              <div
                 key={booking.id}
                 className="p-4 shadow-md w-full border-gray-200 text-left hover:shadow-lg mt-1"
+                onClick={() => { onBookingClick(booking) }}
               >
 
                 <div className="flex justify-between">
@@ -128,7 +136,7 @@ const Bookings = () => {
                   Status: {getStatusBadge(booking.status)}
                 </div>
                 
-              </button>
+              </div>
             ))}
           </div>
 

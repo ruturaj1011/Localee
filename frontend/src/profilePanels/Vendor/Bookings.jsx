@@ -1,6 +1,7 @@
 import React from 'react';
 import { Trash, Trash2 } from 'lucide-react';
 import { ArrowRight } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 function Bookings() {
 
@@ -50,6 +51,13 @@ function Bookings() {
       );
     };
     
+
+    const navigate = useNavigate();
+      
+    const onBookingClick = (booking) => {
+          navigate(`/vendor/123/bookings/${booking.id}/details`, { state: booking });
+        };
+
     return ( 
 
         <main className="flex-1 bg-gray-100 p-6 mt-4">
@@ -63,7 +71,7 @@ function Bookings() {
             <h2 className="text-lg font-semibold mb-4">Upcoming Bookings</h2>
             {upcomingBookings.map((booking) => (
               
-              <button key={booking.id} className="p-4 shadow-md w-full border-gray-200 items-center hover:shadow-lg mt-1">
+              <div key={booking.id} className="p-4 shadow-md w-full border-gray-200 items-center hover:shadow-lg mt-1" onClick={()=>onBookingClick(booking)}>
 
                 <div className='text-left'>
                   <p className="font-medium">{booking.name}</p>
@@ -81,7 +89,7 @@ function Bookings() {
                   </button>
               
                 </div>
-              </button>
+              </div>
             ))}
           </div>
 

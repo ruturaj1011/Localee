@@ -8,6 +8,7 @@ import Navbar from "../../utils/Navbar";
 import Footer from "../../utils/Footer";
 
 import useAuth from "../../utils/authMiddleware";
+import BookingDetails from "../BookingDetails";
 
 const UserPanel = () => {
 
@@ -47,6 +48,7 @@ const UserPanel = () => {
                 <Routes>
                     <Route path="bookings" element={<Bookings />} />
                     <Route path="profile" element={<Profile />} />
+                    <Route path="bookings/:id/details" element={<BookingDetails />} />
                 </Routes>
             </main>
         </div>

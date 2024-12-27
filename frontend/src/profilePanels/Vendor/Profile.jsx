@@ -1,6 +1,13 @@
 import { Edit, Mail, Phone, MapPin } from "lucide-react";
+import { useContext } from "react";
+
+import { AuthContext } from "../../contexts/authContext";
+
 
 const Profile = () => {
+
+  const {logout} = useContext(AuthContext);
+  
   return (
     <div className="p-6 bg-white shadow-lg rounded-md max-w-3xl mx-auto space-y-6">
       {/* Profile Header */}
@@ -40,7 +47,7 @@ const Profile = () => {
       {/* Account Actions */}
       <div className="flex justify-between items-center bg-gray-50 p-4 rounded-md">
         
-        <button className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+        <button onClick={logout} className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
           Log Out
         </button>
       </div>

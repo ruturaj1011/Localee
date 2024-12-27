@@ -18,9 +18,16 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         localStorage.clear(); // Clears all local storage data
-        setUserData(null);
+        setUserData(authContext);
         router("/");
     };
+
+    const isLoggedIn = () => {
+
+        const token = localStorage.getItem("token");
+        
+        return token && token.length > 0;
+    }
 
     const handleVendorRegister = async (name, email, password, phone, businessName, city, state, address) => {
         try {
@@ -112,6 +119,7 @@ export const AuthProvider = ({ children }) => {
         userData,
         setUserData,
         logout,
+        isLoggedIn,
         handleVendorLogin,
         handleVendorRegister,
         handleUserLogin,
