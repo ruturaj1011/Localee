@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Calendar, User } from "lucide-react";
-import Profile from "./Profile";
+import Profile from "../Profile";
 import Bookings from "./Bookings";
 import { Route, Routes } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Navbar from "../../utils/Navbar";
 import Footer from "../../utils/Footer";
+import EditProfile from "../EditProfile";
 
 import useAuth from "../../utils/authMiddleware";
 import BookingDetails from "../BookingDetails";
@@ -48,6 +49,7 @@ const UserPanel = () => {
                 <Routes>
                     <Route path="bookings" element={<Bookings />} />
                     <Route path="profile" element={<Profile />} />
+                    <Route path="profile/edit-profile" element={<EditProfile />} />
                     <Route path="bookings/:id/details" element={<BookingDetails />} />
                 </Routes>
             </main>
