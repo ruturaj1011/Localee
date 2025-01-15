@@ -12,6 +12,12 @@ const serviceSchema = new Schema({
             ref: 'Review' 
         }],
         default: []
+    },
+    address: {type: String},
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User", 
+        required: true,
     }
 })
 
