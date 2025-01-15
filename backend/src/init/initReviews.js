@@ -3,13 +3,11 @@ dotenv.config();
 
 import mongoose from "mongoose";
 
-import services  from "./data.js";
+import reviews  from "./data.js";
 
-import {Service} from "../models/serviceModel.js";
+import {Review} from "../models/reviewModel.js";
 
 
-// MongoDB connection string from environment variables
-// console.log("Mongo URL:", process.env.MONGO_URL);
 
 // console.log(services);
 const dbURL = process.env.MONGO_URL;
@@ -22,11 +20,11 @@ async function main() {
 const initDB = async () => {
     try {
         
-        await Service.deleteMany({}); // Clear existing data
+        await Review.deleteMany({}); // Clear existing data
 
         // Insert the new data into the database
 
-        await Service.insertMany(services.services);
+        await Review.insertMany(reviews.reviews);
         console.log("Data initialized successfully");
 
     } catch (error) {

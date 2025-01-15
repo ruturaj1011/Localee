@@ -1,17 +1,17 @@
 const reviews = [
 
     {
-        "auther": "648cd159d3fcd135c56a7a8b",
+        "auther": "676aba87dd26917aa1f88644",
         "rating": 5,
         "comment": "Excellent service! Highly recommended.",
     },
     {
-        "auther": "648cd159d3fcd135c56a7a8b",
+        "auther": "676aba87dd26917aa1f88644",
         "rating": 4,
         "comment": "Very good experience, but there is room for improvement.",
     },
     {
-        "auther": "648cd159d3fcd135c56a7a8b",
+        "auther": "676aba87dd26917aa1f88644",
         "rating": 3,
         "comment": "Average service. It was okay but not great.",
     }
