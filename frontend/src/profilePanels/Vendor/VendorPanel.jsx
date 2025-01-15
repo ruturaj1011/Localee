@@ -5,13 +5,14 @@ import { Link } from "react-router-dom";
 
 
 import Bookings from "./Bookings";
-import Profile from "./Profile";
+import Profile from "../Profile";
 import YourServices from "./YourServices";
 import EditServiceForm from "./utils/EditService";
 import AddNewService from "./utils/AddNewService";
 import Navbar from "../../utils/Navbar";
 import Footer from "../../utils/Footer";
 import BookingDetails from "../BookingDetails";
+import EditProfile from "../EditProfile";
 
 import useAuth from "../../utils/authMiddleware";
 
@@ -56,6 +57,7 @@ const VendorPanel = () => {
                 <Routes>
                     <Route path="bookings" element={<Bookings />} />
                     <Route path="profile" element={<Profile />} />
+                    <Route path="profile/edit-profile" element={<EditProfile />} />
                     <Route path="yourServices" element={<YourServices />} />
                     <Route path="yourServices/service/edit" element={<EditServiceForm />} />
                     <Route path="yourServices/addNewService" element={<AddNewService />} />

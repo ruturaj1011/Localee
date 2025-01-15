@@ -2,19 +2,9 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const reviewSchema = new Schema({
-    userId: { 
+    auther: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User', 
-        required: true 
-    }, 
-    vendorId: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Vendor', 
-        required: true 
-    },
-    serviceId: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Service', 
         required: true 
     },
     rating: { 
