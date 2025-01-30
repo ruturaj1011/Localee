@@ -19,6 +19,26 @@ app.use(express.urlencoded({limit:"40kb", extended: true }));
 
 app.use("/auth", AuthRoutes);
 
+app.get("/localee", async (req, res) => {
+    try {
+        const { lat, lng, service } = req.query;
+
+        if (!lat || !lng || !service) {
+            return res.status(400).json({ error: "Missing required parameters (lat, lng, service)" });
+        }
+
+        const apiUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=1500&type=${service}&key=${process.env.GOOGLE_LOCALEE}`;
+        
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        res.json(data);
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
 const PORT = 8000;
 const MONGO_URL = process.env.MONGO_URL;
 

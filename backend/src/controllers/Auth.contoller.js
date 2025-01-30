@@ -7,10 +7,12 @@ import { User } from "../models/userModel.js";
 import bcrypt from "bcrypt";
 
 async function fetchGeoLocation(city, state) {
+
   try {
     const response = await fetch(
       `https://nominatim.openstreetmap.org/search?city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}&countrycodes=IN&format=json&addressdetails=1&limit=1`
     );
+    
     const data = await response.json();
 
     if (data.length > 0) {
