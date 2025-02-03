@@ -6,18 +6,15 @@ import SearchBox from '../utils/SearchBox';
 
 function SearchServices() {
   const navigate = useNavigate();
-
   const [location, setLocation] = useState('');
   const [coordinates, setCoordinates] = useState({ lat: null, lng: null });
   const [selectedService, setSelectedService] = useState("");
 
   const handleServiceSelect = (service) => {
     setSelectedService(service);
-    localStorage.setItem('service', service); // Use the newly selected service
-    console.log('Selected Service:', service); // Log the correct value
+    localStorage.setItem('service', service);
   };
 
-  // Check localStorage for previously selected location
   useEffect(() => {
     const storedLoc = localStorage.getItem('location');
     const storedCoord = JSON.parse(localStorage.getItem('coordinates'));
@@ -25,14 +22,18 @@ function SearchServices() {
       setLocation(storedLoc);
       setCoordinates(storedCoord);
     }
+
+    const storedSer = localStorage.getItem('service');
+    if (storedSer) {
+      setSelectedService(storedSer);
+    }
   }, []);
 
-  // Handle location selection
-  const handleLocationSelect = (selectedLocation, lat, lon) => {
+  const handleLocationSelect = (selectedLocation, lat, lng) => {
     setLocation(selectedLocation);
-    setCoordinates({ lat, lng: lon });
+    setCoordinates({ lat, lng });
     localStorage.setItem('location', selectedLocation);
-    localStorage.setItem('coordinates', JSON.stringify({ lat, lng: lon }));
+    localStorage.setItem('coordinates', JSON.stringify({ lat, lng }));
   };
 
   const handleSearch = () => {
@@ -41,19 +42,14 @@ function SearchServices() {
       return;
     }
 
-    console.log('Searching for services in:', location, coordinates, selectedService);
-    navigate('/findServices'); // Navigate to results page
+    navigate(`/services/${selectedService}`, { state: { service: selectedService, location, coordinates } });
   };
 
   return (
     <div className="text-center">
       <div className="mt-10 justify-center items-end lg:flex md:flex gap-2">
-        {/* Location Selector */}
         <LocationSelector location={location} setLocation={handleLocationSelect} />
-
-        <SearchBox onServiceSelect={handleServiceSelect}/>
-        
-        {/* Search Button */}
+        <SearchBox onServiceSelect={handleServiceSelect} />
         <button
           className="w-full md:w-auto px-8 py-3 my-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center justify-center"
           onClick={handleSearch}

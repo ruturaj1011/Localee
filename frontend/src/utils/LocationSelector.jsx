@@ -24,8 +24,8 @@ const LocationSelector = ({ location, setLocation }) => {
     }
   };
 
-  const handleLocationSelect = async (city, lat, lon) => {
-    setLocation(city, lat, lon);
+  const handleLocationSelect = (city, lat, lng) => {
+    setLocation(city, lat, lng);
     setIsOpen(false);
   };
 

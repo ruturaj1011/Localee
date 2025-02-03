@@ -42,7 +42,7 @@ function App() {
           <Route path='/user/:id/*' element={<UserPanel />} />
           <Route path='/vendor/:id/*' element={<VendorPanel />} />
 
-          <Route path='/services' element={<SelectServiceVendor />} />
+          <Route path='/services/:serviceName' element={<SelectServiceVendor />} />
           <Route path='/serviceInfo' element={<ServiceDetails />} />
 
           <Route path='/auth/user/login' element={<UserLogin />} />

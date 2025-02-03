@@ -27,10 +27,12 @@ app.get("/localee", async (req, res) => {
             return res.status(400).json({ error: "Missing required parameters (lat, lng, service)" });
         }
 
-        const apiUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=1500&type=${service}&key=${process.env.GOOGLE_LOCALEE}`;
+        const apiUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=1500&keyword=${encodeURIComponent(service)}&key=${process.env.GOOGLE_LOCALEE}`;
         
         const response = await fetch(apiUrl);
         const data = await response.json();
+
+        // console.log(data);
 
         res.json(data);
     } catch (error) {

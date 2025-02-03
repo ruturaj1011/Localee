@@ -44,8 +44,8 @@ const ServiceCard = ({ provider }) => {
         {/* Rating */}
         <div className="flex items-center mt-3 text-sm">
           <FontAwesomeIcon icon={faStar} className="text-yellow-500 mr-1" />
-          <span className="text-yellow-600 font-medium">{provider.rating}</span>
-          <span className="text-gray-500 ml-2">(50 reviews)</span>
+          <span className="text-yellow-600 font-medium">{provider.rating ? provider.rating : "-"}</span>
+          {/* <span className="text-gray-500 ml-2">(50 reviews)</span> */}
         </div>
       </div>
 
@@ -58,7 +58,7 @@ ServiceCard.propTypes = {
   provider: PropTypes.shape({
     name: PropTypes.string.isRequired,
     location: PropTypes.string.isRequired,
-    rating: PropTypes.number.isRequired,
+    // rating: PropTypes.number.isRequired,
     imageUrl: PropTypes.string.isRequired,
   }).isRequired,
 };
