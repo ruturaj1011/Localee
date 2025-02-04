@@ -41,6 +41,23 @@ app.get("/localee", async (req, res) => {
     }
 });
 
+app.get("/localee/:service/:place_id", async (req, res) => {
+    try {
+      const { place_id } = req.params;  // Match the name of the URL parameter here
+  
+      const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&fields=name,formatted_address,formatted_phone_number,website,rating,user_ratings_total,reviews,photos,editorial_summary&key=${process.env.GOOGLE_LOCALEE}`;
+  
+      const response = await fetch(detailsUrl);
+      const placeData = await response.json();
+  
+      res.json(placeData.result);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+  
+
 const PORT = 8000;
 const MONGO_URL = process.env.MONGO_URL;
 

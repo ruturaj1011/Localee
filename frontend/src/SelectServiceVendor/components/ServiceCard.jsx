@@ -8,15 +8,52 @@ const ServiceCard = ({ provider }) => {
 
   const navigate = useNavigate();
 
-  const handleProviderClick = () => {
-    navigate(`/serviceInfo`);
+  const handleProviderClick = async (placeId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/localee/${provider.service}/${placeId}` 
+      );
+
+      const data = await response.json();
+
+      const details = simplifyData(data);
+
+      navigate(`/serviceInfo/${provider.service}/${placeId}`, { state: { details } });
+    } catch (error) {
+      console.error('Error fetching provider details:', error);
+    }
+  };
+
+  function simplifyData(data) {
+    return {
+      place_id: provider.id,
+      address: data.formatted_address,
+      phone: data.formatted_phone_number,
+      name: data.name,
+      images: data.photos.map(photo => ({
+        height: photo.height,
+        width: photo.width,
+        url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=${photo.width}&photoreference=${photo.photo_reference}&key=${import.meta.env.VITE_GOOGLE_LOCALEE}`
+      })),
+      rating: data.rating,
+      totalRatings: data.user_ratings_total,
+      website: data.website,
+      reviews: data.reviews.map(review => ({
+        author: review.author_name,
+        authorPhoto: review.profile_photo_url,
+        rating: review.rating,
+        text: review.text,
+        time: new Date(review.time * 1000).toLocaleDateString(),
+        relativeTime: review.relative_time_description
+      }))
+    };
   }
 
   return (
     <div
       className="flex items-center bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer max-w-xl mx-auto border border-gray-200"
       role="button"
-      onClick={() => handleProviderClick()}
+      onClick={() => handleProviderClick(provider.id)}
     >
       {/* Image Section */}
       <div className="w-32 h-32 flex-shrink-0">

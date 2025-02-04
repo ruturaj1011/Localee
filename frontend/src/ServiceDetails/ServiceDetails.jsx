@@ -1,14 +1,23 @@
 import React,{useState} from "react";
-import { Phone, Mail, MessageSquare} from "lucide-react";
+import { Phone, Mail, MessageSquare, MapPinCheckIcon} from "lucide-react";
 import Reviews from "./Reviews";
 import BookAppointmentForm from "./BookAppointmentForm";
 import BookHomeVisitForm from "./BookHomeVisit";
 import Navbar from "../utils/Navbar";
 import Footer from "../utils/Footer";
+import { useLocation } from "react-router-dom";
 
 import useAuth from "../utils/authMiddleware";
 
 const ProviderDetailsPage = () => {
+
+    const Location = useLocation();
+
+    const details = Location.state || {};
+
+    const data = details.details;
+
+    console.log(data);
 
     useAuth();
 
@@ -64,26 +73,26 @@ const ProviderDetailsPage = () => {
         <Navbar />
         <div className="min-h-screen bg-gray-50">
             <div className=" max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col lg:flex-row gap-8 z-0">
+
                 {/* Left Section: Provider Details */}
                 <div className="w-full lg:w-1/3 bg-white rounded-lg shadow-md p-6 space-y-6">
                     {/* Provider Info */}
                     <div className="space-y-4">
-                        <h2 className="text-2xl font-bold text-gray-900">Provider Name</h2>
-                        <p className="text-gray-600">
-                            Experienced and trusted professional providing quality services in
-                            your area.
-                        </p>
+                        <h2 className="text-2xl font-bold text-gray-900">{data.name}</h2>
                     </div>
 
                     {/* Contact Options */}
                     <div className="pt-6 space-y-3">
+                        <p className="flex text-gray-600">
+                            <MapPinCheckIcon className="mr-2 w-14 h-14 text-green-600" />{data.address}
+                        </p>
                         <p className="flex items-center text-gray-600">
                             <Phone className="mr-2 w-5 h-5 text-indigo-500" />
-                            +1 234 567 890
+                            {data.phone}
                         </p>
                         <p className="flex items-center text-gray-600">
                             <MessageSquare className="mr-2 w-5 h-5 text-green-500" />
-                            WhatsApp: +1 234 567 891
+                            WhatsApp: {data.phone}
                         </p>
                         <p className="flex items-center text-gray-600">
                             <Mail className="mr-2 w-5 h-5 text-gray-500" />
@@ -152,12 +161,14 @@ const ProviderDetailsPage = () => {
                         <h3 className="text-lg font-semibold mb-4">Gallery</h3>
                         <div className="relative">
                             <div className="carousel flex overflow-x-scroll gap-4 hide-scrollbar">
-                                {[1, 2, 3, 4].map((item) => (
+                                {data.images.map((item, idx) => (
                                     <img
-                                        key={item}
-                                        src={"https://img.freepik.com/free-photo/man-doing-professional-home-cleaning-service_23-2150359014.jpg?t=st=1731408751~exp=1731412351~hmac=e4c53501a1bb2e6596e81ce11e74be606b4be342604f52f38d23aff855a5d82b&w=740"}
+                                        key={idx++}
+                                        src={item.url}
+                                        width={item.width}
                                         alt={`Provider Image ${item}`}
                                         className="rounded-lg w-64 h-48 object-cover"
+                                        loading="lazy"
                                     />
                                 ))}
                             </div>
@@ -166,7 +177,7 @@ const ProviderDetailsPage = () => {
                     
 
                     {/* Reviews Section */}
-                    <Reviews />
+                    <Reviews reviews={data.reviews} rating={data.rating} totalRatings={data.totalRatings} />
 
 
                     {/* Service Area Map */}
@@ -174,7 +185,7 @@ const ProviderDetailsPage = () => {
                         <h3 className="text-lg font-semibold mb-4">Service Area</h3>
                         <div className="h-64 w-full rounded-md overflow-hidden">
                             <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d241318.1160988851!2d72.87284949697013!3d19.07298367015031!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1604911832890!5m2!1sen!2sin"
+                                src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_LOCALEE}&q=${data.address}`}
                                 width="100%"
                                 height="100%"
                                 allowFullScreen=""

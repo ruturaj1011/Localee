@@ -7,6 +7,7 @@ import Footer from '../utils/Footer';
 import { useLocation } from 'react-router-dom';
 
 const SelectServiceVendor = () => {
+  
   const Location = useLocation();
   const { service, location, coordinates } = Location.state || {};
 
@@ -27,6 +28,7 @@ const SelectServiceVendor = () => {
       const data = await response.json();
       const providers = data.results.map((item) => ({
         id: item.place_id,
+        service: service,
         name: item.name,
         location: item.vicinity,
         rating: item.rating,

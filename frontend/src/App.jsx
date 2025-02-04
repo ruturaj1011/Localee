@@ -43,7 +43,7 @@ function App() {
           <Route path='/vendor/:id/*' element={<VendorPanel />} />
 
           <Route path='/services/:serviceName' element={<SelectServiceVendor />} />
-          <Route path='/serviceInfo' element={<ServiceDetails />} />
+          <Route path='/serviceInfo/:service/:placeId' element={<ServiceDetails />} />
 
           <Route path='/auth/user/login' element={<UserLogin />} />
           <Route path='/auth/user/register' element={<UserRegister />} />
