@@ -128,10 +128,12 @@ const login = async (req, res, role) => {
       const token = jwt.sign(
         { id: user._id, role: user.role },
         process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRY || "7d" }
+        { expiresIn: process.env.JWT_EXPIRY || "1d" }
       );
 
-      return res.status(httpStatus.OK).json({ token: token });
+      
+
+      return res.status(httpStatus.OK).json({ token: token, id: user._id});
     } else {
       return res.status(httpStatus.UNAUTHORIZED).json({ message: "Invalid Username or Password!" });
     }

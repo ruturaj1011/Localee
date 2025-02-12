@@ -17,9 +17,20 @@ const userSchema = new Schema(
 
         role: { type: String, enum: ["user", "vendor"], required: true }, // Determines user type
 
+        bookings : {
+            type: [{ 
+                type: mongoose.Schema.Types.ObjectId, 
+                ref: 'Booking' 
+            }],
+            default: []
+        },
+
         // Vendor-specific fields (only applicable when role is "vendor")
         businessName: { type: String, default: "" },
-        servicesOffered: { type: [String], default: [] },
+        servicesOffered: { type: [{ 
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'Service' 
+        }], default: [] },
         profileCompleted: { type: Boolean, default: false },
         createdAt: { type: Date, default: Date.now },
     }

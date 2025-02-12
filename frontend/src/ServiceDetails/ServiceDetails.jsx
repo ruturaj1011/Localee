@@ -17,7 +17,7 @@ const ProviderDetailsPage = () => {
 
     const data = details.details;
 
-    console.log(data);
+    // console.log(data);
 
     useAuth();
 
@@ -79,6 +79,7 @@ const ProviderDetailsPage = () => {
                     {/* Provider Info */}
                     <div className="space-y-4">
                         <h2 className="text-2xl font-bold text-gray-900">{data.name}</h2>
+                        {data.description && <p className="text-gray-600">{data.description}</p>}
                     </div>
 
                     {/* Contact Options */}
@@ -92,12 +93,12 @@ const ProviderDetailsPage = () => {
                         </p>
                         <p className="flex items-center text-gray-600">
                             <MessageSquare className="mr-2 w-5 h-5 text-green-500" />
-                            WhatsApp: {data.phone}
+                            WhatsApp: {data.whatsapp}
                         </p>
-                        <p className="flex items-center text-gray-600">
+                        {data.email && <p className="flex items-center text-gray-600">
                             <Mail className="mr-2 w-5 h-5 text-gray-500" />
-                            vendor.email@example.com
-                        </p>
+                            {data.email}
+                        </p>}
                     </div>
 
 
@@ -161,7 +162,7 @@ const ProviderDetailsPage = () => {
                         <h3 className="text-lg font-semibold mb-4">Gallery</h3>
                         <div className="relative">
                             <div className="carousel flex overflow-x-scroll gap-4 hide-scrollbar">
-                                {data.images.map((item, idx) => (
+                                {data.images && data.images.map((item, idx) => (
                                     <img
                                         key={idx++}
                                         src={item.url}

@@ -1,15 +1,19 @@
 import { Edit, Plus } from "lucide-react";
 import {useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/authContext";
+import { useContext } from "react";
 
 const YourServices = () => {
+
+  const { id } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
   const handleEditBtn = () => {
-    navigate("/vendor/123/yourServices/service/edit");
+    navigate(`/vendor/${id}/yourServices/service/edit`);
   };
   const handleAddService = () => {
-    navigate("/vendor/123/yourServices/addNewService");
+    navigate(`/vendor/${id}/yourServices/addNewService`);
   };
 
   const services = [

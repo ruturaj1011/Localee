@@ -4,7 +4,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 function BookAppointmentForm({ showForm }) {
 
     let [formData, setFormData] = useState({
-
+        type: "Appointment",
         name: "",
         phone: "",
         date: "",
@@ -26,6 +26,7 @@ function BookAppointmentForm({ showForm }) {
 
     let handleSubmit = (event) => {
         event.preventDefault();
+        
         console.log(formData);
 
         showForm(false);

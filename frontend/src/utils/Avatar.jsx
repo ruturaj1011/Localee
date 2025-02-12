@@ -7,6 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/authContext.jsx";
 
 export default function AccountMenu() {
+
+  const {isUserLoggedIn, isVendorLoggedIn, id} = useContext(AuthContext);
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -21,16 +24,16 @@ export default function AccountMenu() {
   
   const handleOptionClick = (option) =>{
     
-    if(userData.role == 'vendor'){
-      navigate(`/vendor/abc/${option}`);
+    if(isVendorLoggedIn){
+      navigate(`/vendor/${id}/${option}`);
     }
     else{
-      navigate(`/user/abc/${option}`);
+      navigate(`/user/${id}/${option}`);
     }
     handleClose();
   }
 
-  const { userData, logout } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
 
   return (
     <>
@@ -105,7 +108,7 @@ export default function AccountMenu() {
           Bookings
         </MenuItem>
         
-        {userData.role == 'vendor' && <MenuItem onClick={() => handleOptionClick("yourServices")}>
+        {isVendorLoggedIn() && <MenuItem onClick={() => handleOptionClick("yourServices")}>
         <Logs className="w-5 h-5 me-2" />
           Your Services
         </MenuItem>

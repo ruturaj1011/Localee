@@ -4,13 +4,31 @@ const bookingSchema = new Schema({
 
     userId: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User', 
-        required: true 
+        ref: 'User',
+        required: true
+    },
+    type:{
+        type: String,
+        enum: ['Appointment', 'HomeVisit'],
+        required: true
+    },
+    name : {
+        type : String,
+        required : true
+    },
+    phone : {
+        type : Number,
+        required : true
+    },
+    address : {
+        type : String
+    },
+    notes : {
+        type : String
     },
     vendorId: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User', 
-        required: true 
+        ref: 'User'
     },
     serviceId: { 
         type: mongoose.Schema.Types.ObjectId, 

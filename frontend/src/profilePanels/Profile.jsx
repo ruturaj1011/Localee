@@ -8,15 +8,15 @@ const Profile = () => {
 
   const navigate = useNavigate();
 
-  const {logout, userData} = useContext(AuthContext);
+  const {logout, isVendorLoggedIn, id} = useContext(AuthContext);
 
   const handleEditBtn = () => {
 
-    if(userData.role == "vendor"){
-      navigate("/vendor/123/profile/edit-profile");
+    if(isVendorLoggedIn()){
+      navigate(`/vendor/${id}/profile/edit-profile`);
     }
     else{
-      navigate("/user/123/profile/edit-profile");
+      navigate(`/user/${id}/profile/edit-profile`);
     }
     
   }

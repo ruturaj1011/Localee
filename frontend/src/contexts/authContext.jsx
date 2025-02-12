@@ -14,6 +14,8 @@ export const AuthProvider = ({ children }) => {
     const authContext = useContext(AuthContext);
 
     const [userData, setUserData] = useState(authContext);
+    const id = localStorage.getItem("id");
+
     const router = useNavigate();
 
     const logout = () => {
@@ -22,11 +24,17 @@ export const AuthProvider = ({ children }) => {
         router("/");
     };
 
-    const isLoggedIn = () => {
+    const isUserLoggedIn = () => {
 
         const token = localStorage.getItem("token");
-        
-        return token && token.length > 0;
+        const role = localStorage.getItem("role");
+        return token && token.length > 0 && role == 'user';
+    }
+    const isVendorLoggedIn = () => {
+
+        const token = localStorage.getItem("token");
+        const role = localStorage.getItem("role");
+        return token && token.length > 0 && role == 'vendor';
     }
 
     const handleVendorRegister = async (name, email, password, phone, businessName, city, state, address) => {
@@ -61,6 +69,8 @@ export const AuthProvider = ({ children }) => {
             if (request.status === httpStatus.OK) {
 
                 localStorage.setItem("token", request.data.token);
+                localStorage.setItem("role", 'vendor');
+                localStorage.setItem("id", request.data.id);
                 setUserData({ role: "vendor", ...request.data.vendorDetails });
                 
                 const redirectTo = localStorage.getItem("redirectTo") || "/";
@@ -102,6 +112,9 @@ export const AuthProvider = ({ children }) => {
 
             if (request.status === httpStatus.OK) {
                 localStorage.setItem("token", request.data.token);
+                localStorage.setItem("role", 'user');
+                localStorage.setItem("id", request.data.id);
+
                 setUserData({ role: "user", ...request.data.userDetails });
                 
                 const redirectTo = localStorage.getItem("redirectTo") || "/";
@@ -116,10 +129,12 @@ export const AuthProvider = ({ children }) => {
     };
 
     const data = {
+        id,
         userData,
         setUserData,
         logout,
-        isLoggedIn,
+        isUserLoggedIn,
+        isVendorLoggedIn,
         handleVendorLogin,
         handleVendorRegister,
         handleUserLogin,

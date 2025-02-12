@@ -6,15 +6,15 @@ const EditProfile = () => {
 
   const navigate = useNavigate();
 
-  const {userData} = useContext(AuthContext);
+  const {isUserLoggedIn, id} = useContext(AuthContext);
 
   const handleSave = () => {
 
-    if(userData.role = 'user'){
-        navigate("/user/123/profile");
+    if(isUserLoggedIn()){
+        navigate(`/user/${id}/profile`);
     }
     else{
-        navigate("/vendor/123/profile");
+        navigate(`/vendor/${id}/profile`);
     }
 
   };

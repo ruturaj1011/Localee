@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Calendar, User, Logs } from "lucide-react";
 import { Route, Routes } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -14,9 +14,13 @@ import Footer from "../../utils/Footer";
 import BookingDetails from "../BookingDetails";
 import EditProfile from "../EditProfile";
 
+import { AuthContext } from "../../contexts/authContext";
+
 import useAuth from "../../utils/authMiddleware";
 
 const VendorPanel = () => {
+
+    const { id } = useContext(AuthContext);
 
     useAuth();
 
@@ -37,15 +41,15 @@ const VendorPanel = () => {
                     Vendor Panel
                 </div>
                 <nav className="flex-1 p-4 space-y-4">
-                    <Link to="/vendor/123/bookings" className="flex items-center gap-2 hover:bg-indigo-500 px-3 py-2 rounded" onClick={()=>handleMenuClick(0)} style={selectedMenu==0? {backgroundColor : "rgb(99 102 241)"} : {}}>
+                    <Link to={`/vendor/${id}/bookings`} className="flex items-center gap-2 hover:bg-indigo-500 px-3 py-2 rounded" onClick={()=>handleMenuClick(0)} style={selectedMenu==0? {backgroundColor : "rgb(99 102 241)"} : {}}>
                         <Calendar className="w-5 h-5" />
                         Bookings
                     </Link>
-                    <Link to="/vendor/123/profile" className="flex items-center gap-2 hover:bg-indigo-500 px-3 py-2 rounded" onClick={()=>handleMenuClick(1)} style={selectedMenu==1? {backgroundColor : "rgb(99 102 241)"} : {}}>
+                    <Link to={`/vendor/${id}/profile`} className="flex items-center gap-2 hover:bg-indigo-500 px-3 py-2 rounded" onClick={()=>handleMenuClick(1)} style={selectedMenu==1? {backgroundColor : "rgb(99 102 241)"} : {}}>
                         <User className="w-5 h-5" />
                         Profile
                     </Link>
-                    <Link to="/vendor/123/yourServices" className="flex items-center gap-2 hover:bg-indigo-500 px-3 py-2 rounded" onClick={()=>handleMenuClick(2)} style={selectedMenu==2? {backgroundColor : "rgb(99 102 241)"} : {}}>
+                    <Link to={`/vendor/${id}/yourServices`} className="flex items-center gap-2 hover:bg-indigo-500 px-3 py-2 rounded" onClick={()=>handleMenuClick(2)} style={selectedMenu==2? {backgroundColor : "rgb(99 102 241)"} : {}}>
                         <Logs className="w-5 h-5" />
                         Your Services
                     </Link>

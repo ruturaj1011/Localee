@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Calendar, User } from "lucide-react";
 import Profile from "../Profile";
 import Bookings from "./Bookings";
@@ -8,12 +8,15 @@ import Navbar from "../../utils/Navbar";
 import Footer from "../../utils/Footer";
 import EditProfile from "../EditProfile";
 
+import { AuthContext } from "../../contexts/authContext";
 import useAuth from "../../utils/authMiddleware";
 import BookingDetails from "../BookingDetails";
 
 const UserPanel = () => {
 
     useAuth();
+
+    const {id} = useContext(AuthContext);
 
   let [selectedMenu, setSelectedMenu] = useState(-1);
 
@@ -33,11 +36,11 @@ const UserPanel = () => {
                     User Panel
                 </div>
                 <nav className="flex-1 p-4 space-y-4">
-                    <Link to="/user/123/bookings" className="flex items-center gap-2 hover:bg-indigo-500 px-3 py-2 rounded" onClick={()=>handleMenuClick(0)} style={selectedMenu==0? {backgroundColor : "rgb(99 102 241)"} : {}}>
+                    <Link to={`/user/${id}/bookings`} className="flex items-center gap-2 hover:bg-indigo-500 px-3 py-2 rounded" onClick={()=>handleMenuClick(0)} style={selectedMenu==0? {backgroundColor : "rgb(99 102 241)"} : {}}>
                         <Calendar className="w-5 h-5" />
                         My Bookings
                     </Link>
-                    <Link to="/user/123/profile" className="flex items-center gap-2 hover:bg-indigo-500 px-3 py-2 rounded" onClick={()=>handleMenuClick(1)} style={selectedMenu==1? {backgroundColor : "rgb(99 102 241)"} : {}}>
+                    <Link to={`/user/${id}/profile`} className="flex items-center gap-2 hover:bg-indigo-500 px-3 py-2 rounded" onClick={()=>handleMenuClick(1)} style={selectedMenu==1? {backgroundColor : "rgb(99 102 241)"} : {}}>
                         <User className="w-5 h-5" />
                         Profile
                     </Link>

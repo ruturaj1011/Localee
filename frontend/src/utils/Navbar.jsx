@@ -31,7 +31,7 @@ function Navbar({idx}) {
     }
 
     
-    const {isLoggedIn} = useContext(AuthContext);
+    const {isUserLoggedIn, isVendorLoggedIn} = useContext(AuthContext);
 
     return (
         <nav className='px-6 py-3.5 lg:px-8 bg-white shadow-md w-full z-500 '>
@@ -48,7 +48,7 @@ function Navbar({idx}) {
 
                     <li className='nav-items hover:text-indigo-700' onClick={() => setNavOption(2)}><Link to="/becomeProvider" style={navOption == 2 ? { color: "rgb(79 70 229)" } : {}} >Become a Provider</Link></li>
 
-                    {(isLoggedIn()) ? <AccountMenu /> : <li className='bg-indigo-600 hover:bg-indigo-700 rounded-3xl py-1.5 px-6 text-white  text-center'>
+                    {(isUserLoggedIn() || isVendorLoggedIn()) ? <AccountMenu /> : <li className='bg-indigo-600 hover:bg-indigo-700 rounded-3xl py-1.5 px-6 text-white  text-center'>
                         <Link to="/auth/user/login" className='text-xl'>Sign In</Link>
                     </li>}
                 </div>
@@ -61,7 +61,7 @@ function Navbar({idx}) {
 
             <div id="ver-Menu" className='list-none items-center text-lg font-sm text-slate-800 hidden'>
 
-            {(isLoggedIn()) ? <AccountMenu /> : <li className='bg-indigo-600 hover:bg-indigo-700 rounded-3xl py-1.5 px-6 text-white mt-4 text-center'>
+            {(isUserLoggedIn() || isVendorLoggedIn()) ? <AccountMenu /> : <li className='bg-indigo-600 hover:bg-indigo-700 rounded-3xl py-1.5 px-6 text-white mt-4 text-center'>
                         <Link to="/auth/user/login" className='text-xl'>Sign In</Link>
                     </li>}
 

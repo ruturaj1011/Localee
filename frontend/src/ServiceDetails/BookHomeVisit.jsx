@@ -4,7 +4,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 function BookHomeVisitForm({ showForm }) {
 
     let [formData, setFormData] = useState({
-
+        type: "HomeVisit",
         name: "",
         phone: "",
         date: "",

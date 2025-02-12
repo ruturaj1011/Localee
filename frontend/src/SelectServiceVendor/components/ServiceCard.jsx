@@ -8,27 +8,43 @@ const ServiceCard = ({ provider }) => {
 
   const navigate = useNavigate();
 
+  // console.log(provider);
+
   const handleProviderClick = async (placeId) => {
     try {
-      const response = await fetch(
-        `http://localhost:8000/localee/${provider.service}/${placeId}` 
-      );
+      
+      if(!provider.owner){
+        const response = await fetch(
+          `http://localhost:8000/localee/${provider.service}/${placeId}` 
+        );
+  
+        const data = await response.json();
+  
+        const details = simplifyGoogleData(data);
+  
+        navigate(`/serviceInfo/${provider.service}/${placeId}`, { state: { details } });
+      }
+      else{
 
-      const data = await response.json();
+        // console.log(provider);
 
-      const details = simplifyData(data);
+        const details = simplifyStoredData(provider);
 
-      navigate(`/serviceInfo/${provider.service}/${placeId}`, { state: { details } });
+        // console.log(details);
+
+        navigate(`/serviceInfo/${provider.service}/${provider.id}`, { state: { details }});
+      }
     } catch (error) {
       console.error('Error fetching provider details:', error);
     }
   };
 
-  function simplifyData(data) {
+  function simplifyGoogleData(data) {
     return {
       place_id: provider.id,
       address: data.formatted_address,
       phone: data.formatted_phone_number,
+      whatsapp: data.formatted_phone_number,
       name: data.name,
       images: data.photos.map(photo => ({
         height: photo.height,
@@ -46,6 +62,30 @@ const ServiceCard = ({ provider }) => {
         time: new Date(review.time * 1000).toLocaleDateString(),
         relativeTime: review.relative_time_description
       }))
+    };
+  }
+
+  function simplifyStoredData(data) {
+    return {
+      place_id: provider.id,
+      address: data.address,
+      phone: data.contactNumber,
+      whatsapp: data.whatsappNumber,
+      email:  data.email,
+      name: data.name,
+      images: data.images || [],
+      rating: data.rating || "No Ratings",
+      totalRatings: data.totalRatings || "No Ratings",
+      website: data.website,
+      reviews: data.reviews.map(review => ({
+        author: review.author_name,
+        authorPhoto: review.profile_photo_url,
+        rating: review.rating,
+        text: review.text,
+        time: new Date(review.time * 1000).toLocaleDateString(),
+        relativeTime: review.relative_time_description
+      })),
+      owner: data.owner
     };
   }
 
