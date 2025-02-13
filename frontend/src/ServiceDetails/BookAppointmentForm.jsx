@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
+import axios from 'axios';
 
-function BookAppointmentForm({ showForm }) {
+function BookAppointmentForm({ showForm, vendorId, serviceId }) {
+    const userId = localStorage.getItem('id');
 
     let [formData, setFormData] = useState({
         type: "Appointment",
@@ -9,59 +11,61 @@ function BookAppointmentForm({ showForm }) {
         phone: "",
         date: "",
         time: "",
-        notes: ""
+        notes: "",
+        vendorId: vendorId || null,
+        userId: userId || null,
+        serviceId: serviceId || null,
     });
 
     let handleInputChange = (event) => {
+        let { name, value } = event.target;
+        setFormData((currData) => ({
+            ...currData,
+            [name]: value
+        }));
+    };
 
-        let fieldName = event.target.name;
-        let newValue = event.target.value;
-
-        setFormData((currData) => {
-            currData[fieldName] = newValue;
-
-            return { ...currData };
-        });
-    }
-
-    let handleSubmit = (event) => {
+    let handleSubmit = async (event) => {
         event.preventDefault();
         
         console.log(formData);
 
+        await axios.post('http://localhost:8000/localee/book', formData, {
+            headers: { "Content-Type": "application/json" }
+        });
+
         showForm(false);
 
         setFormData({
+            type: "Appointment",
             name: "",
             phone: "",
             date: "",
             time: "",
-            notes: ""
+            notes: "",
+            vendorId: vendorId || null,
+            userId: userId || null,
+            serviceId: serviceId || null
         });
-    }
+    };
 
     return (
-
         <div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
-
-            <div className="bg-white w-96 mt-12 p-4  pt-0 rounded-lg shadow-lg space-y-6 min-w-2xl mx-auto relative">
-
+            <div className="bg-white w-96 mt-12 p-4 pt-0 rounded-lg shadow-lg space-y-6 min-w-2xl mx-auto relative">
                 <button
-                        onClick={() => showForm(false)}
-                        className="absolute top-2 right-2 text-gray-800 hover:text-gray-700"
-                    >
-                        <ClearIcon />
+                    onClick={() => showForm(false)}
+                    className="absolute top-2 right-2 text-gray-800 hover:text-gray-700"
+                >
+                    <ClearIcon />
                 </button>
                 <h2 className="text-2xl font-bold text-gray-800 text-center">Book Appointment</h2>
-                <form className="space-y-3 " onSubmit={handleSubmit}>
+                <form className="space-y-3" onSubmit={handleSubmit}>
                     <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                            Full Name
-                        </label>
+                        <label htmlFor="name" className="block text-sm font-medium text-gray-700">Full Name</label>
                         <input
                             type="text"
                             id="name"
-                            name='name'
+                            name="name"
                             value={formData.name}
                             onChange={handleInputChange}
                             className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -70,13 +74,11 @@ function BookAppointmentForm({ showForm }) {
                     </div>
 
                     <div>
-                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                            Phone Number
-                        </label>
+                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number</label>
                         <input
                             type="tel"
                             id="phone"
-                            name='phone'
+                            name="phone"
                             value={formData.phone}
                             onChange={handleInputChange}
                             className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -86,41 +88,35 @@ function BookAppointmentForm({ showForm }) {
 
                     <div className='lg:flex gap-5 w-full'>
                         <div className='w-6/12'>
-                        <label htmlFor="date" className="block text-sm font-medium text-gray-700">
-                            Preferred Date
-                        </label>
-                        <input
-                            type="date"
-                            id="date"
-                            name='date'
-                            value={formData.date}
-                            onChange={handleInputChange}
-                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                        />
+                            <label htmlFor="date" className="block text-sm font-medium text-gray-700">Preferred Date</label>
+                            <input
+                                type="date"
+                                id="date"
+                                name="date"
+                                value={formData.date}
+                                onChange={handleInputChange}
+                                className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            />
                         </div>
                         <div className='w-6/12'>
-                        <label htmlFor="time" className="block text-sm font-medium text-gray-700">
-                            Preferred Time
-                        </label>
-                        <input
-                            type="time"
-                            id="time"
-                            name='time'
-                            value={formData.time}
-                            onChange={handleInputChange}
-                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                        />
+                            <label htmlFor="time" className="block text-sm font-medium text-gray-700">Preferred Time</label>
+                            <input
+                                type="time"
+                                id="time"
+                                name="time"
+                                value={formData.time}
+                                onChange={handleInputChange}
+                                className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            />
                         </div>
                     </div>
 
                     <div>
-                        <label htmlFor="notes" className="block text-sm font-medium text-gray-700">
-                            Additional Notes
-                        </label>
+                        <label htmlFor="notes" className="block text-sm font-medium text-gray-700">Additional Notes</label>
                         <textarea
                             id="notes"
                             rows="3"
-                            name='notes'
+                            name="notes"
                             value={formData.notes}
                             onChange={handleInputChange}
                             className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"

@@ -84,8 +84,8 @@ const ProviderDetailsPage = () => {
 
                     {/* Contact Options */}
                     <div className="pt-6 space-y-3">
-                        <p className="flex text-gray-600">
-                            <MapPinCheckIcon className="mr-2 w-14 h-14 text-green-600" />{data.address}
+                        <p className="flex items-center text-gray-600">
+                            <MapPinCheckIcon className="mr-2 w-6 h-6 text-green-600" />{data.address}
                         </p>
                         <p className="flex items-center text-gray-600">
                             <Phone className="mr-2 w-5 h-5 text-indigo-500" />
@@ -100,7 +100,6 @@ const ProviderDetailsPage = () => {
                             {data.email}
                         </p>}
                     </div>
-
 
 
                     {/* Book Home Visit */ /* Book Appointment */}
@@ -151,9 +150,9 @@ const ProviderDetailsPage = () => {
                 </div>
 
                 {/* Book Appointment Form*/}
-                { AppointmentFormOpen && <BookAppointmentForm showForm={appointmentIsOpen} />}
+                { AppointmentFormOpen && <BookAppointmentForm showForm={appointmentIsOpen} vendorId={data.owner} serviceId={data.place_id}/>}
                 {/* Book Home Visit Form*/}
-                { HomeVisitFormOpen && <BookHomeVisitForm showForm={homeVisitIsOpen} />}
+                { HomeVisitFormOpen && <BookHomeVisitForm showForm={homeVisitIsOpen} vendorId={data.owner} serviceId={data.place_id} />}
 
                 {/* Right Section: Images Carousel and Reviews */}
                 <div className="w-full lg:w-2/3 space-y-6">

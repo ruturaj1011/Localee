@@ -41,7 +41,7 @@ const bookingSchema = new Schema({
     },
     time: { 
         type: String, 
-        required: true 
+        required: function() { return this.type === 'Appointment'; } // Only required for Appointmen
     },
     status: { 
         type: String, 

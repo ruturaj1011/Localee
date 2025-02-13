@@ -57,7 +57,7 @@ app.get("/localee", async (req, res) => {
 
         const storedServices = await searchNearbyServices(lat, lng, service, 2000);
 
-        console.log(storedServices);
+        // console.log(storedServices);
 
         const combinedResults = {
             storedServices,
@@ -87,17 +87,21 @@ app.get("/localee/:service/:place_id", async (req, res) => {
     }
 });
 
-
 // Booking
 app.post('/localee/book', async (req, res) => {
+
     try {
-        const { name, phone, date, time, address, notes, userId, vendorId, serviceId } = req.body;
+
+        const { type, name, phone, date, time, address, notes, userId, vendorId, serviceId } = req.body;
+
+        console.log( type, name, phone, date, time, address, notes, userId, vendorId, serviceId);
         
         if (!name || !phone || !date || !serviceId) {
             return res.status(400).json({ message: 'Required fields are missing' });
         }
         
         const bookingData = {
+            type,
             userId,
             name,
             phone,
@@ -105,7 +109,7 @@ app.post('/localee/book', async (req, res) => {
             time: time || null,
             address: address || '',
             notes: notes || '',
-            vendorId,
+            vendorId: vendorId || null,
             serviceId
         };
         
@@ -114,7 +118,7 @@ app.post('/localee/book', async (req, res) => {
 
         // Update user and vendor booking references
         await User.findByIdAndUpdate(userId, { $push: { bookings: newBooking._id } });
-        if (vendorId) {
+        if (vendorId != null) {      
             await User.findByIdAndUpdate(vendorId, { $push: { bookings: newBooking._id } });
         }
         

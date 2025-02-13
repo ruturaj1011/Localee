@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
+import axios from 'axios';
 
-function BookHomeVisitForm({ showForm }) {
+function BookHomeVisitForm({ showForm, vendorId, serviceId }) {
+
+    const userId = localStorage.getItem('id');
 
     let [formData, setFormData] = useState({
         type: "HomeVisit",
@@ -9,33 +12,40 @@ function BookHomeVisitForm({ showForm }) {
         phone: "",
         date: "",
         address: "",
-        notes: ""
+        notes: "",
+        vendorId: vendorId || null,
+        userId: userId || null,
+        serviceId: serviceId || null
     });
 
     let handleInputChange = (event) => {
+        let { name, value } = event.target;
+        setFormData((currData) => ({
+            ...currData,
+            [name]: value
+        }));
+    };
 
-        let fieldName = event.target.name;
-        let newValue = event.target.value;
-
-        setFormData((currData) => {
-            currData[fieldName] = newValue;
-
-            return { ...currData };
-        });
-    }
-
-    let handleSubmit = (event) => {
+    let handleSubmit = async(event) => {
         event.preventDefault();
         console.log(formData);
+
+        await axios.post('http://localhost:8000/localee/book', formData, {
+            headers: { "Content-Type": "application/json" }
+        });
 
         showForm(false);
 
         setFormData({
+            type: "HomeVisit",
             name: "",
             phone: "",
             date: "",
             address: "",
-            notes: ""
+            notes: "",
+            vendorId: vendorId || null,
+            userId: userId || null,
+            serviceId: serviceId || null
         });
     }
 

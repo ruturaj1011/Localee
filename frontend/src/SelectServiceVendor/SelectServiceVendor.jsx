@@ -31,7 +31,7 @@ const SelectServiceVendor = () => {
         id: item._id, 
         service: item.category,
         name: item.serviceName,
-        discription: item.description,
+        description: item.description,
         email : item.email,
         whatsappNumber : item.whatsappNumber,
         contactNumber : item.contactNumber,

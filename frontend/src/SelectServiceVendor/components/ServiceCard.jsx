@@ -14,6 +14,7 @@ const ServiceCard = ({ provider }) => {
     try {
       
       if(!provider.owner){
+
         const response = await fetch(
           `http://localhost:8000/localee/${provider.service}/${placeId}` 
         );
@@ -76,6 +77,7 @@ const ServiceCard = ({ provider }) => {
       images: data.images || [],
       rating: data.rating || "No Ratings",
       totalRatings: data.totalRatings || "No Ratings",
+      description: data.description,
       website: data.website,
       reviews: data.reviews.map(review => ({
         author: review.author_name,
