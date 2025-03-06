@@ -1,11 +1,13 @@
 import { Edit, Plus } from "lucide-react";
 import {useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/authContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState} from "react";
+import axios from "axios";
 
 const YourServices = () => {
 
-  const { id } = useContext(AuthContext);
+  // const { id } = useContext(AuthContext);
+  const id = localStorage.getItem("id");
 
   const navigate = useNavigate();
 
@@ -16,32 +18,49 @@ const YourServices = () => {
     navigate(`/vendor/${id}/yourServices/addNewService`);
   };
 
-  const services = [
-    {
-      id: 1,
-      name: "Haircut",
-      description: "Professional haircut services for men and women.",
-      image: "https://via.placeholder.com/100x100?text=Haircut",
-    },
-    {
-      id: 2,
-      name: "Photography",
-      description: "Capture your moments with high-quality photography.",
-      image: "https://via.placeholder.com/100x100?text=Photography",
-    },
-    {
-      id: 3,
-      name: "Moving Services",
-      description: "Reliable moving services to make your relocation smooth.",
-      image: "https://via.placeholder.com/100x100?text=Moving",
-    },
-    {
-      id: 4,
-      name: "Custom Repairs",
-      description: "Expert repair solutions for all your needs.",
-      image: "https://via.placeholder.com/100x100?text=Repairs",
-    },
-  ];
+  // const services = [
+  //   {
+  //     id: 1,
+  //     name: "Haircut",
+  //     description: "Professional haircut services for men and women.",
+  //     image: "https://via.placeholder.com/100x100?text=Haircut",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Photography",
+  //     description: "Capture your moments with high-quality photography.",
+  //     image: "https://via.placeholder.com/100x100?text=Photography",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Moving Services",
+  //     description: "Reliable moving services to make your relocation smooth.",
+  //     image: "https://via.placeholder.com/100x100?text=Moving",
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Custom Repairs",
+  //     description: "Expert repair solutions for all your needs.",
+  //     image: "https://via.placeholder.com/100x100?text=Repairs",
+  //   },
+  // ];
+
+  const [services, setServices] = useState([]);
+
+  async function fetchServices() {
+    try {
+      const response = await axios.get(`http://localhost:8000/localee/vendor/${id}/services`);
+      const data = response.data;
+      console.log(data);
+      setServices(data);
+    } catch (error) {
+      console.error("Error fetching services:", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchServices();
+  }, [id]);
 
   return (
     <div className="p-6 mt-4 bg-white shadow-lg rounded-md max-w-5xl mx-auto space-y-6">
@@ -58,7 +77,7 @@ const YourServices = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {services.map((service) => (
           <div
-            key={service.id}
+            key={service._id}
             className="relative p-4 border rounded-md shadow bg-gray-50 flex gap-4"
           >
             {/* Edit Icon */}
@@ -68,15 +87,15 @@ const YourServices = () => {
 
             {/* Service Image */}
             <img
-              src={service.image}
-              alt={service.name}
+              src={service.heroImg !== "" ? service.heroImg : "https://via.placeholder.com/100x100?text=Haircut"}
+              alt={service.serviceName}
               className="w-20 h-20 rounded object-cover"
             />
 
             {/* Service Details */}
             <div className="flex flex-col justify-center">
               <h3 className="text-lg font-semibold text-gray-800">
-                {service.name}
+                {service.serviceName}
               </h3>
               <p className="text-gray-600">{service.description}</p>
             </div>

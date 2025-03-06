@@ -2,15 +2,20 @@ import React, { useState } from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
 import axios from 'axios';
 
-function BookAppointmentForm({ showForm, vendorId, serviceId }) {
+function BookAppointmentForm({ showForm, vendorId, serviceId, details }) {
     const userId = localStorage.getItem('id');
+
+    console.log(vendorId, serviceId);
 
     let [formData, setFormData] = useState({
         type: "Appointment",
-        name: "",
+        customerName: "",
+        vendorName: details.name,
+        serviceCategory: details.serviceCategory,        
         phone: "",
         date: "",
         time: "",
+        address: details.address,
         notes: "",
         vendorId: vendorId || null,
         userId: userId || null,
@@ -38,10 +43,13 @@ function BookAppointmentForm({ showForm, vendorId, serviceId }) {
 
         setFormData({
             type: "Appointment",
-            name: "",
+            customerName: "",
+            vendorName: details.name,
+            serviceCategory: details.serviceCategory,
             phone: "",
             date: "",
             time: "",
+            address: details.address,
             notes: "",
             vendorId: vendorId || null,
             userId: userId || null,
@@ -61,12 +69,12 @@ function BookAppointmentForm({ showForm, vendorId, serviceId }) {
                 <h2 className="text-2xl font-bold text-gray-800 text-center">Book Appointment</h2>
                 <form className="space-y-3" onSubmit={handleSubmit}>
                     <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700">Full Name</label>
+                        <label htmlFor="customerName" className="block text-sm font-medium text-gray-700">Full Name</label>
                         <input
                             type="text"
-                            id="name"
-                            name="name"
-                            value={formData.name}
+                            id="customerName"
+                            name="customerName"
+                            value={formData.customerName}
                             onChange={handleInputChange}
                             className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             placeholder="Enter your name"

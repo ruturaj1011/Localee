@@ -1,8 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Calendar, User, Logs } from "lucide-react";
-import { Route, Routes } from "react-router-dom";
-import { Link } from "react-router-dom";
-
+import { Route, Routes, Link } from "react-router-dom";
 
 import Bookings from "./Bookings";
 import Profile from "../Profile";
@@ -15,16 +13,17 @@ import BookingDetails from "../BookingDetails";
 import EditProfile from "../EditProfile";
 
 import { AuthContext } from "../../contexts/authContext";
-
 import useAuth from "../../utils/authMiddleware";
 
 const VendorPanel = () => {
 
     const { id } = useContext(AuthContext);
+    // const id = localStorage.getItem("id");
 
     useAuth();
 
-    let [selectedMenu, setSelectedMenu] = useState(-1);
+    const [selectedMenu, setSelectedMenu] = useState(-1);
+
 
     const handleMenuClick = (idx) => {
         setSelectedMenu(idx);
@@ -72,7 +71,6 @@ const VendorPanel = () => {
 
         <Footer />
         </>
-
     );
 };
 

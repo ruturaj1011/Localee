@@ -2,22 +2,37 @@ import React from 'react';
 import { Trash, Trash2 } from 'lucide-react';
 import { ArrowRight } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import {useState, useEffect} from 'react';
 
 function Bookings() {
 
-    const upcomingBookings = [
-        { id: 1, name: "John Doe", service: "Home Cleaning", location: "123 Main Street, City", date: "2024-11-20", time: "10:00 AM", status: "Accepted" },
-        { id: 2, name: "Jane Smith", service: "Plumbing", location: "123 Main Street, City", date: "2024-11-22", time: "2:00 PM", status: "Pending" },
-        { id: 3, name: "John Doe", service: "Home Cleaning", location: "123 Main Street, City", date: "2024-11-20", time: "10:00 AM", status: "Accepted" },
-        { id: 4, name: "Jane Smith", service: "Plumbing", location: "123 Main Street, City", date: "2024-11-22", time: "2:00 PM", status: "Accepted" },
-        { id: 5, name: "John Doe", service: "Home Cleaning", location: "123 Main Street, City", date: "2024-11-20", time: "10:00 AM", status: "Pending" },
-        { id: 6, name: "Jane Smith", service: "Plumbing", location: "123 Main Street, City", date: "2024-11-22", time: "2:00 PM", status: "Accepted" },
-    ];
-    
-    const bookingHistory = [
-        { id: 1, name: "Alex Brown", service: "Photography", date: "2024-11-10", status: "Completed" },
-        { id: 2, name: "Emily Davis", service: "Beauty & Wellness", date: "2024-11-15", status: "Cancelled" },
-    ];
+    const [pendingBookings, setPendingBookings] = useState([]);
+    const [bookingHistory, setBookingHistory] = useState([]);
+    const [acceptedBookings, setAcceptedBookings] = useState([]);
+
+    const id = localStorage.getItem("id");
+    const role = localStorage.getItem("role");
+
+    const fetchBookings = async () => {
+      try {
+
+        const bookings = await axios.get(`http://localhost:8000/localee/${role}/${id}/bookingslist`);
+
+        setPendingBookings(bookings.data.pendingBookings);
+        setAcceptedBookings(bookings.data.acceptedBookings);
+        setBookingHistory(bookings.data.bookingHistory);
+
+        console.log(bookings.data);
+      }
+      catch (error) { 
+        console.error("Error fetching bookings:", error);
+      }
+    }
+
+    useEffect(() => {
+      fetchBookings();
+    }, [id]);
     
     const getStatusBadge = (status) => {
       let badgeClass = "";
@@ -55,7 +70,7 @@ function Bookings() {
     const navigate = useNavigate();
       
     const onBookingClick = (booking) => {
-          navigate(`/vendor/123/bookings/${booking.id}/details`, { state: booking });
+          navigate(`/vendor/${id}/bookings/${booking.id}/details`, { state: booking });
         };
 
     return ( 
@@ -69,14 +84,15 @@ function Bookings() {
           {/* Upcoming Bookings */}
           <div className="bg-white p-4 rounded shadow h-fit">
             <h2 className="text-lg font-semibold mb-4">Upcoming Bookings</h2>
-            {upcomingBookings.map((booking) => (
+            {pendingBookings.map((booking) => (
               
-              <div key={booking.id} className="p-4 shadow-md w-full border-gray-200 items-center hover:shadow-lg mt-1" onClick={()=>onBookingClick(booking)}>
+              <div key={booking._id} className="p-4 shadow-md w-full border-gray-200 items-center hover:shadow-lg mt-1" onClick={()=>onBookingClick(booking)}>
 
                 <div className='text-left'>
-                  <p className="font-medium">{booking.name}</p>
-                  <p className="text-gray-600">{booking.service}</p>
-                  <p className="text-gray-500">{booking.date} at {booking.time}</p>
+                  <p className="font-medium">{booking.customerName}</p>
+                  <p className="text-gray-600">{booking.serviceCategory}</p>
+                  <p className="text-gray-600">{booking.type}</p>
+                  {booking.time ? <p className="text-gray-500">{booking.date}  at {booking.time}</p> : <p className="text-gray-500">{booking.date} </p>}
                 </div>
                 <div className="flex gap-2 justify-between">
                   
@@ -91,6 +107,36 @@ function Bookings() {
                 </div>
               </div>
             ))}
+            {acceptedBookings.map((booking) => (
+              
+              <div key={booking.id} className="p-4 shadow-md w-full border-gray-200 items-center hover:shadow-lg mt-1" onClick={()=>onBookingClick(booking)}>
+
+                <div className='text-left'>
+                  <p className="font-medium">{booking.name}</p>
+                  <p className="text-gray-600">{booking.serviceName}</p>
+                  <p className="text-gray-600">{booking.type}</p>
+                  {booking.time ? <p className="text-gray-500">{booking.date}  at {booking.time}</p> : <p className="text-gray-500">{booking.date} </p>}
+                </div>
+                <div className="flex gap-2 justify-between">
+                  
+                  <p className="text-gray-600 mt-1">Status : {getStatusBadge(booking.status)}</p>
+                  <button
+                      onClick={() => handleAction(booking.id, "accept")}
+                      className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                      
+                    >
+                    Accept
+                  </button>
+              
+                </div>
+              </div>
+            ))}
+
+            {pendingBookings.length === 0 && acceptedBookings.length === 0 && (
+              <div className="p-4 text-center text-gray-500">
+                <p>No upcoming bookings</p>
+              </div>
+            )}
           </div>
 
           {/* Booking History */}
@@ -101,7 +147,7 @@ function Bookings() {
               <button className='rounded-2xl w-fit px-2 py-1 h-fit border-2 flex text-sm font-medium hover:border-stone-600'>Clear All <Trash2 size={18} className='mt-0.2 ms-1' /></button>
             </div>
 
-            {bookingHistory.map((history) => (
+            {bookingHistory.length > 0 ? bookingHistory.map((history) => (
               <div key={history.id} className="p-4 border-b border-gray-200">
                 <div className='flex justify-between'>
                   <p className="font-medium">{history.name}</p>
@@ -110,7 +156,10 @@ function Bookings() {
                 <p className="text-gray-600">{history.service}</p>
                 <p className="text-gray-500">{history.date} - {getStatusBadge(history.status)}</p>
               </div>
-            ))}
+            )) : <div className="p-4 text-center text-gray-500">
+                  <p>No upcoming bookings</p>
+                </div>
+            }
           </div>
         </div>
       </main>

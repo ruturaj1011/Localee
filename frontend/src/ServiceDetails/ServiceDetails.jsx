@@ -17,7 +17,7 @@ const ProviderDetailsPage = () => {
 
     const data = details.details;
 
-    // console.log(data);
+    console.log(data);
 
     useAuth();
 
@@ -150,9 +150,9 @@ const ProviderDetailsPage = () => {
                 </div>
 
                 {/* Book Appointment Form*/}
-                { AppointmentFormOpen && <BookAppointmentForm showForm={appointmentIsOpen} vendorId={data.owner} serviceId={data.place_id}/>}
+                { AppointmentFormOpen && <BookAppointmentForm showForm={appointmentIsOpen} vendorId={data.owner ? data.owner : null} serviceId={data.place_id} details={data}/>}
                 {/* Book Home Visit Form*/}
-                { HomeVisitFormOpen && <BookHomeVisitForm showForm={homeVisitIsOpen} vendorId={data.owner} serviceId={data.place_id} />}
+                { HomeVisitFormOpen && <BookHomeVisitForm showForm={homeVisitIsOpen} vendorId={data.owner ? data.owner : null} serviceId={data.place_id} details={data}/>}
 
                 {/* Right Section: Images Carousel and Reviews */}
                 <div className="w-full lg:w-2/3 space-y-6">

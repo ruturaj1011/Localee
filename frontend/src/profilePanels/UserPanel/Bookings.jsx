@@ -1,47 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Edit, Trash2, Trash } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
-const bookingHistory = [
-  {
-    id: 1,
-    name: "Alex Brown",
-    service: "Photography",
-    date: "2024-11-10",
-    status: "Completed",
-  },
-  {
-    id: 2,
-    name: "Emily Davis",
-    service: "Beauty & Wellness",
-    date: "2024-11-15",
-    status: "Cancelled",
-  },
-];
+// const bookingHistory = [
+//   {
+//     id: 1,
+//     name: "Alex Brown",
+//     service: "Photography",
+//     date: "2024-11-10",
+//     status: "Completed",
+//   },
+//   {
+//     id: 2,
+//     name: "Emily Davis",
+//     service: "Beauty & Wellness",
+//     date: "2024-11-15",
+//     status: "Cancelled",
+//   },
+// ];
 
-const upcomingBookings = [
-  {
-    id: 1,
-    service: "Plumbing",
-    vendor: "John Doe",
-    date: "2024-11-21",
-    time: "10:00 AM",
-    location: "123 Main Street, City",
-    status: "Pending", // Can be 'Pending', 'Accepted', or 'Rejected'
-  },
-  {
-    id: 2,
-    service: "Electrical Repair",
-    vendor: "Jane Smith",
-    date: "2024-11-22",
-    time: "02:00 PM",
-    location: "456 Elm Street, City",
-    status: "Accepted",
-  },
-];
+
+// const upcomingBookings = [
+//   {
+//     id: 1,
+//     service: "Plumbing",
+//     vendor: "John Doe",
+//     date: "2024-11-21",
+//     time: "10:00 AM",
+//     location: "123 Main Street, City",
+//     status: "Pending", // Can be 'Pending', 'Accepted', or 'Rejected'
+//   },
+//   {
+//     id: 2,
+//     service: "Electrical Repair",
+//     vendor: "Jane Smith",
+//     date: "2024-11-22",
+//     time: "02:00 PM",
+//     location: "456 Elm Street, City",
+//     status: "Accepted",
+//   },
+// ];
 
 const Bookings = () => {
-  const [bookings, setBookings] = useState(upcomingBookings);
+
+  const [pendingBookings, setPendingBookings] = useState([]);
+  const [bookingHistory, setBookingHistory] = useState([]);
+  const [acceptedBookings, setAcceptedBookings] = useState([]);
+
+  const id = localStorage.getItem("id");
+  const role = localStorage.getItem("role");
+
 
   const cancelBooking = (id) => {
     const confirmCancel = window.confirm(
@@ -84,11 +93,34 @@ const Bookings = () => {
     );
   };
 
+  const fetchBookings = async () => {
+    try {
+
+      const bookings = await axios.get(`http://localhost:8000/localee/${role}/${id}/bookingslist`);
+
+      setPendingBookings(bookings.data.pendingBookings);
+      setAcceptedBookings(bookings.data.acceptedBookings);
+      setBookingHistory(bookings.data.bookingHistory);
+
+      console.log(bookings.data);
+    }
+    catch (error) { 
+      console.error("Error fetching bookings:", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchBookings();
+  }, [id]);
+
   const navigate = useNavigate();
 
   const onBookingClick = (booking) => {
-    navigate(`/user/123/bookings/${booking.id}/details`, { state: booking });
+    navigate(`/user/${id}/bookings/${booking.id}/details`, { state: booking });
   };
+
+
+  console.log(pendingBookings);
 
   return (
     <div>
@@ -103,7 +135,7 @@ const Bookings = () => {
           <div className="bg-white p-4 rounded shadow h-fit">
 
             <h2 className="text-lg font-semibold mb-4">Upcoming Bookings</h2>
-            {upcomingBookings.map((booking) => (
+            {pendingBookings.map((booking) => (
 
               <div
                 key={booking.id}
@@ -113,11 +145,47 @@ const Bookings = () => {
 
                 <div className="flex justify-between">
                   <h3 className="text-lg font-semibold mb-2">
-                    {booking.service}
+                    {booking.serviceCategory}
                   </h3>
 
                   <button
-                    onClick={() => editBooking(booking.id)}
+                    onClick={() => editBooking(booking._id)}
+                    className="text-gray-500 hover:text-gray-700"
+                    title="Edit Booking"
+                  >
+                    <Edit className="w-5 h-5" />
+                  </button>
+                  
+                </div>
+
+                <p className="text-gray-600">{booking.type}</p>
+
+                <p className="text-gray-700">Vendor : {booking.vendorName}</p>
+                {booking.time ? <p className="text-gray-500">{booking.date}  at {booking.time}</p> : <p className="text-gray-500">{booking.date} </p>}
+                <p className="text-gray-600 mb-2">
+                  Location: {booking.address}
+                </p>
+                <div className="text-sm font-medium mb-2">
+                  Status: {getStatusBadge(booking.status)}
+                </div>
+                
+              </div>
+            ))}
+            {acceptedBookings.map((booking) => (
+
+              <div
+                key={booking.id}
+                className="p-4 shadow-md w-full border-gray-200 text-left hover:shadow-lg mt-1"
+                onClick={() => { onBookingClick(booking) }}
+              >
+
+                <div className="flex justify-between">
+                  <h3 className="text-lg font-semibold mb-2">
+                    {booking.service || "Service"}
+                  </h3>
+
+                  <button
+                    onClick={() => editBooking(booking._id)}
                     className="text-gray-500 hover:text-gray-700"
                     title="Edit Booking"
                   >
@@ -126,9 +194,7 @@ const Bookings = () => {
                 </div>
 
                 <p className="text-gray-700">Vendor : {booking.vendor}</p>
-                <p className="text-gray-600">
-                  {booking.date} at {booking.time}
-                </p>
+                {booking.time ? <p className="text-gray-500">{booking.date}  at {booking.time}</p> : <p className="text-gray-500">{booking.date} </p>}
                 <p className="text-gray-600 mb-2">
                   Location: {booking.location}
                 </p>
@@ -137,7 +203,13 @@ const Bookings = () => {
                 </div>
                 
               </div>
-            ))}
+              ))}
+
+              {pendingBookings.length === 0 && acceptedBookings.length === 0 && (
+                <div className="p-4 text-center text-gray-500">
+                <p>No upcoming bookings</p>
+              </div>
+              )}
           </div>
 
           {/* Booking History */}
@@ -149,7 +221,7 @@ const Bookings = () => {
               </button>
             </div>
 
-            {bookingHistory.map((history) => (
+            {bookingHistory.length > 0 ? bookingHistory.map((history) => (
               <div key={history.id} className="p-4 border-b border-gray-200">
                 <div className="flex justify-between">
                   <p className="font-medium">{history.name}</p>
@@ -165,7 +237,10 @@ const Bookings = () => {
                   Status: {getStatusBadge(history.status)}
                 </div>
               </div>
-            ))}
+            )): <div className="p-4 text-center text-gray-500">
+                <p>No upcoming bookings</p>
+              </div>
+            }
           </div>
         </div>
       </main>

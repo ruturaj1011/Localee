@@ -43,6 +43,7 @@ const ServiceCard = ({ provider }) => {
   function simplifyGoogleData(data) {
     return {
       place_id: provider.id,
+      serviceCategory: provider.service,
       address: data.formatted_address,
       phone: data.formatted_phone_number,
       whatsapp: data.formatted_phone_number,
@@ -69,6 +70,7 @@ const ServiceCard = ({ provider }) => {
   function simplifyStoredData(data) {
     return {
       place_id: provider.id,
+      serviceCategory: provider.service,
       address: data.address,
       phone: data.contactNumber,
       whatsapp: data.whatsappNumber,

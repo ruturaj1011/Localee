@@ -89,7 +89,7 @@ const SelectServiceVendor = () => {
         <div className="w-full md:w-2/3 p-4">
           <div className="hide-scrollbar mt-2 h-[calc(100vh-50px)] overflow-y-scroll bg-white rounded-lg shadow p-4 space-y-4">
             {serviceProviders.length > 0 ? (
-              serviceProviders.map((provider) => <ServiceCard key={provider.id} provider={provider} />)
+              serviceProviders.map((provider) => <ServiceCard key={provider.id} provider={provider}/>)
             ) : (
               <p className="text-center text-gray-600">No service providers found.</p>
             )}

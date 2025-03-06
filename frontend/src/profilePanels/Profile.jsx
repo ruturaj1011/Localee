@@ -1,14 +1,34 @@
 import { Edit, Mail, Phone, MapPin } from "lucide-react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 import { AuthContext} from "../contexts/authContext";
 
 const Profile = () => {
 
-  const navigate = useNavigate();
+  const [data, setData] = useState({});
 
   const {logout, isVendorLoggedIn, id} = useContext(AuthContext);
+
+    async function fetchVendor() {
+      try {
+          const res = await axios.get(`http://localhost:8000/localee/${id}`);
+          setData(res.data);
+          // console.log(res.data);
+      } catch (err) {
+          console.error("Error fetching vendor data:", err);
+      }
+    }
+
+    useEffect(() => {
+      fetchVendor();
+    }, []);
+
+  // console.log(data);
+
+  const navigate = useNavigate();
 
   const handleEditBtn = () => {
 
@@ -29,7 +49,7 @@ const Profile = () => {
           JD
         </div>
         <div>
-          <h2 className="text-2xl font-semibold text-gray-800">John Doe</h2>
+          <h2 className="text-2xl font-semibold text-gray-800">{data.name}</h2>
         </div>
         <button className="ml-auto px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 flex items-center gap-2" onClick={handleEditBtn}>
           <Edit className="w-4 h-4" />
@@ -43,15 +63,15 @@ const Profile = () => {
         <div className="space-y-3">
           <p className="flex items-center text-gray-600">
             <Phone className="mr-2 w-5 h-5 text-indigo-500" />
-            +91 234 567 890
+            {data.phone}
           </p>
           <p className="flex items-center text-gray-600">
             <Mail className="mr-2 w-5 h-5 text-indigo-500" />
-            johndoe@example.com
+            {data.email}
           </p>
           <p className="flex items-center text-gray-600">
             <MapPin className="mr-2 w-5 h-5 text-indigo-500" />
-            394 Late Avenue Oklahoma City Oklahoma OK 73109
+            {data.address}
           </p>
         </div>
       </div>

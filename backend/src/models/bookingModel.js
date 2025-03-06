@@ -12,9 +12,16 @@ const bookingSchema = new Schema({
         enum: ['Appointment', 'HomeVisit'],
         required: true
     },
-    name : {
+    customerName : {
         type : String,
         required : true
+    },
+    vendorName : {
+        type : String,
+        required : true
+    },
+    serviceCategory : {
+        type : String,
     },
     phone : {
         type : Number,
@@ -28,12 +35,15 @@ const bookingSchema = new Schema({
     },
     vendorId: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User'
+        ref: 'User',
+        default: null
     },
     serviceId: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Service', 
+        type: String,
         required: true 
+    },
+    placeId: { 
+        type: String, 
     },
     date: { 
         type: Date, 
@@ -45,7 +55,7 @@ const bookingSchema = new Schema({
     },
     status: { 
         type: String, 
-        enum: ['pending', 'completed', 'cancelled'],
+        enum: ['pending', 'accepted', 'completed', 'cancelled'],
         default: 'pending' 
     }
 }, { timestamps: true }); // Automatically adds createdAt and updatedAt fields

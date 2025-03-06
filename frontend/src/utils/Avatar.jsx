@@ -8,7 +8,9 @@ import { AuthContext } from "../contexts/authContext.jsx";
 
 export default function AccountMenu() {
 
-  const {isUserLoggedIn, isVendorLoggedIn, id} = useContext(AuthContext);
+  const {id} = useContext(AuthContext);
+
+  const role = localStorage.getItem("role");
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -24,12 +26,8 @@ export default function AccountMenu() {
   
   const handleOptionClick = (option) =>{
     
-    if(isVendorLoggedIn){
-      navigate(`/vendor/${id}/${option}`);
-    }
-    else{
-      navigate(`/user/${id}/${option}`);
-    }
+    navigate(`/${role}/${id}/${option}`);
+
     handleClose();
   }
 
@@ -108,7 +106,7 @@ export default function AccountMenu() {
           Bookings
         </MenuItem>
         
-        {isVendorLoggedIn() && <MenuItem onClick={() => handleOptionClick("yourServices")}>
+        {role == 'vendor' && <MenuItem onClick={() => handleOptionClick("yourServices")}>
         <Logs className="w-5 h-5 me-2" />
           Your Services
         </MenuItem>

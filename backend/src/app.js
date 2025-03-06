@@ -92,18 +92,20 @@ app.post('/localee/book', async (req, res) => {
 
     try {
 
-        const { type, name, phone, date, time, address, notes, userId, vendorId, serviceId } = req.body;
+        const { type, customerName, vendorName, serviceCategory, phone, date, time, address, notes, userId, vendorId, serviceId } = req.body;
 
-        console.log( type, name, phone, date, time, address, notes, userId, vendorId, serviceId);
+        // console.log( type, customerName, vendorName, serviceCategory, phone, date, time, address, notes, userId, vendorId, serviceId);
         
-        if (!name || !phone || !date || !serviceId) {
+        if (!customerName || !vendorName|| !phone || !date || !serviceId) {
             return res.status(400).json({ message: 'Required fields are missing' });
         }
         
         const bookingData = {
             type,
             userId,
-            name,
+            customerName,
+            vendorName,
+            serviceCategory,
             phone,
             date,
             time: time || null,
@@ -118,12 +120,13 @@ app.post('/localee/book', async (req, res) => {
 
         // Update user and vendor booking references
         await User.findByIdAndUpdate(userId, { $push: { bookings: newBooking._id } });
-        if (vendorId != null) {      
+        if (vendorId) {      
             await User.findByIdAndUpdate(vendorId, { $push: { bookings: newBooking._id } });
         }
         
         res.status(201).json({ message: 'Booking successful', booking: newBooking });
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
@@ -175,7 +178,57 @@ app.post("/localee/vendor/:vendorId/addNewService", async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
+
+// profile info
+app.get("/localee/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const data = await User.findById(id);
+
+        // console.log(data);
+
+        res.json(data);
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
   
+// Services
+app.get("/localee/vendor/:id/services", async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const vendor = await User.findById(id).populate("servicesOffered");
+
+        // console.log(vendor.servicesOffered);
+        res.json(vendor.servicesOffered);
+    } catch (error) {
+        console.error("Error fetching services:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+// bookings history | upcoming bookings
+app.get("/localee/:role/:id/bookingslist", async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const vendor = await User.findById(id).populate("bookings");
+
+        const pendingBookings = vendor.bookings.filter(booking => booking.status === "pending");
+        const acceptedBookings = vendor.bookings.filter(booking => booking.status === "accepted");
+        const bookingHistory = vendor.bookings.filter(booking => booking.status === "completed" || booking.status === "cancelled");
+
+        // console.log(pendingBookings, acceptedBookings, bookingHistory);
+
+        res.json({ pendingBookings, acceptedBookings, bookingHistory });
+    } catch (error) {
+        console.error("Error fetching bookings:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
 
 const PORT = 8000;
 const MONGO_URL = process.env.MONGO_URL;
