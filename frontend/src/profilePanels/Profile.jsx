@@ -71,7 +71,7 @@ const Profile = () => {
           </p>
           <p className="flex items-center text-gray-600">
             <MapPin className="mr-2 w-5 h-5 text-indigo-500" />
-            {data.address}
+            {data.city}, {data.state}
           </p>
         </div>
       </div>

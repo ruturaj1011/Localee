@@ -64,7 +64,7 @@ const VendorPanel = () => {
                     <Route path="yourServices" element={<YourServices />} />
                     <Route path="yourServices/service/edit" element={<EditServiceForm />} />
                     <Route path="yourServices/addNewService" element={<AddNewService />} />
-                    <Route path="bookings/:id/details" element={<BookingDetails />} />
+                    <Route path="bookings/:id/details" element={<BookingDetails role={'vendor'} />} />
                 </Routes>
             </main>
         </div>

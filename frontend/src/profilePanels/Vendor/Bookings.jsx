@@ -1,169 +1,147 @@
-import React from 'react';
-import { Trash, Trash2 } from 'lucide-react';
-import { ArrowRight } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { CalendarDays, MapPin, Phone, ClipboardList, User, Trash2 } from "lucide-react";
 
 function Bookings() {
+  const [pendingBookings, setPendingBookings] = useState([]);
+  const [acceptedBookings, setAcceptedBookings] = useState([]);
+  const [bookingHistory, setBookingHistory] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    const [pendingBookings, setPendingBookings] = useState([]);
-    const [bookingHistory, setBookingHistory] = useState([]);
-    const [acceptedBookings, setAcceptedBookings] = useState([]);
+  const id = localStorage.getItem("id");
+  const role = localStorage.getItem("role");
+  const navigate = useNavigate();
 
-    const id = localStorage.getItem("id");
-    const role = localStorage.getItem("role");
-
+  useEffect(() => {
     const fetchBookings = async () => {
       try {
-
-        const bookings = await axios.get(`http://localhost:8000/localee/${role}/${id}/bookingslist`);
-
-        setPendingBookings(bookings.data.pendingBookings);
-        setAcceptedBookings(bookings.data.acceptedBookings);
-        setBookingHistory(bookings.data.bookingHistory);
-
-        console.log(bookings.data);
+        setLoading(true);
+        const res = await axios.get(`http://localhost:8000/localee/${role}/${id}/bookingslist`);
+        setPendingBookings(res.data.pendingBookings);
+        setAcceptedBookings(res.data.acceptedBookings);
+        setBookingHistory(res.data.bookingHistory);
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+        setLoading(false);
       }
-      catch (error) { 
-        console.error("Error fetching bookings:", error);
-      }
-    }
-
-    useEffect(() => {
-      fetchBookings();
-    }, [id]);
-    
-    const getStatusBadge = (status) => {
-      let badgeClass = "";
-  
-      switch (status) {
-        case "Accepted":
-          badgeClass = "bg-green-100 text-green-800";
-          break;
-        case "Rejected":
-          badgeClass = "bg-red-100 text-red-800";
-          break;
-        case "Pending":
-          badgeClass = "bg-yellow-100 text-yellow-800";
-          break;
-        case "Completed":
-            badgeClass = "bg-green-100 text-yellow-800";
-            break;
-        case "Cancelled":
-              badgeClass = "bg-red-100 text-yellow-800";
-              break;
-        default:
-          badgeClass = "bg-gray-100 text-gray-800";
-      }
-  
-      return (
-        <span
-          className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${badgeClass}`}
-        >
-          {status}
-        </span>
-      );
     };
-    
+    fetchBookings();
+  }, []);
 
-    const navigate = useNavigate();
-      
-    const onBookingClick = (booking) => {
-          navigate(`/vendor/${id}/bookings/${booking.id}/details`, { state: booking });
-        };
+  const handleAccept = async (bookingId) => {
+    try {
+      await axios.patch(`http://localhost:8000/localee/${role}/${id}/acceptBooking/${bookingId}`);
+      setPendingBookings((prev) =>
+        prev.map((b) => (b._id === bookingId ? { ...b, status: "Accepted" } : b))
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-    return ( 
+  const BookingCard = ({ booking, showAccept }) => (
+    <div
+      onClick={() => navigate(`/vendor/${id}/bookings/${booking._id}/details`, { state: booking })}
+      className="bg-white border rounded-xl shadow p-5 hover:shadow-lg transition cursor-pointer relative"
+    >
+      <div className="absolute top-3 right-3">
+        <span
+          className={`px-3 py-1 text-xs font-bold rounded-full ${
+            booking.status === "accepted"
+              ? "bg-green-500 text-white"
+              : booking.status === "pending"
+              ? "bg-yellow-500 text-white"
+              : booking.status === "rejected"
+              ? "bg-red-100 text-red-800"
+              : booking.status === "cancelled"
+              ? "bg-red-100 text-red-800"
+              : booking.status === "completed"
+              ? "bg-blue-100 text-blue-800"
+              : "bg-gray-500 text-white"
+          }`}
+        >
+          {booking.status}
+        </span>
+      </div>
 
-        <main className="flex-1 bg-gray-100 p-6 mt-4">
-        <h1 className="text-2xl font-bold mb-6">Bookings</h1>
+      <h3 className="text-lg font-semibold flex items-center gap-2">
+        <User size={18} /> {booking.customerName}
+      </h3>
+      <p className="text-sm flex items-center gap-1 mt-1">
+        <ClipboardList size={16} /> {booking.serviceCategory} ({booking.type})
+      </p>
 
-        {/* Two Columns for Large Screens */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="mt-4 space-y-2 text-sm">
+        <p className="flex items-center gap-2">
+          <CalendarDays size={16} /> {booking.date} at {booking.time}
+        </p>
+        <p className="flex items-center gap-2">
+          <MapPin size={16} /> {booking.address}
+        </p>
+        <p className="flex items-center gap-2">
+          <Phone size={16} /> {booking.phone}
+        </p>
+        {booking.notes && (
+          <p className="flex items-start gap-2">
+            <ClipboardList size={16} className="mt-1" /> {booking.notes}
+          </p>
+        )}
+      </div>
 
-          {/* Upcoming Bookings */}
-          <div className="bg-white p-4 rounded shadow h-fit">
-            <h2 className="text-lg font-semibold mb-4">Upcoming Bookings</h2>
-            {pendingBookings.map((booking) => (
-              
-              <div key={booking._id} className="p-4 shadow-md w-full border-gray-200 items-center hover:shadow-lg mt-1" onClick={()=>onBookingClick(booking)}>
+      {showAccept && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleAccept(booking._id);
+          }}
+          disabled={booking.status === "Accepted"}
+          className={`mt-5 px-5 py-1 rounded-lg font-bold text-white ${
+            booking.status === "Accepted"
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-green-600 hover:bg-green-700"
+          }`}
+        >
+          {booking.status === "Accepted" ? "Accepted" : "Accept"}
+        </button>
+      )}
+    </div>
+  );
 
-                <div className='text-left'>
-                  <p className="font-medium">{booking.customerName}</p>
-                  <p className="text-gray-600">{booking.serviceCategory}</p>
-                  <p className="text-gray-600">{booking.type}</p>
-                  {booking.time ? <p className="text-gray-500">{booking.date}  at {booking.time}</p> : <p className="text-gray-500">{booking.date} </p>}
-                </div>
-                <div className="flex gap-2 justify-between">
-                  
-                  <p className="text-gray-600 mt-1">Status : {getStatusBadge(booking.status)}</p>
-                  <button
-                      onClick={() => handleAction(booking.id, "accept")}
-                      className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-                    >
-                    Accept
-                  </button>
-              
-                </div>
-              </div>
-            ))}
-            {acceptedBookings.map((booking) => (
-              
-              <div key={booking.id} className="p-4 shadow-md w-full border-gray-200 items-center hover:shadow-lg mt-1" onClick={()=>onBookingClick(booking)}>
+  return (
+    <main className="min-h-screen p-10 bg-gray-100">
+      <h1 className="text-3xl font-bold mb-8">My Bookings</h1>
 
-                <div className='text-left'>
-                  <p className="font-medium">{booking.name}</p>
-                  <p className="text-gray-600">{booking.serviceName}</p>
-                  <p className="text-gray-600">{booking.type}</p>
-                  {booking.time ? <p className="text-gray-500">{booking.date}  at {booking.time}</p> : <p className="text-gray-500">{booking.date} </p>}
-                </div>
-                <div className="flex gap-2 justify-between">
-                  
-                  <p className="text-gray-600 mt-1">Status : {getStatusBadge(booking.status)}</p>
-                  <button
-                      onClick={() => handleAction(booking.id, "accept")}
-                      className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-                      
-                    >
-                    Accept
-                  </button>
-              
-                </div>
-              </div>
-            ))}
-
-            {pendingBookings.length === 0 && acceptedBookings.length === 0 && (
-              <div className="p-4 text-center text-gray-500">
-                <p>No upcoming bookings</p>
-              </div>
-            )}
-          </div>
-
-          {/* Booking History */}
-          <div className="bg-white p-4 rounded shadow h-fit">
-            
-            <div className='flex justify-between'>
-              <h2 className="text-lg font-semibold mb-4">Booking History</h2>
-              <button className='rounded-2xl w-fit px-2 py-1 h-fit border-2 flex text-sm font-medium hover:border-stone-600'>Clear All <Trash2 size={18} className='mt-0.2 ms-1' /></button>
-            </div>
-
-            {bookingHistory.length > 0 ? bookingHistory.map((history) => (
-              <div key={history.id} className="p-4 border-b border-gray-200">
-                <div className='flex justify-between'>
-                  <p className="font-medium">{history.name}</p>
-                  <button><Trash size={16} strokeWidth={1.25} /></button>
-                </div>
-                <p className="text-gray-600">{history.service}</p>
-                <p className="text-gray-500">{history.date} - {getStatusBadge(history.status)}</p>
-              </div>
-            )) : <div className="p-4 text-center text-gray-500">
-                  <p>No upcoming bookings</p>
-                </div>
-            }
-          </div>
+      {loading ? (
+        <div className="grid gap-6 lg:grid-cols-2">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="h-48 bg-gray-200 animate-pulse rounded-xl"></div>
+          ))}
         </div>
-      </main>
-    );
+      ) : (
+        <div className="grid gap-10 lg:grid-cols-2">
+          <section className="bg-white p-6 rounded-2xl shadow-lg">
+            <h2 className="text-2xl font-semibold mb-4">Upcoming Bookings</h2>
+            <div className="space-y-6">
+              {[...pendingBookings, ...acceptedBookings].map((b) => (
+                <BookingCard key={b._id} booking={b} showAccept />
+              ))}
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-semibold mb-4">Booking History</h2>
+            <div className="space-y-6">
+              {bookingHistory.map((b) => (
+                <BookingCard key={b._id} booking={b} />
+              ))}
+            </div>
+          </section>
+        </div>
+      )}
+    </main>
+  );
 }
 
 export default Bookings;

@@ -55,7 +55,7 @@ const bookingSchema = new Schema({
     },
     status: { 
         type: String, 
-        enum: ['pending', 'accepted', 'completed', 'cancelled'],
+        enum: ['pending', 'accepted', 'rejected', 'completed', 'cancelled'],
         default: 'pending' 
     }
 }, { timestamps: true }); // Automatically adds createdAt and updatedAt fields

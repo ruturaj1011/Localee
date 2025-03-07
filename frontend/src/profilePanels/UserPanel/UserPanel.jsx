@@ -11,6 +11,7 @@ import EditProfile from "../EditProfile";
 import { AuthContext } from "../../contexts/authContext";
 import useAuth from "../../utils/authMiddleware";
 import BookingDetails from "../BookingDetails";
+import UpdateBooking from "./UpdateBooking";
 
 const UserPanel = () => {
 
@@ -53,7 +54,8 @@ const UserPanel = () => {
                     <Route path="bookings" element={<Bookings />} />
                     <Route path="profile" element={<Profile />} />
                     <Route path="profile/edit-profile" element={<EditProfile />} />
-                    <Route path="bookings/:id/details" element={<BookingDetails />} />
+                    <Route path="bookings/:id/details" element={<BookingDetails role={'user'} />} />
+                    <Route path="bookings/:id/details/update" element={<UpdateBooking />}  />
                 </Routes>
             </main>
         </div>
