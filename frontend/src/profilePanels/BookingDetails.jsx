@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import ConfirmationCard from "./ConfirmationCard";
+import axios from "axios";
 
 const BookingDetails = ({ role }) => {
   const { state: booking } = useLocation();
+  const navigate = useNavigate();
+
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [btnRole, setBtnRole] = useState("");
 
   if (!booking) {
     return <div className="text-center text-gray-500">No booking details available.</div>;
@@ -11,10 +16,32 @@ const BookingDetails = ({ role }) => {
 
   const id = localStorage.getItem("id");
 
-  const navigate = useNavigate();
-
   function onUpdateClick() {
+    if (booking.status === "cancelled") return; // Prevent update if cancelled
     navigate(`/user/${id}/bookings/${booking._id}/details/update`, { state: booking });
+  }
+
+  function onBtnClick(status) {
+    setIsConfirmationOpen(true);
+    setBtnRole(status);
+  }
+
+  async function handleConfirm() {
+    try {
+      const isConfirm = await axios.post(`http://localhost:8000/localee/${role}/${id}/bookings/${booking._id}/${btnRole}`);
+
+      if (isConfirm.status === 200) {
+        console.log(`Booking ${btnRole} successfully.`);
+        setIsConfirmationOpen(false);
+      } else {
+        alert("Something went wrong, Please try again.");
+        setIsConfirmationOpen(false);
+      }
+    } catch (err) {
+      alert(`Error while ${btnRole} booking. Please try again.`);
+      console.log(err);
+      setIsConfirmationOpen(false);
+    }
   }
 
   return (
@@ -36,25 +63,47 @@ const BookingDetails = ({ role }) => {
         <Detail label="Updated At" value={new Date(booking.updatedAt).toLocaleString()} />
       </div>
 
-      {role === "user" && (
+      {/* User Actions */}
+      {role === "user" && booking.status !== "cancelled" && booking.status !== "rejected" && (
         <div className="flex gap-4 pt-4">
-          <button className="bg-red-500 text-white px-6 py-2 rounded-xl hover:bg-red-600 transition">
+          <button className="bg-red-500 text-white px-6 py-2 rounded-xl hover:bg-red-600 transition" onClick={() => onBtnClick("cancel")}>
             Cancel Booking
           </button>
-          <button className="border border-gray-300 text-gray-700 px-6 py-2 rounded-xl hover:bg-gray-100 transition" onClick={onUpdateClick}>
+          <button
+            className={`border border-gray-300 text-gray-700 px-6 py-2 rounded-xl ${
+              booking.status === "cancelled" ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-100 transition"
+            }`}
+            onClick={onUpdateClick}
+            disabled={booking.status === "cancelled"}
+          >
             Update Booking
           </button>
         </div>
       )}
 
-      {role === "vendor" && (
+      {/* Vendor Actions */}
+      {role === "vendor" && booking.status === "pending" && (
         <div className="flex gap-4 pt-4">
-          <button className="bg-green-500 text-white px-6 py-2 rounded-xl hover:bg-green-600 transition">
+          <button className="bg-green-500 text-white px-6 py-2 rounded-xl hover:bg-green-600 transition" onClick={() => onBtnClick("accept")}>
             Accept Booking
           </button>
-          <button className="bg-red-500 text-white px-6 py-2 rounded-xl hover:bg-red-600 transition">
+          <button className="bg-red-500 text-white px-6 py-2 rounded-xl hover:bg-red-600 transition" onClick={() => onBtnClick("reject")}>
             Reject Booking
           </button>
+        </div>
+      )}
+
+      {/* Disabled Button for Vendor if Already Accepted or Rejected */}
+      {role === "vendor" && (booking.status === "accepted" || booking.status === "rejected" || booking.status === "cancelled") && (
+        <button className="bg-gray-400 text-white px-6 py-2 rounded-xl opacity-50 cursor-not-allowed">
+          {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+        </button>
+      )}
+
+      {/* Confirmation Modal */}
+      {isConfirmationOpen && btnRole !== "" && (
+        <div className="z-20 fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <ConfirmationCard btnRole={btnRole} onClose={() => setIsConfirmationOpen(false)} onConfirm={handleConfirm} />
         </div>
       )}
     </div>

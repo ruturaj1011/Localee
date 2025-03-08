@@ -66,6 +66,16 @@ const Bookings = () => {
     );
   };
 
+  const onClearAll = async () => {
+    try {
+      const res = await axios.delete(`http://localhost:8000/localee/${role}/${id}/bookings/clearHistory`);
+      console.log(res.data.message);
+      fetchBookings();
+    } catch (error) {
+      console.error("Error clearing bookings:", error);
+    }
+  }
+
   return (
     <div>
       <main className="flex-1 bg-gray-100 p-6 mt-4">
@@ -146,7 +156,7 @@ const Bookings = () => {
           <div className="bg-white p-6 rounded-2xl shadow-lg">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold mb-4">Booking History</h2>
-              <button className="flex items-center text-sm font-medium px-3 py-1 rounded-full border hover:border-gray-700">
+              <button className="flex items-center text-sm font-medium px-3 py-1 rounded-full border hover:border-gray-700" onClick={() => onClearAll()}>
                 Clear All <Trash2 size={18} className="ml-2" />
               </button>
             </div>

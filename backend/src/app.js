@@ -230,6 +230,87 @@ app.get("/localee/:role/:id/bookingslist", async (req, res) => {
     }
 });
 
+app.post("/localee/:role/:id/bookings/:bookingId/:status", async (req, res) => {
+    const { id, bookingId, status } = req.params;
+
+    try {
+        const booking = await Booking.findById(bookingId);
+
+        if (!booking) {
+            return res.status(404).json({ message: "Booking not found" });
+        }
+
+        if (booking.status === "completed" || booking.status === "cancelled") {
+            return res.status(400).json({ message: "Booking already completed or cancelled" });
+        }
+
+        let updatedStatus;
+        if (status === "accept") {
+            updatedStatus = "accepted";
+        } else if (status === "reject") {
+            updatedStatus = "rejected";
+        } else if (status === "cancel") {
+            updatedStatus = "cancelled";
+        } else {
+            return res.status(400).json({ message: "Invalid status" });
+        }
+
+        booking.status = updatedStatus;
+        await booking.save();
+
+        res.status(200).json({ message: `Booking ${updatedStatus} successfully`, booking });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
+app.delete("/localee/:role/:id/bookings/clearHistory", async (req, res) => {
+    
+    const { id } = req.params;
+
+    try {
+        const user = await User.findById(id).populate("bookings");
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Select only completed/cancelled/rejected bookings
+        const removableBookings = user.bookings
+            .filter(booking => 
+                ["completed", "cancelled", "rejected"].includes(booking.status)
+            )
+            .map(booking => booking._id);
+
+        if (removableBookings.length === 0) {
+            return res.status(200).json({ message: "No history to clear" });
+        }
+
+        // Remove references from user's bookings array
+        user.bookings = user.bookings.filter(booking => 
+            !removableBookings.includes(booking._id.toString())
+        );
+        await user.save();
+
+        // Check if any other users/vendors still have these bookings
+        const vendorCount = await User.countDocuments({ bookings: { $in: removableBookings } });
+
+        if (vendorCount === 0) {
+            await BookingModel.deleteMany({ _id: { $in: removableBookings } });
+        }
+
+        return res.status(200).json({ message: "History cleared successfully" });
+
+    } catch (err) {
+        console.error("Error clearing history:", err);
+        res.status(500).json({ message: "Server error", error: err.message });
+    }
+});
+
+
+
+
 const PORT = 8000;
 const MONGO_URL = process.env.MONGO_URL;
 

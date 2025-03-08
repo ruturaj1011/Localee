@@ -13,20 +13,21 @@ function Bookings() {
   const role = localStorage.getItem("role");
   const navigate = useNavigate();
 
+  const fetchBookings = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`http://localhost:8000/localee/${role}/${id}/bookingslist`);
+      setPendingBookings(res.data.pendingBookings);
+      setAcceptedBookings(res.data.acceptedBookings);
+      setBookingHistory(res.data.bookingHistory);
+      setLoading(false);
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        setLoading(true);
-        const res = await axios.get(`http://localhost:8000/localee/${role}/${id}/bookingslist`);
-        setPendingBookings(res.data.pendingBookings);
-        setAcceptedBookings(res.data.acceptedBookings);
-        setBookingHistory(res.data.bookingHistory);
-        setLoading(false);
-      } catch (err) {
-        console.error(err);
-        setLoading(false);
-      }
-    };
     fetchBookings();
   }, []);
 
@@ -40,6 +41,16 @@ function Bookings() {
       console.error(err);
     }
   };
+
+  const onClearAll = async () => {
+      try {
+        const res = await axios.delete(`http://localhost:8000/localee/${role}/${id}/bookings/clearHistory`);
+        console.log(res.data.message);
+        fetchBookings();
+      } catch (error) {
+        console.error("Error clearing bookings:", error);
+      }
+    }
 
   const BookingCard = ({ booking, showAccept }) => (
     <div
@@ -98,12 +109,12 @@ function Bookings() {
           }}
           disabled={booking.status === "Accepted"}
           className={`mt-5 px-5 py-1 rounded-lg font-bold text-white ${
-            booking.status === "Accepted"
+            booking.status === "accepted"
               ? "bg-gray-400 cursor-not-allowed"
               : "bg-green-600 hover:bg-green-700"
           }`}
         >
-          {booking.status === "Accepted" ? "Accepted" : "Accept"}
+          {booking.status === "accepted" ? "Accepted" : "Accept"}
         </button>
       )}
     </div>
@@ -132,6 +143,9 @@ function Bookings() {
 
           <section>
             <h2 className="text-2xl font-semibold mb-4">Booking History</h2>
+            <button className="flex items-center text-sm font-medium px-3 py-1 rounded-full border hover:border-gray-700" onClick={() => onClearAll()}>
+            Clear All <Trash2 size={18} className="ml-2" />
+          </button>
             <div className="space-y-6">
               {bookingHistory.map((b) => (
                 <BookingCard key={b._id} booking={b} />
