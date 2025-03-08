@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const UpdateBooking = () => {
   const { state } = useLocation();
@@ -19,11 +20,25 @@ const UpdateBooking = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     console.log("Updated Booking:", form);
 
-    // Add your update API call here
+    const updatedBooking = {
+      ...booking,
+      customerName: form.customerName,
+      phone: form.phone,
+      date: form.date,
+      time: form.time,
+      notes: form.notes,
+      address: form.address,
+    };
+
+    // console.log("Updated Booking:", updatedBooking);
+
+    const update = await axios.patch(`http://localhost:8000/localee/user/${booking.userId}/bookings/${booking._id}/update`, updatedBooking);
+
+    alert(update.data.message);
 
     navigate(-1); // Go back after update
   };

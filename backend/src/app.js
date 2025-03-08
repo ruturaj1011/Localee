@@ -308,6 +308,29 @@ app.delete("/localee/:role/:id/bookings/clearHistory", async (req, res) => {
     }
 });
 
+app.patch("/localee/:role/:id/bookings/:bookingId/update", async (req, res) => {
+
+    const {bookingId}  = req.params;
+    const { customerName, phone, date, time, notes, address } = req.body;
+
+    try{
+
+        const booking = await Booking.findByIdAndUpdate( bookingId, {customerName, phone, date, time, notes, address}, {new : true, runValidators:true});
+
+        if (!booking) {
+            return res.status(404).json({ message: "Booking not found" });
+        }
+
+        res.status(200).json({ message: "Booking updated successfully", booking });
+
+    }
+    catch(err){
+        console.error("Error updating booking:", err);
+        res.status(500).json({ message: "Server error", error: err.message })
+    };
+    
+});
+
 
 
 
