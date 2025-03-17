@@ -27,11 +27,11 @@ const ServiceCard = ({ provider }) => {
       }
       else{
 
-        // console.log(provider);
+        console.log(provider);
 
         const details = simplifyStoredData(provider);
 
-        // console.log(details);
+        console.log(details);
 
         navigate(`/serviceInfo/${provider.service}/${provider.id}`, { state: { details }});
       }
@@ -68,6 +68,11 @@ const ServiceCard = ({ provider }) => {
   }
 
   function simplifyStoredData(data) {
+
+    let images2 = data.imagesUrl.map((image) => ({
+      url: image,
+    }));
+
     return {
       place_id: provider.id,
       serviceCategory: provider.service,
@@ -76,7 +81,7 @@ const ServiceCard = ({ provider }) => {
       whatsapp: data.whatsappNumber,
       email:  data.email,
       name: data.name,
-      images: data.images || [],
+      images: images2 || [],
       rating: data.rating || "No Ratings",
       totalRatings: data.totalRatings || "No Ratings",
       description: data.description,

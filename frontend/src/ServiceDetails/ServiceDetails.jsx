@@ -163,7 +163,7 @@ const ProviderDetailsPage = () => {
                             <div className="carousel flex overflow-x-scroll gap-4 hide-scrollbar">
                                 {data.images && data.images.map((item, idx) => (
                                     <img
-                                        key={idx++}
+                                        key={idx}
                                         src={item.url}
                                         width={item.width}
                                         alt={`Provider Image ${item}`}

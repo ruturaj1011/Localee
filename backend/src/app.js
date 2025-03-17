@@ -15,13 +15,15 @@ import { getCoordinates } from './middleware.js';
 
 import AuthRoutes from "./routes/AuthRoutes.js";
 
+import {upload, cloudinary} from './config/cloudinary.js';
+
 const app = express();
 
 const server = createServer(app);
 
 app.use(cors());
-app.use(express.json({limit : "40kb"}));
-app.use(express.urlencoded({limit:"40kb", extended: true }));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.use("/auth", AuthRoutes);
 
@@ -131,16 +133,17 @@ app.post('/localee/book', async (req, res) => {
     }
 });
 
-app.post("/localee/vendor/:vendorId/addNewService", async (req, res) => {
+app.post("/localee/vendor/:vendorId/addNewService", upload.array('images', 6), async (req, res) => {
     try {
         const { vendorId } = req.params;
         const {
-            serviceName, category, heroImg, images, email, whatsappNumber, 
+            serviceName, category, email, whatsappNumber, 
             contactNumber, description, address, city, state, zip
         } = req.body;
 
-        const add = `${address}, ${city}, ${state}, ${zip}`;
+        // console.log("Received files:", req.files);
 
+        const add = `${address}, ${city}, ${state}, ${zip}`;
         const { lat, lng } = await getCoordinates(add);
 
         // Validate required fields
@@ -148,12 +151,20 @@ app.post("/localee/vendor/:vendorId/addNewService", async (req, res) => {
             return res.status(400).json({ error: "Required fields are missing" });
         }
 
+        // Extract Cloudinary URLs from req.files
+        const imageUrls = req.files.map(file => file.path); // Cloudinary URL is stored in file.path
+
+        // Separate heroImg from the uploaded images (if available)
+        const heroImg = imageUrls.length > 0 ? imageUrls[0] : ""; // First image as hero image
+
+        // console.log(heroImg, imageUrls);
+
         // Create service object
         const newService = new Service({
             serviceName,
             category,
-            heroImg: heroImg || "",
-            images: images || [],
+            heroImg,
+            images: imageUrls,
             email,
             whatsappNumber,
             contactNumber,
@@ -178,6 +189,7 @@ app.post("/localee/vendor/:vendorId/addNewService", async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
+
 
 // profile info
 app.get("/localee/:id", async (req, res) => {

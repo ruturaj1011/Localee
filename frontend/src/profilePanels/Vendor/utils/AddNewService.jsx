@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const services = [
   { title: "Electrician" }, { title: "Plumber" }, { title: "Carpenter" }, { title: "Home Cleaning" },
@@ -21,6 +21,9 @@ const services = [
 ];
 
 const AddService = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
+
   const [formData, setFormData] = useState({
     serviceName: "",
     category: "",
@@ -61,49 +64,82 @@ const AddService = () => {
     setFilteredCategories([]);
   };
 
-  const { id } = useParams();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Submitting: ", formData);
 
-    await axios.post(
-      `http://localhost:8000/localee/vendor/${id}/addNewService`,
-      formData,
-      { headers: { "Content-Type": "application/json" } }
-    )
-      .then((res) => console.log(res.data))
-      .catch((err) => console.log(err));
-
-    setFormData({
-      serviceName: "",
-      category: "",
-      heroImg: "",
-      images: [],
-      description: "",
-      email: "",
-      whatsappNumber: "",
-      contactNumber: "",
-      address: "",
-      city: "",
-      state: "",
-      zip: "",
+    const formData2 = new FormData();
+    Object.keys(formData).forEach((key) => {
+      if (key === "images") {
+        formData.images.forEach((file) => formData2.append("images", file));
+      } else {
+        formData2.append(key, formData[key]);
+      }
     });
+
+    try {
+      const service = await axios.post(
+        `http://localhost:8000/localee/vendor/${id}/addNewService`,
+        formData2,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
+      if (service.status === 201) {
+        navigate(-1);
+        alert("Service added successfully.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to add service. Please try again.");
+    }
+  };
+
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    setFormData({ ...formData, images: [...formData.images, ...files] });
+  };
+
+  const removeImage = (index) => {
+    const newImages = formData.images.filter((_, i) => i !== index);
+    setFormData({ ...formData, images: newImages });
   };
 
   return (
-    <div className="max-w-3xl mx-auto bg-white p-6 shadow-lg rounded-lg">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4">Add a New Service</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <input type="text" name="serviceName" placeholder="Service Name" value={formData.serviceName} onChange={handleChange} className="p-3 border rounded w-full" required />
-          
+    <div className="max-w-4xl mx-auto bg-white p-8 shadow-2xl rounded-xl">
+      <h2 className="text-3xl font-bold text-gray-800 mb-6">Add a New Service</h2>
+      <form onSubmit={handleSubmit} className="space-y-6" encType="multipart/form-data">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Service Name</label>
+            <input
+              type="text"
+              name="serviceName"
+              placeholder="Service Name"
+              value={formData.serviceName}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+              required
+            />
+          </div>
           <div className="relative">
-            <input type="text" name="category" placeholder="Category" value={formData.category} onChange={handleChange} className="p-3 border rounded w-full" />
+            <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+            <input
+              type="text"
+              name="category"
+              placeholder="Category"
+              value={formData.category}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+              required
+            />
             {filteredCategories.length > 0 && (
-              <ul className="absolute bg-white border rounded w-full mt-1 z-10">
+              <ul className="absolute bg-white border border-gray-300 rounded-lg w-full mt-1 z-10 shadow-lg">
                 {filteredCategories.map((cat) => (
-                  <li key={cat.title} onClick={() => handleSelectCategory(cat.title)} className="p-2 hover:bg-gray-200 cursor-pointer">
+                  <li
+                    key={cat.title}
+                    onClick={() => handleSelectCategory(cat.title)}
+                    className="p-3 hover:bg-gray-100 cursor-pointer transition-colors"
+                  >
                     {cat.title}
                   </li>
                 ))}
@@ -112,25 +148,149 @@ const AddService = () => {
           </div>
         </div>
 
-        <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} className="p-3 border rounded w-full" required />
-        
-        <div className="grid grid-cols-2 gap-4">
-          <input type="text" name="whatsappNumber" placeholder="WhatsApp Number" value={formData.whatsappNumber} onChange={handleChange} className="p-3 border rounded w-full" required />
-          <input type="text" name="contactNumber" placeholder="Contact Number" value={formData.contactNumber} onChange={handleChange} className="p-3 border rounded w-full" required />
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+            required
+          />
         </div>
 
-        <textarea name="description" placeholder="Service Description" value={formData.description} onChange={handleChange} className="p-3 border rounded w-full" rows="4" required></textarea>
-
-        <input type="text" name="address" placeholder="Street Address" value={formData.address} onChange={handleChange} className="p-3 border rounded w-full" required />
-
-        <div className="grid grid-cols-2 gap-4">
-          <input type="text" name="city" placeholder="City" value={formData.city} onChange={handleChange} className="p-3 border rounded w-full" required />
-          <input type="text" name="state" placeholder="State" value={formData.state} onChange={handleChange} className="p-3 border rounded w-full" required />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">WhatsApp Number</label>
+            <input
+              type="text"
+              name="whatsappNumber"
+              placeholder="WhatsApp Number"
+              value={formData.whatsappNumber}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Contact Number</label>
+            <input
+              type="text"
+              name="contactNumber"
+              placeholder="Contact Number"
+              value={formData.contactNumber}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+              required
+            />
+          </div>
         </div>
 
-        <input type="text" name="zip" placeholder="ZIP Code" value={formData.zip} onChange={handleChange} className="p-3 border rounded w-full" required />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Upload Images</label>
+            <input
+              type="file"
+              multiple
+              onChange={handleImageUpload}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+              required
+            />
+          </div>
+          <div className="grid grid-cols-3 gap-4">
+            {formData.images.map((img, index) => (
+              <div key={index} className="relative">
+                <img
+                  src={URL.createObjectURL(img)}
+                  alt="Uploaded"
+                  className="w-full h-24 object-cover rounded-lg"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeImage(index)}
+                  className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full text-xs hover:bg-red-600"
+                >
+                  X
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
 
-        <button type="submit" className="w-full p-3 bg-indigo-600 text-white font-semibold rounded hover:bg-indigo-700">Submit</button>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Service Description</label>
+          <textarea
+            name="description"
+            placeholder="Service Description"
+            value={formData.description}
+            onChange={handleChange}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+            rows="4"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Street Address</label>
+          <input
+            type="text"
+            name="address"
+            placeholder="Street Address"
+            value={formData.address}
+            onChange={handleChange}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+            required
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
+            <input
+              type="text"
+              name="city"
+              placeholder="City"
+              value={formData.city}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">State</label>
+            <input
+              type="text"
+              name="state"
+              placeholder="State"
+              value={formData.state}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+              required
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">ZIP Code</label>
+          <input
+            type="text"
+            name="zip"
+            placeholder="ZIP Code"
+            value={formData.zip}
+            onChange={handleChange}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full p-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
+        >
+          Submit
+        </button>
       </form>
     </div>
   );
