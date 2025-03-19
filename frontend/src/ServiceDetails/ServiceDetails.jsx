@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import { Phone, Mail, MessageSquare, MapPinCheckIcon} from "lucide-react";
 import Reviews from "./Reviews";
 import BookAppointmentForm from "./BookAppointmentForm";
@@ -6,6 +6,7 @@ import BookHomeVisitForm from "./BookHomeVisit";
 import Navbar from "../utils/Navbar";
 import Footer from "../utils/Footer";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 import useAuth from "../utils/authMiddleware";
 
@@ -15,9 +16,34 @@ const ProviderDetailsPage = () => {
 
     const details = Location.state || {};
 
+    const id = localStorage.getItem("id");
+
     const data = details.details;
 
-    console.log(data);
+    const [reviews, setReviews] = useState([]);
+
+    useEffect(() => {
+        const fetchReviews = async () => {
+          if (data.isStored === true) {
+            try {
+              const res = await axios.get(`http://localhost:8000/reviews/${data.place_id}`);
+              setReviews(res.data);
+              console.log(res.data);
+
+              data.reviews = reviews;
+              console.log(data);
+
+            } catch (err) {
+              console.error("Error fetching reviews:", err);
+            }
+          }
+        };
+      
+        fetchReviews();
+    }, [data.isStored, data.place_id]);
+      
+
+    // console.log(data);
 
     useAuth();
 
@@ -177,7 +203,7 @@ const ProviderDetailsPage = () => {
                     
 
                     {/* Reviews Section */}
-                    <Reviews reviews={data.reviews} rating={data.rating} totalRatings={data.totalRatings} />
+                    <Reviews reviews={reviews} rating={data.rating} totalRatings={data.totalRatings} serviceId={data.place_id} owner={id}/>
 
 
                     {/* Service Area Map */}

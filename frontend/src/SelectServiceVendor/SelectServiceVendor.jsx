@@ -45,7 +45,7 @@ const SelectServiceVendor = () => {
         reviews: item.reviews || [],
         imageUrl: item.heroImg || 'https://placehold.co/400',
         imagesUrl: item.images || [],
-        owner: item.owner,
+        owner: item.owner
       }));
   
       const googleProviders = data.googleResults.map((item) => ({

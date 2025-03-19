@@ -1,24 +1,70 @@
 import React, { useState } from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
-import { NotebookPen, PenIcon, PenLine } from 'lucide-react';
+import { PenIcon, Star, Trash } from 'lucide-react';
+import axios from 'axios';
 
-function Reviews({ reviews, rating, totalRatings }) {
+function Reviews({ reviews, rating, totalRatings, serviceId, owner }) {
     let [showReviewForm, setShowReviewForm] = useState(false);
 
-    const handleSubmitReview = (e) => {
+    console.log(reviews);
+
+    const id = localStorage.getItem("id");
+
+    let [review, setReview] = useState({
+        message: "",
+        rating: 5,
+        serviceId: serviceId,
+        owner: owner,
+    });
+
+    const [hover, setHover] = useState(null);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setReview({ ...review, [name]: value });
+    };
+
+    const handleSubmitReview = async (e) => {
         e.preventDefault();
-        setShowReviewForm(false);  // Close the form
+        console.log(review);
+
+        try {
+            await axios.post("http://localhost:8000/reviews/add", review)
+            alert("Review submitted successfully");
+        }
+        catch (err) {
+            alert("Failed to submit review");
+        }
+
+        setReview({
+            message: "",
+            rating: 5,
+            serviceId: serviceId,
+            owner: owner,
+        });
+        setShowReviewForm(false);
+
+        window.location.reload();
+    };
+
+    const deleteReview = async (id) => {
+        try {
+            await axios.delete(`http://localhost:8000/reviews/${id}/delete`, { serviceId, owner: id });
+            alert("Review deleted successfully");
+        }
+        catch (err) {
+            alert("Failed to delete review");
+        }
+        window.location.reload();
     };
 
     return (
         <div className="bg-white rounded-lg shadow-md p-6">
             <div className="mb-4 flex justify-between items-center">
-                
                 <h3 className="text-lg font-semibold">Reviews</h3>
-                
+
                 <div className='flex items-center justify-evenly space-x-4'>
                     <div className="flex items-center space-x-2">
-
                         <span className="text-yellow-500 text-lg">{rating}</span>
                         <div className="flex items-center">
                             {[...Array(5)].map((_, i) => (
@@ -36,7 +82,6 @@ function Reviews({ reviews, rating, totalRatings }) {
                             ))}
                         </div>
                         <span className="text-gray-600 text-sm">({totalRatings} reviews)</span>
-
                     </div>
 
                     <button
@@ -44,33 +89,40 @@ function Reviews({ reviews, rating, totalRatings }) {
                         className="flex items-center gap-1 px-3 py-1 rounded-md bg-indigo-100 text-black text-sm font-medium shadow-md hover:shadow-xl transition duration-300 hover:scale-105"
                     >
                         <PenIcon className="w-3.5 h-3.5" />
-                        
                     </button>
-
-
                 </div>
             </div>
 
             <div className="max-h-60 overflow-y-scroll space-y-4 hide-scrollbar">
-                {reviews?.map((review, index) => (
+                {reviews?.map((rev, index) => (
                     <div key={index} className="border-b pb-4">
-                        <div className="flex items-center space-x-3">
-                            <img
-                                src={review.authorPhoto}
-                                alt={review.author}
-                                className="w-10 h-10 rounded-full object-cover"
-                            />
-                            <div>
-                                <h4 className="font-medium text-gray-900">{review.author}</h4>
-                                <p className="text-gray-500 text-sm">
-                                    {review.time} • {review.relativeTime}
-                                </p>
+                        <div className="flex items-center space-x-3 justify-between">
+                            <div className="flex items-center space-x-2">
+                                
+                                    <img
+                                        src={rev.authorPhoto}
+                                        alt={rev.author}
+                                        className="w-10 h-10 rounded-full object-cover"
+                                    />
+                                
+                                <div>
+                                    <h4 className="font-medium text-gray-900">{rev.author}</h4>
+                                    <p className="text-gray-500 text-sm">
+                                        {rev.time} • {rev.relativeTime}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className='text-gray-500'>
+                                {id === rev.owner && (
+
+                                    <button className='hover:text-gray-950' onClick={() => deleteReview(rev.id)}><Trash size={16} /></button>
+                                )}
                             </div>
                         </div>
 
-                        <p className="text-gray-600 text-sm mt-2">{review.text}</p>
-                        
-                        {/* Star Rating */}
+                        <p className="text-gray-600 text-sm mt-2">{rev.text}</p>
+
                         <div className="flex items-center mt-2">
                             {[...Array(5)].map((_, i) => (
                                 <svg
@@ -78,7 +130,7 @@ function Reviews({ reviews, rating, totalRatings }) {
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="16"
                                     height="16"
-                                    fill={i < review.rating ? "gold" : "gray"}
+                                    fill={i < rev.rating ? "gold" : "gray"}
                                     className="bi bi-star"
                                     viewBox="0 0 16 16"
                                 >
@@ -86,7 +138,6 @@ function Reviews({ reviews, rating, totalRatings }) {
                                 </svg>
                             ))}
                         </div>
-
                     </div>
                 ))}
             </div>
@@ -102,25 +153,33 @@ function Reviews({ reviews, rating, totalRatings }) {
                             <label htmlFor="review" className="block text-sm font-medium text-gray-700">Review</label>
                             <textarea
                                 id="review"
-                                name="review"
+                                name="message"
                                 className="mt-1 p-2 w-full border rounded-md"
+                                value={review.message}
+                                onChange={handleChange}
                                 required
                             ></textarea>
                         </div>
                         <div>
-                            <label htmlFor="rating" className="block text-sm font-medium text-gray-700">Rating</label>
-                            <select
-                                id="rating"
-                                name="rating"
-                                className="mt-1 p-2 w-full border rounded-md"
-                                required
-                            >
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+                            <div className="flex gap-1">
+                                {[...Array(5)].map((_, index) => {
+                                    const starValue = index + 1;
+                                    return (
+                                        <Star
+                                            key={index}
+                                            size={24}
+                                            className="cursor-pointer"
+                                            fill={starValue <= (hover || review.rating) ? '#FACC15' : '#E5E7EB'} // Yellow for filled, Gray for empty
+                                            stroke={starValue <= (hover || review.rating) ? '#FACC15' : '#E5E7EB'}
+                                            onClick={() => setReview({ ...review, rating: starValue })}
+                                            onMouseEnter={() => setHover(starValue)}
+                                            onMouseLeave={() => setHover(null)}
+                                        />
+
+                                    );
+                                })}
+                            </div>
                         </div>
                         <div>
                             <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none">

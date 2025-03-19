@@ -10,7 +10,8 @@ const Profile = () => {
 
   const [data, setData] = useState({});
 
-  const {logout, isVendorLoggedIn, id} = useContext(AuthContext);
+  const {logout, id} = useContext(AuthContext);
+  const role = localStorage.getItem("role");
 
     async function fetchVendor() {
       try {
@@ -32,12 +33,7 @@ const Profile = () => {
 
   const handleEditBtn = () => {
 
-    if(isVendorLoggedIn()){
-      navigate(`/vendor/${id}/profile/edit-profile`);
-    }
-    else{
-      navigate(`/user/${id}/profile/edit-profile`);
-    }
+    navigate(`/${role}/${id}/profile/edit-profile`, {state: {data}});
     
   }
 
@@ -46,7 +42,7 @@ const Profile = () => {
       {/* Profile Header */}
       <div className="flex items-center gap-4">
         <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center text-2xl font-bold text-red-500">
-          JD
+          {data.name?.charAt(0).toUpperCase()}
         </div>
         <div>
           <h2 className="text-2xl font-semibold text-gray-800">{data.name}</h2>

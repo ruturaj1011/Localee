@@ -63,7 +63,8 @@ const ServiceCard = ({ provider }) => {
         text: review.text,
         time: new Date(review.time * 1000).toLocaleDateString(),
         relativeTime: review.relative_time_description
-      }))
+      })),
+      isStored: false
     };
   }
 
@@ -94,7 +95,8 @@ const ServiceCard = ({ provider }) => {
         time: new Date(review.time * 1000).toLocaleDateString(),
         relativeTime: review.relative_time_description
       })),
-      owner: data.owner
+      owner: data.owner,
+      isStored: true
     };
   }
 
