@@ -7,6 +7,7 @@ import Profile from "../Profile";
 import YourServices from "./YourServices";
 import EditServiceForm from "./utils/EditService";
 import AddNewService from "./utils/AddNewService";
+import ServiceDetails from "./utils/ServiceDetails";
 import Navbar from "../../utils/Navbar";
 import Footer from "../../utils/Footer";
 import BookingDetails from "../BookingDetails";
@@ -62,7 +63,8 @@ const VendorPanel = () => {
                     <Route path="profile" element={<Profile />} />
                     <Route path="profile/edit-profile" element={<EditProfile />} />
                     <Route path="yourServices" element={<YourServices />} />
-                    <Route path="yourServices/service/edit" element={<EditServiceForm />} />
+                    <Route path="yourServices/service/:serviceId/edit" element={<EditServiceForm />} />
+                    <Route path="yourServices/service/:serviceId" element={<ServiceDetails />} />
                     <Route path="yourServices/addNewService" element={<AddNewService />} />
                     <Route path="bookings/:id/details" element={<BookingDetails role={'vendor'} />} />
                 </Routes>

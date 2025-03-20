@@ -11,39 +11,14 @@ const YourServices = () => {
 
   const navigate = useNavigate();
 
-  const handleEditBtn = () => {
-    navigate(`/vendor/${id}/yourServices/service/edit`);
-  };
   const handleAddService = () => {
     navigate(`/vendor/${id}/yourServices/addNewService`);
   };
 
-  // const services = [
-  //   {
-  //     id: 1,
-  //     name: "Haircut",
-  //     description: "Professional haircut services for men and women.",
-  //     image: "https://via.placeholder.com/100x100?text=Haircut",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Photography",
-  //     description: "Capture your moments with high-quality photography.",
-  //     image: "https://via.placeholder.com/100x100?text=Photography",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Moving Services",
-  //     description: "Reliable moving services to make your relocation smooth.",
-  //     image: "https://via.placeholder.com/100x100?text=Moving",
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Custom Repairs",
-  //     description: "Expert repair solutions for all your needs.",
-  //     image: "https://via.placeholder.com/100x100?text=Repairs",
-  //   },
-  // ];
+  const serviceClick = (serviceId) => {
+    navigate(`/vendor/${id}/yourServices/service/${serviceId}`);
+  };
+
 
   const [services, setServices] = useState([]);
 
@@ -78,10 +53,11 @@ const YourServices = () => {
         {services.map((service) => (
           <div
             key={service._id}
+            onClick={() => serviceClick(service._id)}
             className="relative p-4 border rounded-md shadow bg-gray-50 flex gap-4"
           >
             {/* Edit Icon */}
-            <button onClick={handleEditBtn} className="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
+            <button onClick={() => serviceClick(service._id)} className="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
               <Edit className="w-5 h-5" />
             </button>
 
