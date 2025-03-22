@@ -24,7 +24,7 @@ const YourServices = () => {
 
   async function fetchServices() {
     try {
-      const response = await axios.get(`http://localhost:8000/localee/vendor/${id}/services`);
+      const response = await axios.get(`http://localhost:8000/vendor/${id}/services`);
       const data = response.data;
       console.log(data);
       setServices(data);

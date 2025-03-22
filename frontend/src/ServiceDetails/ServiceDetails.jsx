@@ -20,6 +20,8 @@ const ProviderDetailsPage = () => {
 
     const data = details.details;
 
+    // console.log(data);
+
     const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
@@ -28,11 +30,6 @@ const ProviderDetailsPage = () => {
             try {
               const res = await axios.get(`http://localhost:8000/reviews/${data.place_id}`);
               setReviews(res.data);
-              console.log(res.data);
-
-              data.reviews = reviews;
-              console.log(data);
-
             } catch (err) {
               console.error("Error fetching reviews:", err);
             }
@@ -203,7 +200,7 @@ const ProviderDetailsPage = () => {
                     
 
                     {/* Reviews Section */}
-                    <Reviews reviews={reviews} rating={data.rating} totalRatings={data.totalRatings} serviceId={data.place_id} owner={id}/>
+                    <Reviews reviews={data.isStored === true ? reviews : data.reviews} rating={data.rating} totalRatings={data.totalRatings} serviceId={data.place_id} owner={id} isStored={data.isStored}/>
 
 
                     {/* Service Area Map */}

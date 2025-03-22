@@ -35,7 +35,7 @@ function BookAppointmentForm({ showForm, vendorId, serviceId, details }) {
         
         console.log(formData);
 
-        await axios.post('http://localhost:8000/localee/book', formData, {
+        await axios.post(`http://localhost:8000/localee/${serviceId}/book`, formData, {
             headers: { "Content-Type": "application/json" }
         });
 

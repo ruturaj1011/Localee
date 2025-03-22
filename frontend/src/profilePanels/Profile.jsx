@@ -15,7 +15,7 @@ const Profile = () => {
 
     async function fetchVendor() {
       try {
-          const res = await axios.get(`http://localhost:8000/localee/${id}`);
+          const res = await axios.get(`http://localhost:8000/profile/${id}`);
           setData(res.data);
           // console.log(res.data);
       } catch (err) {

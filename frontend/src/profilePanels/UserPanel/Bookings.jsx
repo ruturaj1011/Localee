@@ -27,6 +27,7 @@ const Bookings = () => {
       const bookings = await axios.get(
         `http://localhost:8000/localee/${role}/${id}/bookingslist`
       );
+      console.log(bookings.data);
       setPendingBookings(bookings.data.pendingBookings);
       setAcceptedBookings(bookings.data.acceptedBookings);
       setBookingHistory(bookings.data.bookingHistory);
@@ -36,6 +37,7 @@ const Bookings = () => {
       setLoading(false);
     }
   };
+  
 
   useEffect(() => {
     fetchBookings();
@@ -172,13 +174,13 @@ const Bookings = () => {
                   className="p-5 mb-4 bg-gray-50 rounded-xl border hover:shadow-md transition"
                 >
                   <div className="flex justify-between items-center">
-                    <p className="font-medium text-lg">{history.name}</p>
+                    <p className="font-medium text-lg">{history.customerName}</p>
                     <button>
                       <Trash size={16} strokeWidth={1.25} />
                     </button>
                   </div>
                   <p className="text-gray-600 mt-1">
-                    Service: <span className="font-medium">{history.service}</span>
+                    Service: <span className="font-medium">{history.serviceCategory+"("+history.type+")"}</span>
                   </p>
                   <p className="text-gray-500 text-sm mt-1">{history.date}</p>
                   <div className="mt-2">{getStatusBadge(history.status)}</div>

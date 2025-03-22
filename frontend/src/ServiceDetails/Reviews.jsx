@@ -3,10 +3,11 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { PenIcon, Star, Trash } from 'lucide-react';
 import axios from 'axios';
 
-function Reviews({ reviews, rating, totalRatings, serviceId, owner }) {
+function Reviews({ reviews, rating, totalRatings, serviceId, owner, isStored }) {
+    
     let [showReviewForm, setShowReviewForm] = useState(false);
 
-    console.log(reviews);
+    // console.log("rev" , reviews);
 
     const id = localStorage.getItem("id");
 
@@ -84,12 +85,14 @@ function Reviews({ reviews, rating, totalRatings, serviceId, owner }) {
                         <span className="text-gray-600 text-sm">({totalRatings} reviews)</span>
                     </div>
 
-                    <button
+                    {isStored && (
+                        <button
                         onClick={() => setShowReviewForm(true)}
                         className="flex items-center gap-1 px-3 py-1 rounded-md bg-indigo-100 text-black text-sm font-medium shadow-md hover:shadow-xl transition duration-300 hover:scale-105"
                     >
                         <PenIcon className="w-3.5 h-3.5" />
                     </button>
+                    )}
                 </div>
             </div>
 
@@ -114,7 +117,7 @@ function Reviews({ reviews, rating, totalRatings, serviceId, owner }) {
                             </div>
 
                             <div className='text-gray-500'>
-                                {id === rev.owner && (
+                                {isStored && id === rev.owner && (
 
                                     <button className='hover:text-gray-950' onClick={() => deleteReview(rev.id)}><Trash size={16} /></button>
                                 )}
@@ -144,10 +147,7 @@ function Reviews({ reviews, rating, totalRatings, serviceId, owner }) {
 
             {showReviewForm && (
                 <div className="mt-4 pt-4 border-t-2 border-indigo-600">
-                    <div className='flex justify-between'>
-                        <h4 className="text-lg font-semibold mb-2">Add Your Review</h4>
-                        <button onClick={() => setShowReviewForm(false)}><ClearIcon /></button>
-                    </div>
+                    {}
                     <form onSubmit={handleSubmitReview} className="space-y-4">
                         <div>
                             <label htmlFor="review" className="block text-sm font-medium text-gray-700">Review</label>

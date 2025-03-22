@@ -37,6 +37,8 @@ const BookingDetails = ({ role }) => {
         alert("Something went wrong, Please try again.");
         setIsConfirmationOpen(false);
       }
+
+      navigate(-1);
     } catch (err) {
       alert(`Error while ${btnRole} booking. Please try again.`);
       console.log(err);

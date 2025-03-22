@@ -16,12 +16,16 @@ const ServiceCard = ({ provider }) => {
       if(!provider.owner){
 
         const response = await fetch(
-          `http://localhost:8000/localee/${provider.service}/${placeId}` 
+          `http://localhost:8000/google/${provider.service}/${placeId}` 
         );
   
         const data = await response.json();
+
+        console.log(data);
   
         const details = simplifyGoogleData(data);
+
+        console.log(details);
   
         navigate(`/serviceInfo/${provider.service}/${placeId}`, { state: { details } });
       }
@@ -56,7 +60,7 @@ const ServiceCard = ({ provider }) => {
       rating: data.rating,
       totalRatings: data.user_ratings_total,
       website: data.website,
-      reviews: data.reviews.map(review => ({
+      reviews: data.reviews?.map(review => ({
         author: review.author_name,
         authorPhoto: review.profile_photo_url,
         rating: review.rating,
