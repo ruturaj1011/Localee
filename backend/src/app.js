@@ -18,10 +18,6 @@ import VendorRoutes from "./routes/VendorRoutes.js";
 
 import fetch from 'node-fetch';
 
-import {upload, cloudinary} from './config/cloudinary.js';
-
-
-
 const app = express();
 
 const server = createServer(app);
@@ -87,6 +83,8 @@ app.get("/fetch/nearby/services", async (req, res) => {
             storedServices,
             googleResults: data.results
         };
+
+        // console.log(combinedResults);
 
         res.json(combinedResults);
     } catch (error) {

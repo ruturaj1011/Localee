@@ -2,18 +2,25 @@ import React, { useState, useEffect } from 'react';
 import LocationSelector from '../../utils/LocationSelector';
 import SearchBox from '../../utils/SearchBox';
 import { useNavigate } from 'react-router-dom';
+import { MapPin, Search, Star, Sliders } from 'lucide-react';
 
 const Filters = () => {
+  // Maintain the same state management
   const [location, setLocation] = useState('');
   const [coordinates, setCoordinates] = useState({ lat: null, lng: null });
   const [selectedService, setSelectedService] = useState('');
   const [selectedRating, setSelectedRating] = useState('4 stars & above');
+  const [isExpanded, setIsExpanded] = useState(true);
+  
+  const navigate = useNavigate();
 
+  // Keep the same service selection handler
   const handleServiceSelect = (service) => {
     setSelectedService(service);
     localStorage.setItem('service', service);
   };
 
+  // Maintain the same useEffect hooks for initializing from localStorage
   useEffect(() => {
     const storedSer = localStorage.getItem('service');
     if (storedSer) {
@@ -30,6 +37,7 @@ const Filters = () => {
     }
   }, []);
 
+  // Keep the same location selection handler
   const handleLocationSelect = (selectedLocation, lat, lng) => {
     setLocation(selectedLocation);
     setCoordinates({ lat, lng });
@@ -37,52 +45,94 @@ const Filters = () => {
     localStorage.setItem('coordinates', JSON.stringify({ lat, lng }));
   };
 
-  const navigate = useNavigate();
+  // Keep the same apply filters handler
   const handleApplyFilters = () => {
     navigate(`/services/${selectedService}`, { state: { service: selectedService, location, coordinates } });
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md w-72 border border-gray-200 mt-4">
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">Filters</h2>
-      <div className="space-y-4">
-        <div className="w-72">
-          <label className="block text-sm font-medium text-gray-600 mb-1">
-            Change Search
-          </label>
-          <SearchBox service={selectedService} onServiceSelect={handleServiceSelect} />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-600 mb-1">
-            Select Location
-          </label>
-          <LocationSelector location={location} setLocation={handleLocationSelect} />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-600 mb-1">
-            Ratings
-          </label>
-          <select
-            className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-            value={selectedRating}
-            onChange={(e) => setSelectedRating(e.target.value)}
-          >
-            <option>4 stars & above</option>
-            <option>3 stars & above</option>
-          </select>
-        </div>
-      </div>
-
-      <div className="mt-4 text-center">
-        <button
-          onClick={handleApplyFilters}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500 focus:outline-none"
-        >
-          Apply
+    <div className="bg-white rounded-lg shadow-md border border-gray-200 mt-4 overflow-hidden">
+      {/* Header with toggle button */}
+      <div className="bg-gradient-to-r from-blue-600 to-blue-500 p-3 flex justify-between items-center cursor-pointer"
+           onClick={() => setIsExpanded(!isExpanded)}>
+        <h2 className="text-lg font-semibold text-white flex items-center">
+          <Sliders className="h-5 w-5 mr-2" />
+          Filters
+        </h2>
+        <button className="text-white">
+          {isExpanded ? '−' : '+'}
         </button>
       </div>
+
+      {/* Collapsible content */}
+      {isExpanded && (
+        <div className="p-4 space-y-5">
+          {/* Service search section */}
+          <div className="filter-group">
+            <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+              <Search className="h-4 w-4 mr-2 text-blue-500" />
+              Change Search
+            </label>
+            <SearchBox 
+              service={selectedService} 
+              onServiceSelect={handleServiceSelect} 
+            />
+            {selectedService && (
+              <div className="mt-2 text-sm text-blue-600">
+                Currently searching: <span className="font-medium">{selectedService}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Location selection section */}
+          <div className="filter-group">
+            <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+              <MapPin className="h-4 w-4 mr-2 text-blue-500" />
+              Select Location
+            </label>
+            <LocationSelector 
+              location={location} 
+              setLocation={handleLocationSelect} 
+            />
+            {location && (
+              <div className="mt-2 text-sm text-blue-600">
+                Current location: <span className="font-medium">{location}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Rating filter section */}
+          <div className="filter-group">
+            <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+              <Star className="h-4 w-4 mr-2 text-blue-500" />
+              Minimum Rating
+            </label>
+            <div className="flex space-x-2">
+              {['4 stars & above', '3 stars & above'].map((rating) => (
+                <button
+                  key={rating}
+                  className={`py-2 px-3 rounded-full text-sm flex-1 ${
+                    selectedRating === rating
+                      ? 'bg-blue-100 text-blue-700 border-2 border-blue-500'
+                      : 'bg-gray-100 text-gray-700 border border-gray-300'
+                  }`}
+                  onClick={() => setSelectedRating(rating)}
+                >
+                  {rating.split(' ')[0]} ★
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Apply button */}
+          <button
+            onClick={handleApplyFilters}
+            className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium flex items-center justify-center"
+          >
+            Apply Filters
+          </button>
+        </div>
+      )}
     </div>
   );
 };
