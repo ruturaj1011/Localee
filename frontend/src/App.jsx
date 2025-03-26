@@ -7,9 +7,9 @@ import FindServices from "./findServices/FindServices"
 import ServiceDetails from "./ServiceDetails/ServiceDetails.jsx"
 
 import { AuthProvider } from "./contexts/authContext";
+import { FlashProvider } from './contexts/FlashContext';
 
-import Navbar from './utils/Navbar';
-import Footer from './utils/Footer';
+
 import VendorPanel from './profilePanels/Vendor/VendorPanel';
 import UserPanel from './profilePanels/UserPanel/UserPanel.jsx';
 import SelectServiceVendor from "./SelectServiceVendor/SelectServiceVendor.jsx";
@@ -29,6 +29,7 @@ function App() {
       
     <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
 
+      <FlashProvider>
       <AuthProvider>
         
       
@@ -56,6 +57,7 @@ function App() {
       {/* <Footer /> */}
 
       </AuthProvider>
+      </FlashProvider>
 
     </Router>
     

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useFlash } from "../../contexts/flashContext";
 
 const UpdateBooking = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const { addFlashMessage } = useFlash();
   const booking = state || {};
 
   const [form, setForm] = useState({
@@ -36,10 +38,16 @@ const UpdateBooking = () => {
 
     // console.log("Updated Booking:", updatedBooking);
 
-    const update = await axios.patch(`http://localhost:8000/localee/user/${booking.userId}/bookings/${booking._id}/update`, updatedBooking);
+    try{
+      const update = await axios.patch(`http://localhost:8000/localee/user/${booking.userId}/bookings/${booking._id}/update`, updatedBooking);
 
-    alert(update.data.message);
-
+      addFlashMessage("Booking updated successfully.", "success");
+      console.log("Booking updated successfully:", update.data);
+    }
+    catch(err){
+      addFlashMessage("Failed to update booking. Please try again.", "error");
+      console.error("Error updating booking:", err);
+    }
     navigate(-1); // Go back after update
   };
 

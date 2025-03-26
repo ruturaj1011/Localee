@@ -3,12 +3,15 @@ import { Search, ArrowRight } from 'lucide-react';
 import LocationSelector from '../utils/LocationSelector';
 import { useNavigate } from 'react-router-dom';
 import SearchBox from '../utils/SearchBox';
+import { useFlash } from '../contexts/flashContext';
 
 function SearchServices() {
   const navigate = useNavigate();
   const [location, setLocation] = useState('');
   const [coordinates, setCoordinates] = useState({ lat: null, lng: null });
   const [selectedService, setSelectedService] = useState("");
+  const { addFlashMessage } = useFlash();
+
 
   const handleServiceSelect = (service) => {
     setSelectedService(service);
@@ -38,7 +41,7 @@ function SearchServices() {
 
   const handleSearch = () => {
     if (!location || !selectedService) {
-      alert('Please select a location and service to search for services.');
+      addFlashMessage('Please select a location and service!', 'info');
       return;
     }
 

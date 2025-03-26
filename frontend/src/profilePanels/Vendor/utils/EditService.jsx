@@ -2,9 +2,11 @@ import { useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FaTrash, FaUpload } from "react-icons/fa"; // Icons for actions
+import { useFlash } from "../../../contexts/flashContext";
 
 const EditService = () => {
   const { id, serviceId } = useParams();
+  const { addFlashMessage } = useFlash();
   const navigate = useNavigate();
   const location = useLocation();
   const serviceData = location.state?.service; // Get service data passed via state
@@ -78,11 +80,12 @@ const EditService = () => {
       );
 
       if (response.status === 200) {
-        alert("Service updated successfully.");
+        
         navigate(`/vendor/${id}/yourServices/service/${serviceId}`);
+        addFlashMessage("Service updated successfully.", "success");
       }
     } catch (err) {
-      alert("Failed to update service.");
+      addFlashMessage("Failed to update service. Please try again.", "error");
       console.error(err);
     } finally {
       setLoading(false); // Stop loading

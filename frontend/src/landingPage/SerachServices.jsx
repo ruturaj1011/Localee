@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Search, ArrowRight, MapPin } from 'lucide-react';
 import LocationSelector from '../utils/LocationSelector';
 import { useNavigate } from "react-router-dom";
+import { useFlash } from '../contexts/flashContext';
 
 function SearchServices() {
   const [location, setLocation] = useState('');
   const [coordinates, setCoordinates] = useState({ lat: null, lng: null });
+  const { addFlashMessage } = useFlash();
 
   const handleLocationSelect = (selectedLocation, lat, lon) => {
     setLocation(selectedLocation);
@@ -24,7 +26,8 @@ function SearchServices() {
 
       navigate("/findServices");
     } else {
-      alert('Please select a location!');
+      // alert('Please select a location!');
+      addFlashMessage('Please select a location!', 'info');
     }
   };
 

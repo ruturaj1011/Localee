@@ -3,9 +3,11 @@ import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt, faStar } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { useFlash } from "../../contexts/flashContext";
 
 const ServiceCard = ({ provider }) => {
 
+  const { addFlashMessage } = useFlash();
   const navigate = useNavigate();
 
   // console.log(provider);
@@ -41,6 +43,7 @@ const ServiceCard = ({ provider }) => {
       }
     } catch (error) {
       console.error('Error fetching provider details:', error);
+      addFlashMessage("Failed to fetch provider details. Please try again.", "error");
     }
   };
 

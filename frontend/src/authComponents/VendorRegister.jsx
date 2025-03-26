@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/authContext.jsx";
 import { useContext } from "react";
+import { useFlash } from "../contexts/flashContext.jsx";
 
 const VendorRegister = () => {
     const { handleVendorRegister } = useContext(AuthContext);
+    const { addFlashMessage } = useFlash();
 
     const [formData, setFormData] = useState({
         name: "",
@@ -44,8 +46,10 @@ const VendorRegister = () => {
                 address
             );
             router("/auth/vendor/login");
+            addFlashMessage("Registration successful. Please login to continue.", "success");
         } catch (e) {
             setErrorMessage("Error occurred during registration. Please try again.");
+            addFlashMessage("Error occurred during registration. Please try again.", "error");
         } finally {
             setIsSubmitting(false);
         }

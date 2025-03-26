@@ -3,27 +3,30 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../contexts/authContext";
+import { useFlash } from "../contexts/flashContext";
 
 const Profile = () => {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const { logout, isVendorLoggedIn, id } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { addFlashMessage } = useFlash();
 
-  async function fetchVendor() {
+  async function fetchUser() {
     setIsLoading(true);
     try {
       const res = await axios.get(`http://localhost:8000/profile/${id}`);
       setData(res.data);
       setIsLoading(false);
     } catch (err) {
-      console.error("Error fetching vendor data:", err);
+      addFlashMessage("Failed to load profile data. Please try again.", "error");
+      console.error("Error fetching user data:", err);
       setIsLoading(false);
     }
   }
 
   useEffect(() => {
-    fetchVendor();
+    fetchUser();
   }, []);
 
   const handleEditBtn = () => {
@@ -141,7 +144,10 @@ const Profile = () => {
                 {/* Add more account details as needed */}
                 <div className="pt-4">
                   <button 
-                    onClick={logout} 
+                    onClick={() => {
+                      logout();
+                      addFlashMessage("You logged out successfully!", "success");
+                    }} 
                     className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors flex items-center gap-2 text-sm font-medium"
                   >
                     <LogOut className="w-4 h-4" />

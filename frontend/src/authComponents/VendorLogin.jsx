@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/authContext";
 import { useContext } from "react";
+import { useFlash } from "../contexts/flashContext";
 
 const VendorLogin = () => {
     const { handleVendorLogin } = useContext(AuthContext);
@@ -10,6 +11,7 @@ const VendorLogin = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const router = useNavigate();
+    const { addFlashMessage } = useFlash();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,8 +19,10 @@ const VendorLogin = () => {
         try {
             await handleVendorLogin(email, password);
             router("/"); // Redirect to dashboard or home after login
+            addFlashMessage("Welcome back! You are now logged in.", "success");
         } catch (e) {
             setErrorMessage("Invalid email or password. Please try again.");
+            addFlashMessage("Invalid email or password. Please try again.", "error");
         } finally {
             setIsLoading(false);
         }

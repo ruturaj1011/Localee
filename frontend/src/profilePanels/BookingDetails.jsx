@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ConfirmationCard from "./ConfirmationCard";
 import axios from "axios";
+import { useFlash } from "../contexts/flashContext";
 
 const BookingDetails = ({ role }) => {
   const { state: booking } = useLocation();
   const navigate = useNavigate();
+  const { addFlashMessage } = useFlash();
 
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [btnRole, setBtnRole] = useState("");
@@ -17,7 +19,10 @@ const BookingDetails = ({ role }) => {
   const id = localStorage.getItem("id");
 
   function onUpdateClick() {
-    if (booking.status === "cancelled") return; // Prevent update if cancelled
+    if (booking.status === "cancelled"){
+      addFlashMessage("Booking is already cancelled.", "info");
+      return;
+    } // Prevent update if cancelled
     navigate(`/user/${id}/bookings/${booking._id}/details/update`, { state: booking });
   }
 
@@ -32,15 +37,16 @@ const BookingDetails = ({ role }) => {
 
       if (isConfirm.status === 200) {
         console.log(`Booking ${btnRole} successfully.`);
+        addFlashMessage(`Booking ${btnRole} successfully.`, "success");
         setIsConfirmationOpen(false);
       } else {
-        alert("Something went wrong, Please try again.");
+        addFlashMessage(`Error while ${btnRole} booking. Please try again.`, "error");
         setIsConfirmationOpen(false);
       }
 
       navigate(-1);
     } catch (err) {
-      alert(`Error while ${btnRole} booking. Please try again.`);
+      addFlashMessage(`Error while ${btnRole} booking. Please try again.`, "error");
       console.log(err);
       setIsConfirmationOpen(false);
     }

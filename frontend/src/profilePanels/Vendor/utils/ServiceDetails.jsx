@@ -3,10 +3,12 @@ import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaEdit, FaTrash, FaStar } from "react-icons/fa"; // Icons for actions and rating
 import { Email, LocationCity, Phone, WhatsApp } from "@mui/icons-material";
+import { useFlash } from "../../../contexts/flashContext";
 
 
 const ServiceDetails = () => {
     const { id, serviceId } = useParams();
+    const { addFlashMessage } = useFlash();
     const navigate = useNavigate();
     const [service, setService] = useState(null);
     const [reviews, setReviews] = useState([]);
@@ -23,6 +25,8 @@ const ServiceDetails = () => {
                 setService(response.data);
             } catch (err) {
                 setError("Failed to fetch service details.");
+                addFlashMessage("Failed to fetch service details. Please try again.", "error");
+                navigate(-1);
                 console.error(err);
             }
         };
@@ -36,6 +40,7 @@ const ServiceDetails = () => {
                 setReviews(response.data);
             } catch (err) {
                 setError("Failed to fetch reviews.");
+                addFlashMessage("Failed to fetch reviews", "error");
                 console.error(err);
             }
         };
@@ -51,11 +56,11 @@ const ServiceDetails = () => {
             await axios.delete(
                 `http://localhost:8000/vendor/${id}/services/${serviceId}/delete`
             );
-            alert("Service removed successfully.");
+            addFlashMessage("Service removed successfully.", "success");
             navigate(`/vendor/${id}/yourServices`); // Redirect to vendor dashboard
             window.location.reload();
         } catch (err) {
-            alert("Failed to remove service.");
+            addFlashMessage("Failed to remove service. Please try again.", "error");
             console.error(err);
         }
     };

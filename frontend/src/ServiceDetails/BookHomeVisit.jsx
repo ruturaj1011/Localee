@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
 import axios from 'axios';
+import { useFlash } from '../contexts/flashContext';
 
 function BookHomeVisitForm({ showForm, vendorId, serviceId, details }) {
 
     const userId = localStorage.getItem('id');
+    const { addFlashMessage } = useFlash();
 
-    console.log(vendorId);
+    // console.log(vendorId);
 
     let [formData, setFormData] = useState({
         type: "HomeVisit",
@@ -30,29 +32,36 @@ function BookHomeVisitForm({ showForm, vendorId, serviceId, details }) {
         }));
     };
 
-    let handleSubmit = async(event) => {
-        event.preventDefault();
-        console.log(formData);
+    let handleSubmit = async (event) => {
+        try {
+            event.preventDefault();
+            console.log(formData);
 
-        await axios.post(`http://localhost:8000/localee/${serviceId}/book`, formData, {
-            headers: { "Content-Type": "application/json" }
-        });
+            await axios.post(`http://localhost:8000/localee/${serviceId}/book`, formData, {
+                headers: { "Content-Type": "application/json" }
+            });
 
-        showForm(false);
+            showForm(false);
 
-        setFormData({
-            type: "HomeVisit",
-            customerName: "",
-            vendorName: details.name,
-            serviceCategory: details.serviceCategory,
-            phone: "",
-            date: "",
-            address: "",
-            notes: "",
-            vendorId: vendorId || null,
-            userId: userId || null,
-            serviceId: serviceId || null
-        });
+            setFormData({
+                type: "HomeVisit",
+                customerName: "",
+                vendorName: details.name,
+                serviceCategory: details.serviceCategory,
+                phone: "",
+                date: "",
+                address: "",
+                notes: "",
+                vendorId: vendorId || null,
+                userId: userId || null,
+                serviceId: serviceId || null
+            });
+            addFlashMessage("Home visit booked successfully.", "success");
+        }
+        catch (err) {
+            console.error(err);
+            addFlashMessage("Failed to book home visit. Please try again.", "error");
+        }
     }
 
     return (
@@ -62,10 +71,10 @@ function BookHomeVisitForm({ showForm, vendorId, serviceId, details }) {
             <div className="bg-white w-96 h-fit mt-10 p-4 pt-0 rounded-lg shadow-lg space-y-6 min-w-2xl mx-auto relative">
 
                 <button
-                        onClick={() => showForm(false)}
-                        className="absolute top-2 right-2 text-gray-800 hover:text-gray-700"
-                    >
-                        <ClearIcon />
+                    onClick={() => showForm(false)}
+                    className="absolute top-2 right-2 text-gray-800 hover:text-gray-700"
+                >
+                    <ClearIcon />
                 </button>
                 <h2 className="text-2xl font-bold text-gray-800 text-center">Book Home Visit</h2>
                 <form className="space-y-2" onSubmit={handleSubmit}>
@@ -100,7 +109,7 @@ function BookHomeVisitForm({ showForm, vendorId, serviceId, details }) {
                     </div>
 
                     <div>
-                        
+
                         <label htmlFor="date" className="block text-sm font-medium text-gray-700">
                             Preferred Date
                         </label>
@@ -112,17 +121,17 @@ function BookHomeVisitForm({ showForm, vendorId, serviceId, details }) {
                             onChange={handleInputChange}
                             className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         />
-                        
+
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Address</label>
                         <textarea
-                        rows="2"
-                        placeholder="Enter your address"
-                        name='address'
-                        value={formData.address}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                            rows="2"
+                            placeholder="Enter your address"
+                            name='address'
+                            value={formData.address}
+                            onChange={handleInputChange}
+                            className="w-full px-4 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                         ></textarea>
                     </div>
 

@@ -1,13 +1,14 @@
 import { Edit, Plus } from "lucide-react";
 import {useNavigate } from "react-router-dom";
-import { AuthContext } from "../../contexts/authContext";
-import { useContext, useEffect, useState} from "react";
+import { useEffect, useState} from "react";
+import { useFlash } from "../../contexts/flashContext";
 import axios from "axios";
 
 const YourServices = () => {
 
   // const { id } = useContext(AuthContext);
   const id = localStorage.getItem("id");
+  const { addFlashMessage } = useFlash();
 
   const navigate = useNavigate();
 
@@ -30,6 +31,7 @@ const YourServices = () => {
       setServices(data);
     } catch (error) {
       console.error("Error fetching services:", error);
+      addFlashMessage("Failed to load services. Please try again.", "error");
     }
   }
 

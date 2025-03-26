@@ -8,7 +8,7 @@ import { AuthContext } from "../contexts/authContext.jsx";
 
 export default function AccountMenu() {
 
-  const {id} = useContext(AuthContext);
+  const { id } = useContext(AuthContext);
 
   const role = localStorage.getItem("role");
 
@@ -23,9 +23,9 @@ export default function AccountMenu() {
     setAnchorEl(null);
   };
   const navigate = useNavigate();
-  
-  const handleOptionClick = (option) =>{
-    
+
+  const handleOptionClick = (option) => {
+
     navigate(`/${role}/${id}/${option}`);
 
     handleClose();
@@ -98,28 +98,29 @@ export default function AccountMenu() {
       >
         {/* Menu Items */}
         <MenuItem onClick={() => handleOptionClick("profile")}>
-        <User className="w-5 h-5 me-2" />
+          <User className="w-5 h-5 me-2" />
           Profile
         </MenuItem>
         <MenuItem onClick={() => handleOptionClick("bookings")}>
-        <Calendar className="w-5 h-5 me-2" />
+          <Calendar className="w-5 h-5 me-2" />
           Bookings
         </MenuItem>
-        
+
         {role == 'vendor' && <MenuItem onClick={() => handleOptionClick("yourServices")}>
-        <Logs className="w-5 h-5 me-2" />
+          <Logs className="w-5 h-5 me-2" />
           Your Services
         </MenuItem>
         }
 
         <Divider sx={{ my: 1 }} />
-        <MenuItem onClick={() => { 
-        handleClose(); 
-        logout(); 
-    }}  sx={{ color: "error.main", fontWeight: "bold" }}>
+        <MenuItem onClick={() => {
+          handleClose();
+          logout();
+          addFlashMessage("You logged out successfully!", "success");
+        }} sx={{ color: "error.main", fontWeight: "bold" }}>
           <Logout fontSize="small" sx={{ mr: 1 }
           }
-           />
+          />
           Logout
         </MenuItem>
       </Menu>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaTrash } from "react-icons/fa"; // Icon for removing images
+import { useFlash } from "../../../contexts/flashContext";
 
 const services = [
   { title: "Electrician" }, { title: "Plumber" }, { title: "Carpenter" }, { title: "Home Cleaning" },
@@ -24,6 +25,7 @@ const services = [
 const AddService = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { addFlashMessage } = useFlash();
 
   const [formData, setFormData] = useState({
     serviceName: "",
@@ -88,11 +90,11 @@ const AddService = () => {
 
       if (service.status === 201) {
         navigate(-1);
-        alert("Service added successfully.");
+        addFlashMessage("Service added successfully.", "success");
       }
     } catch (err) {
       console.error(err);
-      alert("Failed to add service. Please try again.");
+      addFlashMessage("Failed to add service. Please try again.", "error");
     } finally {
       setLoading(false); // Stop loading
     }

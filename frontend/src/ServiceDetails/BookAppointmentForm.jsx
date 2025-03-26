@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
 import axios from 'axios';
+import { useFlash } from '../contexts/flashContext';
 
 function BookAppointmentForm({ showForm, vendorId, serviceId, details }) {
+    const { addFlashMessage } = useFlash();
     const userId = localStorage.getItem('id');
 
     console.log(vendorId, serviceId);
@@ -11,7 +13,7 @@ function BookAppointmentForm({ showForm, vendorId, serviceId, details }) {
         type: "Appointment",
         customerName: "",
         vendorName: details.name,
-        serviceCategory: details.serviceCategory,        
+        serviceCategory: details.serviceCategory,
         phone: "",
         date: "",
         time: "",
@@ -31,30 +33,37 @@ function BookAppointmentForm({ showForm, vendorId, serviceId, details }) {
     };
 
     let handleSubmit = async (event) => {
-        event.preventDefault();
-        
-        console.log(formData);
+        try {
+            event.preventDefault();
 
-        await axios.post(`http://localhost:8000/localee/${serviceId}/book`, formData, {
-            headers: { "Content-Type": "application/json" }
-        });
+            console.log(formData);
 
-        showForm(false);
+            await axios.post(`http://localhost:8000/localee/${serviceId}/book`, formData, {
+                headers: { "Content-Type": "application/json" }
+            });
 
-        setFormData({
-            type: "Appointment",
-            customerName: "",
-            vendorName: details.name,
-            serviceCategory: details.serviceCategory,
-            phone: "",
-            date: "",
-            time: "",
-            address: details.address,
-            notes: "",
-            vendorId: vendorId || null,
-            userId: userId || null,
-            serviceId: serviceId || null
-        });
+            showForm(false);
+
+            setFormData({
+                type: "Appointment",
+                customerName: "",
+                vendorName: details.name,
+                serviceCategory: details.serviceCategory,
+                phone: "",
+                date: "",
+                time: "",
+                address: details.address,
+                notes: "",
+                vendorId: vendorId || null,
+                userId: userId || null,
+                serviceId: serviceId || null
+            });
+            addFlashMessage("Appointment booked successfully.", "success");
+        }
+        catch (err) {
+            console.error(err);
+            addFlashMessage("Failed to book appointment. Please try again.", "error");
+        }
     };
 
     return (

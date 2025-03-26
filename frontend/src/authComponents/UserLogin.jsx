@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/authContext";
+import { useFlash } from "../contexts/flashContext";
 import { useContext } from "react";
 
 const UserLogin = () => {
+
     const { handleUserLogin } = useContext(AuthContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -12,14 +14,18 @@ const UserLogin = () => {
     const [showPassword, setShowPassword] = useState(false);
     const router = useNavigate();
 
+    const { addFlashMessage } = useFlash();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         try {
             await handleUserLogin(email, password);
             router("/findServices"); // Redirect to home after login
+            addFlashMessage("Welcome back! You are now logged in.", "success");
         } catch (e) {
             setErrorMessage("Invalid email or password.");
+            addFlashMessage("Invalid email or password.", "error");
         } finally {
             setIsLoading(false);
         }

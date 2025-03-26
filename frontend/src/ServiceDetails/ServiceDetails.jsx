@@ -7,6 +7,7 @@ import Navbar from "../utils/Navbar";
 import Footer from "../utils/Footer";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import { useFlash } from "../contexts/flashContext";
 
 import useAuth from "../utils/authMiddleware";
 
@@ -21,6 +22,7 @@ const ProviderDetailsPage = () => {
     const data = details.details;
 
     // console.log(data);
+    const { addFlashMessage } = useFlash();
 
     const [reviews, setReviews] = useState([]);
 
@@ -32,6 +34,7 @@ const ProviderDetailsPage = () => {
               setReviews(res.data);
             } catch (err) {
               console.error("Error fetching reviews:", err);
+                addFlashMessage("Failed to fetch reviews.", "error");
             }
           }
         };

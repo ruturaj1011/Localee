@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Edit, Trash2, Trash, MapPin, CalendarDays, Clock, Phone, Type } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useFlash } from "../../contexts/flashContext";
 
 const SkeletonCard = () => (
   <div className="animate-pulse p-5 mb-4 bg-gray-100 rounded-xl border">
@@ -19,6 +20,7 @@ const Bookings = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("upcoming");
   
+  const { addFlashMessage } = useFlash();
   const id = localStorage.getItem("id");
   const role = localStorage.getItem("role");
   const navigate = useNavigate();
@@ -34,6 +36,7 @@ const Bookings = () => {
       setBookingHistory(bookings.data.bookingHistory);
     } catch (error) {
       console.error("Error fetching bookings:", error);
+      addFlashMessage("Failed to load bookings. Please try again.", "error");
     } finally {
       setLoading(false);
     }
@@ -47,9 +50,12 @@ const Bookings = () => {
     try {
       const res = await axios.delete(`http://localhost:8000/localee/${role}/${id}/bookings/clearHistory`);
       console.log(res.data.message);
+      setBookingHistory([]);
+      addFlashMessage("Booking history cleared successfully.", "success");
       fetchBookings();
     } catch (error) {
       console.error("Error clearing bookings:", error);
+      addFlashMessage("Failed to clear booking history. Please try again.", "error");
     }
   };
 

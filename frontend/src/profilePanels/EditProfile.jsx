@@ -3,9 +3,11 @@ import { AuthContext } from "../contexts/authContext";
 import { useContext, useEffect, useState } from "react";
 import { Save, User, X } from "lucide-react";
 import axios from "axios";
+import { useFlash } from "../contexts/flashContext";
 
 const EditProfile = () => {
   const navigate = useNavigate();
+  const { addFlashMessage } = useFlash();
   const { isUserLoggedIn, id } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
@@ -36,6 +38,7 @@ const EditProfile = () => {
         console.error("Error fetching user data:", err);
         setError("Failed to load profile data. Please try again.");
         setIsLoading(false);
+        addFlashMessage("Failed to load profile data. Please try again.", "error");
       }
     }
     
@@ -61,11 +64,11 @@ const EditProfile = () => {
   const handleSave = async () => {
     try {
       await axios.post(`http://localhost:8000/profile/${id}/update`, formData);
-      alert("Profile updated successfully");
+      addFlashMessage("Profile updated successfully.", "success");
       navigate(-1);
     } catch (error) {
       console.error("Error updating profile:", error);
-      alert("Failed to update profile");
+      addFlashMessage("Failed to update profile. Please try again.", "error");
     }
   };
   // Get initials from name for avatar

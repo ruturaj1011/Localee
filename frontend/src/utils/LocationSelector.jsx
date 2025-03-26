@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { MapPin, Search } from 'lucide-react';
+import { useFlash } from '../contexts/flashContext';
 
 const LocationSelector = ({ location, setLocation }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+
+  const { addFlashMessage } = useFlash();
 
   const fetchSuggestions = async (query) => {
     if (!query) {
@@ -21,6 +24,7 @@ const LocationSelector = ({ location, setLocation }) => {
       setSuggestions(data);
     } catch (error) {
       console.error('Error fetching location suggestions:', error);
+      addFlashMessage('Failed to fetch location suggestions.', 'error');
     }
   };
 

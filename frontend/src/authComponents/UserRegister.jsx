@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/authContext.jsx";
 import { useContext } from "react";
+import { useFlash } from "../contexts/flashContext.jsx";
 
 
 const UserRegister = () => {
@@ -18,6 +19,8 @@ const UserRegister = () => {
     const [currentStep, setCurrentStep] = useState(1);
     const router = useNavigate();
 
+    const { addFlashMessage } = useFlash();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
@@ -31,9 +34,11 @@ const UserRegister = () => {
                 state
             );
             router("/auth/user/login"); // Redirect to user login after registration
+            addFlashMessage("Registration successful. Please login to continue.", "success");
         } catch (e) {
             console.log(e);
             setErrorMessage("Error occurred during registration.");
+            addFlashMessage("Error occurred during registration. Please Try Again!", "error");
         } finally {
             setIsLoading(false);
         }

@@ -5,9 +5,11 @@ import ServiceCard from './components/ServiceCard';
 import Navbar from '../utils/Navbar';
 import Footer from '../utils/Footer';
 import { useLocation } from 'react-router-dom';
+import { useFlash } from '../contexts/flashContext';
 
 const SelectServiceVendor = () => {
   
+  const { addFlashMessage } = useFlash();
   const Location = useLocation();
   const { service, location, coordinates } = Location.state || {};
 
@@ -65,6 +67,7 @@ const SelectServiceVendor = () => {
       setServiceProviders([...storedProviders, ...googleProviders]);
     } catch (error) {
       console.error('Error fetching service providers:', error);
+      addFlashMessage('Failed to load service providers. Please try again.', 'error');
     }
   };
   
@@ -72,10 +75,6 @@ const SelectServiceVendor = () => {
   useEffect(() => {
     fetchServices();
   }, [coordinates, service]);
-
-  // useEffect(() => {
-  //   console.log(serviceProviders);
-  // }, [serviceProviders]);
 
   return (
     <>

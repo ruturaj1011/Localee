@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CalendarDays, MapPin, Phone, ClipboardList, User, Trash2 } from "lucide-react";
+import { useFlash } from "../../contexts/flashContext";
 
 function Bookings() {
+  const { addFlashMessage } = useFlash();
   const [pendingBookings, setPendingBookings] = useState([]);
   const [acceptedBookings, setAcceptedBookings] = useState([]);
   const [bookingHistory, setBookingHistory] = useState([]);
@@ -24,6 +26,8 @@ function Bookings() {
     } catch (err) {
       console.error(err);
       setLoading(false);
+      navigate(-1);
+      addFlashMessage("Failed to load bookings. Please try again.", "error");
     }
   };
 
@@ -37,8 +41,10 @@ function Bookings() {
       setPendingBookings((prev) =>
         prev.map((b) => (b._id === bookingId ? { ...b, status: "Accepted" } : b))
       );
+      addFlashMessage("Booking accepted successfully.", "success");
     } catch (err) {
       console.error(err);
+      addFlashMessage("Failed to accept booking. Please try again.", "error");
     }
   };
 
@@ -46,9 +52,11 @@ function Bookings() {
       try {
         const res = await axios.delete(`http://localhost:8000/localee/${role}/${id}/bookings/clearHistory`);
         console.log(res.data.message);
+        addFlashMessage("Bookings history cleared successfully.", "success");
         fetchBookings();
       } catch (error) {
         console.error("Error clearing bookings:", error);
+        addFlashMessage("Failed to clear bookings history. Please try again.", "error");
       }
     }
 

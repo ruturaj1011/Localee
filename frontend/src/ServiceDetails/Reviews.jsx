@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import ClearIcon from '@mui/icons-material/Clear';
 import { PenIcon, Star, Trash } from 'lucide-react';
 import axios from 'axios';
+import { useFlash } from '../contexts/flashContext';
 
 function Reviews({ reviews, rating, totalRatings, serviceId, owner, isStored }) {
     
     let [showReviewForm, setShowReviewForm] = useState(false);
+    const { addFlashMessage } = useFlash();
 
     // console.log("rev" , reviews);
 
@@ -31,10 +32,10 @@ function Reviews({ reviews, rating, totalRatings, serviceId, owner, isStored }) 
 
         try {
             await axios.post("http://localhost:8000/reviews/add", review)
-            alert("Review submitted successfully");
+            addFlashMessage("Review added successfully.", "success");
         }
         catch (err) {
-            alert("Failed to submit review");
+            addFlashMessage("Failed to add review. Please try again.", "error");
         }
 
         setReview({
@@ -51,10 +52,10 @@ function Reviews({ reviews, rating, totalRatings, serviceId, owner, isStored }) 
     const deleteReview = async (id) => {
         try {
             await axios.delete(`http://localhost:8000/reviews/${id}/delete`, { serviceId, owner: id });
-            alert("Review deleted successfully");
+            addFlashMessage("Review deleted successfully.", "success");
         }
         catch (err) {
-            alert("Failed to delete review");
+            addFlashMessage("Failed to delete review. Please try again.", "error");
         }
         window.location.reload();
     };
