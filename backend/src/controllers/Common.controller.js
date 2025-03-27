@@ -58,7 +58,7 @@ const bookingHistoryAndUpcoming = async (req, res) => {
 
         const pendingBookings = vendor.bookings.filter(booking => booking.status === "pending");
         const acceptedBookings = vendor.bookings.filter(booking => booking.status === "accepted");
-        const bookingHistory = vendor.bookings.filter(booking => booking.status === "completed" || booking.status === "cancelled");
+        const bookingHistory = vendor.bookings.filter(booking => booking.status === "completed" || booking.status === "cancelled" || booking.status === "rejected");
 
         // console.log(pendingBookings, acceptedBookings, bookingHistory);
 
@@ -107,7 +107,6 @@ const updateBookingStatus = async (req, res) => {
 
 // clear booking history
 const clearBookingHistory = async (req, res) => {
-    
     const { id } = req.params;
 
     try {
@@ -117,37 +116,38 @@ const clearBookingHistory = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // Select only completed/cancelled/rejected bookings
-        const removableBookings = user.bookings
-            .filter(booking => 
-                ["completed", "cancelled", "rejected"].includes(booking.status)
-            )
-            .map(booking => booking._id);
+        // Filter out completed, cancelled, or rejected bookings
+        const removableBookings = user.bookings.filter(booking => 
+            ["completed", "cancelled", "rejected"].includes(booking.status)
+        );
 
         if (removableBookings.length === 0) {
-            return res.status(200).json({ message: "No history to clear" });
+            return res.status(200).json({ message: "No booking history to clear." });
         }
 
-        // Remove references from user's bookings array
-        user.bookings = user.bookings.filter(booking => 
-            !removableBookings.includes(booking._id.toString())
+        // Extract booking IDs for deletion
+        const removableBookingIds = removableBookings.map(booking => booking._id);
+
+        // Remove from user's bookings
+        user.bookings = user.bookings.filter(booking =>
+            !removableBookingIds.includes(booking._id)
         );
         await user.save();
 
-        // Check if any other users/vendors still have these bookings
-        const vendorCount = await User.countDocuments({ bookings: { $in: removableBookings } });
+        // Delete bookings if no other users have them
+        await Booking.deleteMany({
+            _id: { $in: removableBookingIds },
+            $nor: [{ _id: { $in: (await User.find({ bookings: { $in: removableBookingIds } })).flatMap(u => u.bookings) } }]
+        });
 
-        if (vendorCount === 0) {
-            await BookingModel.deleteMany({ _id: { $in: removableBookings } });
-        }
+        res.status(200).json({ message: "Booking history cleared successfully." });
 
-        return res.status(200).json({ message: "History cleared successfully" });
-
-    } catch (err) {
-        console.error("Error clearing history:", err);
-        res.status(500).json({ message: "Server error", error: err.message });
+    } catch (error) {
+        console.error("Error clearing booking history:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 };
+
 
 // update booking details
 const updateBooking = async (req, res) => {

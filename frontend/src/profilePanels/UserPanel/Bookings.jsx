@@ -19,7 +19,7 @@ const Bookings = () => {
   const [bookingHistory, setBookingHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("upcoming");
-  
+
   const { addFlashMessage } = useFlash();
   const id = localStorage.getItem("id");
   const role = localStorage.getItem("role");
@@ -48,14 +48,22 @@ const Bookings = () => {
 
   const onClearAll = async () => {
     try {
-      const res = await axios.delete(`http://localhost:8000/localee/${role}/${id}/bookings/clearHistory`);
-      console.log(res.data.message);
+      const res = await axios.delete(
+        `http://localhost:8000/localee/${role}/${id}/bookings/clearHistory`
+      );
+
       setBookingHistory([]);
-      addFlashMessage("Booking history cleared successfully.", "success");
-      fetchBookings();
+      addFlashMessage(
+        `History deleted successfully!`,
+        "success"
+      );
+      
     } catch (error) {
       console.error("Error clearing bookings:", error);
-      addFlashMessage("Failed to clear booking history. Please try again.", "error");
+      addFlashMessage(
+        error.response?.data?.message || "Failed to clear booking history",
+        "error"
+      );
     }
   };
 
@@ -73,9 +81,8 @@ const Bookings = () => {
     };
     return (
       <span
-        className={`px-3 py-1 rounded-full text-sm font-medium ${
-          statusStyles[status.toLowerCase()] || "bg-gray-100 text-gray-800 border border-gray-200"
-        }`}
+        className={`px-3 py-1 rounded-full text-sm font-medium ${statusStyles[status.toLowerCase()] || "bg-gray-100 text-gray-800 border border-gray-200"
+          }`}
       >
         {status}
       </span>
@@ -145,7 +152,7 @@ const Bookings = () => {
     >
       <div className="flex justify-between items-center">
         <p className="font-medium text-lg text-gray-800">{history.name}</p>
-        <button 
+        <button
           className="text-gray-400 hover:text-red-500 p-1 rounded-full hover:bg-gray-100"
           aria-label="Remove from history"
         >
@@ -171,21 +178,19 @@ const Bookings = () => {
         {/* Tab Navigation */}
         <div className="flex border-b border-gray-200 mb-6">
           <button
-            className={`px-6 py-3 font-medium text-sm mr-4 border-b-2 ${
-              activeTab === "upcoming" 
-                ? "border-blue-500 text-blue-600" 
+            className={`px-6 py-3 font-medium text-sm mr-4 border-b-2 ${activeTab === "upcoming"
+                ? "border-blue-500 text-blue-600"
                 : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-            }`}
+              }`}
             onClick={() => setActiveTab("upcoming")}
           >
             Upcoming Bookings
           </button>
           <button
-            className={`px-6 py-3 font-medium text-sm border-b-2 ${
-              activeTab === "history" 
-                ? "border-blue-500 text-blue-600" 
+            className={`px-6 py-3 font-medium text-sm border-b-2 ${activeTab === "history"
+                ? "border-blue-500 text-blue-600"
                 : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-            }`}
+              }`}
             onClick={() => setActiveTab("history")}
           >
             Booking History
@@ -223,7 +228,7 @@ const Bookings = () => {
             <div className="mb-4 flex justify-between items-center">
               <h2 className="text-xl font-semibold text-gray-800">Booking History</h2>
               {bookingHistory.length > 0 && (
-                <button 
+                <button
                   className="flex items-center text-sm font-medium px-3 py-1.5 rounded-full border border-gray-300 hover:bg-gray-100 transition-colors"
                   onClick={onClearAll}
                 >
@@ -249,7 +254,7 @@ const Bookings = () => {
                     </button>
                   </div>
                   <p className="text-gray-600 mt-1">
-                    Service: <span className="font-medium">{history.serviceCategory+"("+history.type+")"}</span>
+                    Service: <span className="font-medium">{history.serviceCategory + "(" + history.type + ")"}</span>
                   </p>
                   <p className="text-gray-500 text-sm mt-1">{history.date}</p>
                   <div className="mt-2">{getStatusBadge(history.status)}</div>

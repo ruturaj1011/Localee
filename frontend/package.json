@@ -20,7 +20,7 @@
     "@mui/material": "^6.1.6",
     "axios": "^1.7.9",
     "dotenv": "^16.4.7",
-    "framer-motion": "^12.6.0",
+    "framer-motion": "^12.6.2",
     "http-status": "^2.0.0",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.456.0",

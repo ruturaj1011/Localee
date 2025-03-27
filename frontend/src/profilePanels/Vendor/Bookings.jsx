@@ -49,16 +49,25 @@ function Bookings() {
   };
 
   const onClearAll = async () => {
-      try {
-        const res = await axios.delete(`http://localhost:8000/localee/${role}/${id}/bookings/clearHistory`);
-        console.log(res.data.message);
-        addFlashMessage("Bookings history cleared successfully.", "success");
-        fetchBookings();
-      } catch (error) {
-        console.error("Error clearing bookings:", error);
-        addFlashMessage("Failed to clear bookings history. Please try again.", "error");
-      }
+    try {
+      const res = await axios.delete(
+        `http://localhost:8000/localee/${role}/${id}/bookings/clearHistory`
+      );
+
+      setBookingHistory([]);
+      addFlashMessage(
+        `History deleted successfully!`,
+        "success"
+      );
+      
+    } catch (error) {
+      console.error("Error clearing bookings:", error);
+      addFlashMessage(
+        error.response?.data?.message || "Failed to clear booking history",
+        "error"
+      );
     }
+  };
 
   const BookingCard = ({ booking, showAccept }) => (
     <div

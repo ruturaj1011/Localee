@@ -43,51 +43,45 @@ function Navbar({ idx }) {
               <li className="nav-items relative group">
                 <Link
                   to="/"
-                  className={`transition duration-300 ease-in-out hover:text-indigo-700 ${
-                    navOption === 0 ? "text-indigo-600 font-semibold" : ""
-                  }`}
+                  className={`transition duration-300 ease-in-out hover:text-indigo-700 ${navOption === 0 ? "text-indigo-600 font-semibold" : ""
+                    }`}
                   onClick={() => setNavOption(0)}
                 >
                   Home
                 </Link>
                 <div
-                  className={`absolute bottom-0 left-0 h-0.5 w-0 bg-indigo-600 transition-all duration-300 ${
-                    navOption === 0 ? "w-full" : "group-hover:w-full"
-                  }`}
+                  className={`absolute bottom-0 left-0 h-0.5 w-0 bg-indigo-600 transition-all duration-300 ${navOption === 0 ? "w-full" : "group-hover:w-full"
+                    }`}
                 ></div>
               </li>
 
               <li className="nav-items relative group">
                 <Link
                   to="/findServices"
-                  className={`transition duration-300 ease-in-out hover:text-indigo-700 ${
-                    navOption === 1 ? "text-indigo-600 font-semibold" : ""
-                  }`}
+                  className={`transition duration-300 ease-in-out hover:text-indigo-700 ${navOption === 1 ? "text-indigo-600 font-semibold" : ""
+                    }`}
                   onClick={() => setNavOption(1)}
                 >
                   Find Services
                 </Link>
                 <div
-                  className={`absolute bottom-0 left-0 h-0.5 w-0 bg-indigo-600 transition-all duration-300 ${
-                    navOption === 1 ? "w-full" : "group-hover:w-full"
-                  }`}
+                  className={`absolute bottom-0 left-0 h-0.5 w-0 bg-indigo-600 transition-all duration-300 ${navOption === 1 ? "w-full" : "group-hover:w-full"
+                    }`}
                 ></div>
               </li>
 
               <li className="nav-items relative group">
                 <Link
                   to="/becomeProvider"
-                  className={`transition duration-300 ease-in-out hover:text-indigo-700 ${
-                    navOption === 2 ? "text-indigo-600 font-semibold" : ""
-                  }`}
+                  className={`transition duration-300 ease-in-out hover:text-indigo-700 ${navOption === 2 ? "text-indigo-600 font-semibold" : ""
+                    }`}
                   onClick={() => setNavOption(2)}
                 >
                   Become a Provider
                 </Link>
                 <div
-                  className={`absolute bottom-0 left-0 h-0.5 w-0 bg-indigo-600 transition-all duration-300 ${
-                    navOption === 2 ? "w-full" : "group-hover:w-full"
-                  }`}
+                  className={`absolute bottom-0 left-0 h-0.5 w-0 bg-indigo-600 transition-all duration-300 ${navOption === 2 ? "w-full" : "group-hover:w-full"
+                    }`}
                 ></div>
               </li>
             </div>
@@ -149,11 +143,10 @@ function Navbar({ idx }) {
           <div className="flex flex-col space-y-2">
             <Link
               to="/"
-              className={`px-3 py-2 rounded-md text-base font-medium ${
-                navOption === 0
+              className={`px-3 py-2 rounded-md text-base font-medium ${navOption === 0
                   ? "bg-indigo-50 text-indigo-600"
                   : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
-              }`}
+                }`}
               onClick={() => {
                 setNavOption(0);
                 hamClick();
@@ -164,11 +157,10 @@ function Navbar({ idx }) {
 
             <Link
               to="/findServices"
-              className={`px-3 py-2 rounded-md text-base font-medium ${
-                navOption === 1
+              className={`px-3 py-2 rounded-md text-base font-medium ${navOption === 1
                   ? "bg-indigo-50 text-indigo-600"
                   : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
-              }`}
+                }`}
               onClick={() => {
                 setNavOption(1);
                 hamClick();
@@ -179,11 +171,10 @@ function Navbar({ idx }) {
 
             <Link
               to="/becomeProvider"
-              className={`px-3 py-2 rounded-md text-base font-medium ${
-                navOption === 2
+              className={`px-3 py-2 rounded-md text-base font-medium ${navOption === 2
                   ? "bg-indigo-50 text-indigo-600"
                   : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
-              }`}
+                }`}
               onClick={() => {
                 setNavOption(2);
                 hamClick();

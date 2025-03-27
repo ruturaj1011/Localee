@@ -4,13 +4,14 @@ import axios from 'axios';
 import { useFlash } from '../contexts/flashContext';
 
 function Reviews({ reviews, rating, totalRatings, serviceId, owner, isStored }) {
-    
+
     let [showReviewForm, setShowReviewForm] = useState(false);
     const { addFlashMessage } = useFlash();
 
     // console.log("rev" , reviews);
 
     const id = localStorage.getItem("id");
+    const role = localStorage.getItem("role");
 
     let [review, setReview] = useState({
         message: "",
@@ -86,13 +87,13 @@ function Reviews({ reviews, rating, totalRatings, serviceId, owner, isStored }) 
                         <span className="text-gray-600 text-sm">({totalRatings} reviews)</span>
                     </div>
 
-                    {isStored && (
+                    {isStored && role == "user" && (
                         <button
-                        onClick={() => setShowReviewForm(true)}
-                        className="flex items-center gap-1 px-3 py-1 rounded-md bg-indigo-100 text-black text-sm font-medium shadow-md hover:shadow-xl transition duration-300 hover:scale-105"
-                    >
-                        <PenIcon className="w-3.5 h-3.5" />
-                    </button>
+                            onClick={() => setShowReviewForm(true)}
+                            className="flex items-center gap-1 px-3 py-1 rounded-md bg-indigo-100 text-black text-sm font-medium shadow-md hover:shadow-xl transition duration-300 hover:scale-105"
+                        >
+                            <PenIcon className="w-3.5 h-3.5" />
+                        </button>
                     )}
                 </div>
             </div>
@@ -102,13 +103,15 @@ function Reviews({ reviews, rating, totalRatings, serviceId, owner, isStored }) 
                     <div key={index} className="border-b pb-4">
                         <div className="flex items-center space-x-3 justify-between">
                             <div className="flex items-center space-x-2">
-                                
-                                    <img
-                                        src={rev.authorPhoto}
-                                        alt={rev.author}
-                                        className="w-10 h-10 rounded-full object-cover"
-                                    />
-                                
+
+                                <img
+                                    src={rev.authorPhoto}
+                                    alt={rev.author}
+                                    className="w-10 h-10 rounded-full object-cover"
+                                    onError={(e) => e.target.src = 'https://placehold.co/400'}
+                                />
+
+
                                 <div>
                                     <h4 className="font-medium text-gray-900">{rev.author}</h4>
                                     <p className="text-gray-500 text-sm">
@@ -148,7 +151,7 @@ function Reviews({ reviews, rating, totalRatings, serviceId, owner, isStored }) 
 
             {showReviewForm && (
                 <div className="mt-4 pt-4 border-t-2 border-indigo-600">
-                    {}
+                    { }
                     <form onSubmit={handleSubmitReview} className="space-y-4">
                         <div>
                             <label htmlFor="review" className="block text-sm font-medium text-gray-700">Review</label>
