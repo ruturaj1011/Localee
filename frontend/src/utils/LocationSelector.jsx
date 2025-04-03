@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MapPin, Search } from 'lucide-react';
 import { useFlash } from '../contexts/flashContext';
+import axios from 'axios';
 
 const LocationSelector = ({ location, setLocation }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,13 +29,31 @@ const LocationSelector = ({ location, setLocation }) => {
     }
   };
 
-  const handleLocationSelect = (city, lat, lng) => {
-    setLocation(city, lat, lng);
-    setIsOpen(false);
-  };
+  const handleLocationSelect = async (city, lat, lng) => {
+  if (city === 'Current Location') {
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
+      );
+
+      const data = await response.json(); // Wait for JSON conversion
+
+      console.log(data); // Log full response
+
+      city = data.display_name; // Get the full address
+    } catch (e) {
+      console.error(e);
+      addFlashMessage("Something went wrong! Please search for your location", "error");
+    }
+  }
+
+  setLocation(city, lat, lng);
+  setIsOpen(false);
+};
+
 
   return (
-    <div className="relative my-2 w-fit min-w-64">
+    <div className="relative my-2 w-auto min-w-64">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center px-4 py-3 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"

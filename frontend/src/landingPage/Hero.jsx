@@ -11,7 +11,7 @@ function Hero() {
       </div>
       
       {/* Gradient overlay for better text visibility */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-blue-600/60"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-800/80 to-blue-500/60"></div>
       
       {/* Geometric accents */}
       <div className="absolute top-0 left-0 w-full h-full">

@@ -11,13 +11,13 @@ const SelectServiceVendor = () => {
   
   const { addFlashMessage } = useFlash();
   const Location = useLocation();
-  const { service, location, coordinates } = Location.state || {};
+  const { service, location, coordinates, minRating } = Location.state || {};
 
   const [serviceProviders, setServiceProviders] = useState([]);
 
   const fetchServices = async () => {
     if (!coordinates || !service) return;
-  
+    console.log(minRating);
     try {
       const response = await fetch(
         `http://localhost:8000/fetch/nearby/services?lat=${coordinates.lat}&lng=${coordinates.lng}&service=${service}`
@@ -41,7 +41,6 @@ const SelectServiceVendor = () => {
         city : item.city,
         state : item.state,
         zip : item.zip,
-        reviews: item.reviews,
         location: item.address || 'No address provided',
         rating: item.rating || 'No rating',
         reviews: item.reviews || [],
@@ -59,10 +58,10 @@ const SelectServiceVendor = () => {
         imageUrl: item.photos
           ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${item.photos[0].photo_reference}&key=${import.meta.env.VITE_GOOGLE_LOCALEE}`
           : 'https://placehold.co/400',
-      }));
+      })).filter((provider) => provider.rating >= minRating);
 
-      // console.log(storedProviders);
-      // console.log(googleProviders);
+      console.log(storedProviders);
+      console.log(googleProviders);
   
       setServiceProviders([...storedProviders, ...googleProviders]);
     } catch (error) {

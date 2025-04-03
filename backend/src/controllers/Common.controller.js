@@ -26,6 +26,7 @@ const bookService = async (req, res) => {
             serviceCategory,
             phone,
             date,
+            status: vendorId? 'pending' : 'accepted',
             time: time || null,
             address: address || '',
             notes: notes || '',

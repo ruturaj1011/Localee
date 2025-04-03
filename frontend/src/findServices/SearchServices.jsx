@@ -45,7 +45,7 @@ function SearchServices() {
       return;
     }
 
-    navigate(`/services/${selectedService}`, { state: { service: selectedService, location, coordinates } });
+    navigate(`/services/${selectedService}`, { state: { service: selectedService, location, coordinates, minRating : 1 } });
   };
 
   return (

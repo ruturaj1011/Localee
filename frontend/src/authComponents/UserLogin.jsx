@@ -12,6 +12,7 @@ const UserLogin = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+
     const router = useNavigate();
 
     const { addFlashMessage } = useFlash();
@@ -25,7 +26,7 @@ const UserLogin = () => {
             addFlashMessage("Welcome back! You are now logged in.", "success");
         } catch (e) {
             setErrorMessage("Invalid email or password.");
-            addFlashMessage("Invalid email or password.", "error");
+            // addFlashMessage("Invalid email or password.", "error");
         } finally {
             setIsLoading(false);
         }
@@ -60,7 +61,8 @@ const UserLogin = () => {
                     
                     <button
                         className="px-6 py-3 bg-white text-indigo-700 font-semibold rounded-lg hover:bg-indigo-50 transition-colors duration-300 shadow-md"
-                        onClick={() => router('/auth/vendor/register')}>
+                        onClick={() => router('/auth/vendor/register')}
+                    >
                         Become a Vendor
                     </button>
                 </div>
