@@ -1,127 +1,73 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowRight, Store, Award, MapPin, Phone } from 'lucide-react';
 
 const RegistrationForm = () => {
-  const [formData, setFormData] = useState({
-    providerName: '',
-    businessName: '',
-    serviceCategories: '',
-    contactInfo: '',
-    location: '',
-    certifications: null,
-  });
+  const navigate = useNavigate();
 
-  // Handle form input changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  // Handle file upload
-  const handleFileChange = (e) => {
-    setFormData({ ...formData, certifications: e.target.files[0] });
-  };
-
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Form submission logic (e.g., API call or form validation)
-    console.log(formData);
+  const handleRegisterClick = () => {
+    navigate('/auth/vendor/register');
   };
 
   return (
-    <div className="py-12 bg-gray-100">
-      <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg ">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Join Localee</h2>
-        <form onSubmit={handleSubmit} className="space-y-6 ">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label htmlFor="providerName" className="block text-gray-700 mb-2">Provider Name</label>
-              <input
-                type="text"
-                id="providerName"
-                name="providerName"
-                value={formData.providerName}
-                onChange={handleInputChange}
-                className="w-full p-3 border rounded-md shadow-sm"
-                placeholder="Enter your name"
-                required
-              />
-            </div>
-            <div>
-              <label htmlFor="businessName" className="block text-gray-700 mb-2">Business Name</label>
-              <input
-                type="text"
-                id="businessName"
-                name="businessName"
-                value={formData.businessName}
-                onChange={handleInputChange}
-                className="w-full p-3 border rounded-md shadow-sm"
-                placeholder="Enter your business name"
-                required
-              />
+    <div className="py-16 bg-gradient-to-b from-blue-50 to-white">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="flex flex-col md:flex-row bg-white rounded-2xl shadow-xl overflow-hidden">
+          {/* Left side - Image/Graphic */}
+          <div className="w-full md:w-2/5 bg-blue-600 text-white p-8 flex flex-col justify-center">
+            <h2 className="text-3xl font-bold mb-4">Join Our Vendor Network</h2>
+            <p className="text-blue-100 mb-6">
+              Connect with local customers and grow your business by becoming a verified Localee service provider.
+            </p>
+            <div className="space-y-4">
+              <div className="flex items-center">
+                <Store size={20} className="mr-3 text-blue-200" />
+                <span>Showcase your business</span>
+              </div>
+              <div className="flex items-center">
+                <MapPin size={20} className="mr-3 text-blue-200" />
+                <span>Serve your local community</span>
+              </div>
+              <div className="flex items-center">
+                <Phone size={20} className="mr-3 text-blue-200" />
+                <span>Get direct customer inquiries</span>
+              </div>
+              <div className="flex items-center">
+                <Award size={20} className="mr-3 text-blue-200" />
+                <span>Build trust with verification</span>
+              </div>
             </div>
           </div>
 
-          <div>
-            <label htmlFor="serviceCategories" className="block text-gray-700 mb-2">Service Categories</label>
-            <input
-              type="text"
-              id="serviceCategories"
-              name="serviceCategories"
-              value={formData.serviceCategories}
-              onChange={handleInputChange}
-              className="w-full p-3 border rounded-md shadow-sm"
-              placeholder="List your service categories"
-              required
-            />
+          {/* Right side - Call to action */}
+          <div className="w-full md:w-3/5 p-8 flex flex-col justify-center">
+            <div className="max-w-lg">
+              <h3 className="text-2xl font-semibold text-gray-800 mb-4">Become a Localee Provider</h3>
+              <p className="text-gray-600 mb-8">
+                Join our community of trusted local service providers. Registration is simple and puts your business in front of customers looking for your services.
+              </p>
+              
+              <div className="bg-gray-50 p-6 rounded-xl mb-8">
+                <h4 className="font-medium text-gray-800 mb-3">What you'll need to register:</h4>
+                <ul className="space-y-2 text-gray-600">
+                  <li>• Business information</li>
+                  <li>• Service categories</li>
+                  <li>• Contact details</li>
+                  <li>• Business location</li>
+                  <li>• Certifications or ID (for verification)</li>
+                </ul>
+              </div>
+              
+              <button
+                onClick={handleRegisterClick}
+                className="w-full md:w-auto flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg transition duration-300"
+              >
+                Register as Provider
+                <ArrowRight size={18} className="ml-2" />
+              </button>
+            </div>
           </div>
-
-          <div>
-            <label htmlFor="contactInfo" className="block text-gray-700 mb-2">Contact Info</label>
-            <input
-              type="text"
-              id="contactInfo"
-              name="contactInfo"
-              value={formData.contactInfo}
-              onChange={handleInputChange}
-              className="w-full p-3 border rounded-md shadow-sm"
-              placeholder="Enter your contact info"
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="location" className="block text-gray-700 mb-2">Location</label>
-            <input
-              type="text"
-              id="location"
-              name="location"
-              value={formData.location}
-              onChange={handleInputChange}
-              className="w-full p-3 border rounded-md shadow-sm"
-              placeholder="Enter your location"
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="certifications" className="block text-gray-700 mb-2">Upload Certifications/ID</label>
-            <input
-              type="file"
-              id="certifications"
-              name="certifications"
-              onChange={handleFileChange}
-              className="w-full p-3 border rounded-md shadow-sm"
-              required
-            />
-          </div>
-
-          <div className="text-center">
-            <button type="submit" className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-300">
-              Join Localee
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ import { useFlash } from '../contexts/flashContext';
 function SearchServices() {
   const [location, setLocation] = useState('');
   const [coordinates, setCoordinates] = useState({ lat: null, lng: null });
-  const { addFlashMessage } = useFlash();
+  const {addFlashMessage} = useFlash();
 
   const handleLocationSelect = (selectedLocation, lat, lon) => {
     setLocation(selectedLocation);
@@ -26,17 +26,15 @@ function SearchServices() {
 
       navigate("/findServices");
     } else {
-      // alert('Please select a location!');
-      addFlashMessage('Please select a location!', 'info');
+      addFlashMessage("Please select a location.", "info"); 
     }
   };
 
   return (
-    <div className="w-full max-w-xl mx-auto">
+    <div className="w-full max-w-3xl mx-auto">
       <div className="relative bg-white shadow-xl rounded-2xl p-2 md:p-3">
-        <form onSubmit={handleSubmit} className="flex flex-col md:flex-row items-strech gap-3 justify-around">
-
-          <div className="relative flex">
+        <form onSubmit={handleSubmit} className="flex flex-col md:flex-row items-stretch gap-3">
+          <div className="relative flex-grow">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <MapPin className="h-5 w-5 text-gray-400" />
             </div>
@@ -50,7 +48,7 @@ function SearchServices() {
           
           <button
             type="submit"
-            className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-medium px-6 py-3 rounded-xl hover:from-indigo-700 hover:to-blue-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center justify-center whitespace-nowrap min-w-32 h-14"
+            className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-medium px-6 py-3 rounded-xl hover:from-indigo-700 hover:to-blue-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center justify-center whitespace-nowrap min-w-32"
           >
             <Search className="mr-2 h-5 w-5" />
             Find Services
@@ -64,7 +62,7 @@ function SearchServices() {
           </div>
         )}
         
-        {/* <div className="mt-4 px-4 flex flex-wrap gap-2">
+        <div className="mt-4 px-4 flex flex-wrap gap-2">
           <p className="text-xs text-gray-500 mr-2">Popular searches:</p>
           {['Plumbers', 'Electricians', 'Cleaning', 'Lawn Care', 'Tutors'].map((service, index) => (
             <span 
@@ -75,7 +73,7 @@ function SearchServices() {
               {service}
             </span>
           ))}
-        </div> */}
+        </div>
       </div>
     </div>
   );

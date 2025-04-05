@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Calendar, User, Logs } from "lucide-react";
-import { Route, Routes, Link } from "react-router-dom";
+import { Calendar, User, Logs, Menu, ChevronLeft } from "lucide-react";
+import { Route, Routes, Link, useLocation } from "react-router-dom";
 
 import Bookings from "./Bookings";
 import Profile from "../Profile";
@@ -12,67 +12,145 @@ import Navbar from "../../utils/Navbar";
 import Footer from "../../utils/Footer";
 import BookingDetails from "../BookingDetails";
 import EditProfile from "../EditProfile";
-
 import { AuthContext } from "../../contexts/authContext";
 import useAuth from "../../utils/authMiddleware";
 
 const VendorPanel = () => {
-
     const { id } = useContext(AuthContext);
-    // const id = localStorage.getItem("id");
-
+    const location = useLocation();
+    
     useAuth();
 
+    // State for sidebar collapsible on mobile
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+    
+    // Determine which menu item is active based on current path
     const [selectedMenu, setSelectedMenu] = useState(-1);
 
+    useEffect(() => {
+        const path = location.pathname;
+        if (path.includes('/bookings')) {
+            setSelectedMenu(0);
+        } else if (path.includes('/profile')) {
+            setSelectedMenu(1);
+        } else if (path.includes('/yourServices')) {
+            setSelectedMenu(2);
+        }
+    }, [location.pathname]);
 
     const handleMenuClick = (idx) => {
         setSelectedMenu(idx);
     }
 
+    const toggleSidebar = () => {
+        setSidebarOpen(!sidebarOpen);
+    }
+
     return (
-        <>
-        <Navbar/>
-        <div className="flex h-screen">
+        <div className="flex flex-col min-h-screen bg-gray-50">
+            <Navbar />
+            
+            <div className="flex flex-1">
+                {/* Mobile sidebar toggle */}
+                <button 
+                    className="md:hidden fixed bottom-4 right-4 z-20 bg-indigo-600 text-white p-3 rounded-full shadow-lg"
+                    onClick={toggleSidebar}
+                    aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}
+                >
+                    <Menu className="w-5 h-5" />
+                </button>
 
-            {/* Sidebar */}
-            <aside id="vendor-sideBar" className="w-64 bg-indigo-600 text-white flex flex-col pt-4 md:relative md:w-48 lg:w-64">
-                <div className="p-4 text-center text-xl font-bold border-b border-indigo-500">
-                    Vendor Panel
-                </div>
-                <nav className="flex-1 p-4 space-y-4">
-                    <Link to={`/vendor/${id}/bookings`} className="flex items-center gap-2 hover:bg-indigo-500 px-3 py-2 rounded" onClick={()=>handleMenuClick(0)} style={selectedMenu==0? {backgroundColor : "rgb(99 102 241)"} : {}}>
-                        <Calendar className="w-5 h-5" />
-                        Bookings
-                    </Link>
-                    <Link to={`/vendor/${id}/profile`} className="flex items-center gap-2 hover:bg-indigo-500 px-3 py-2 rounded" onClick={()=>handleMenuClick(1)} style={selectedMenu==1? {backgroundColor : "rgb(99 102 241)"} : {}}>
-                        <User className="w-5 h-5" />
-                        Profile
-                    </Link>
-                    <Link to={`/vendor/${id}/yourServices`} className="flex items-center gap-2 hover:bg-indigo-500 px-3 py-2 rounded" onClick={()=>handleMenuClick(2)} style={selectedMenu==2? {backgroundColor : "rgb(99 102 241)"} : {}}>
-                        <Logs className="w-5 h-5" />
-                        Your Services
-                    </Link>
-                </nav>
-            </aside>
+                {/* Sidebar */}
+                <aside 
+                    id="vendor-sideBar" 
+                    className={`${
+                        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+                    } fixed md:relative z-10 w-64 bg-gradient-to-b from-indigo-700 to-indigo-600 text-white flex flex-col h-screen transition-transform duration-300 ease-in-out shadow-xl md:translate-x-0 md:w-48 lg:w-64`}
+                >
+                    <div className="p-5 text-center font-bold border-b border-indigo-500 flex items-center justify-between">
+                        <h2 className="text-xl">Vendor Panel</h2>
+                        <button 
+                            className="md:hidden text-white"
+                            onClick={toggleSidebar}
+                            aria-label="Close sidebar"
+                        >
+                            <ChevronLeft className="w-5 h-5" />
+                        </button>
+                    </div>
+                    
+                    <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+                        <Link 
+                            to={`/vendor/${id}/bookings`} 
+                            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                                selectedMenu === 0 
+                                    ? 'bg-white text-indigo-700 font-medium shadow-md' 
+                                    : 'text-white hover:bg-indigo-500'
+                            }`} 
+                            onClick={() => handleMenuClick(0)}
+                        >
+                            <Calendar className="w-5 h-5" />
+                            <span>Bookings</span>
+                        </Link>
+                        
+                        <Link 
+                            to={`/vendor/${id}/profile`} 
+                            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                                selectedMenu === 1 
+                                    ? 'bg-white text-indigo-700 font-medium shadow-md' 
+                                    : 'text-white hover:bg-indigo-500'
+                            }`} 
+                            onClick={() => handleMenuClick(1)}
+                        >
+                            <User className="w-5 h-5" />
+                            <span>Profile</span>
+                        </Link>
+                        
+                        <Link 
+                            to={`/vendor/${id}/yourServices`} 
+                            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                                selectedMenu === 2 
+                                    ? 'bg-white text-indigo-700 font-medium shadow-md' 
+                                    : 'text-white hover:bg-indigo-500'
+                            }`} 
+                            onClick={() => handleMenuClick(2)}
+                        >
+                            <Logs className="w-5 h-5" />
+                            <span>Your Services</span>
+                        </Link>
+                    </nav>
+                    
+                    <div className="p-4 text-xs text-indigo-200 border-t border-indigo-500 text-center">
+                        © 2025 Vendor Dashboard
+                    </div>
+                </aside>
 
-            {/* Main Content */}
-            <main className="flex-1 bg-gray-50 p-4 md:p-2 lg:p-6 overflow-auto">
-                <Routes>
-                    <Route path="bookings" element={<Bookings />} />
-                    <Route path="profile" element={<Profile />} />
-                    <Route path="profile/edit-profile" element={<EditProfile />} />
-                    <Route path="yourServices" element={<YourServices />} />
-                    <Route path="yourServices/service/:serviceId/edit" element={<EditServiceForm />} />
-                    <Route path="yourServices/service/:serviceId" element={<ServiceDetails />} />
-                    <Route path="yourServices/addNewService" element={<AddNewService />} />
-                    <Route path="bookings/:id/details" element={<BookingDetails role={'vendor'} />} />
-                </Routes>
-            </main>
+                {/* Overlay for mobile when sidebar is open */}
+                {sidebarOpen && (
+                    <div 
+                        className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-0"
+                        onClick={toggleSidebar}
+                    ></div>
+                )}
+
+                {/* Main Content */}
+                <main className="flex-1 p-4 md:p-6 overflow-auto">
+                    <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-sm p-5 mb-6">
+                        <Routes>
+                            <Route path="bookings" element={<Bookings />} />
+                            <Route path="profile" element={<Profile />} />
+                            <Route path="profile/edit-profile" element={<EditProfile />} />
+                            <Route path="yourServices" element={<YourServices />} />
+                            <Route path="yourServices/service/:serviceId/edit" element={<EditServiceForm />} />
+                            <Route path="yourServices/service/:serviceId" element={<ServiceDetails />} />
+                            <Route path="yourServices/addNewService" element={<AddNewService />} />
+                            <Route path="bookings/:id/details" element={<BookingDetails role={'vendor'} />} />
+                        </Routes>
+                    </div>
+                </main>
+            </div>
+
+            <Footer />
         </div>
-
-        <Footer />
-        </>
     );
 };
 
