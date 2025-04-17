@@ -15,6 +15,7 @@ import ProfileRoutes from "./routes/ProfileRoutes.js";
 import ReviewRoutes from "./routes/ReviewsRoutes.js";
 import CommonRoutes from "./routes/CommonRoutes.js";
 import VendorRoutes from "./routes/VendorRoutes.js";
+import ChatRoutes from "./routes/ChatRoutes.js";
 
 import fetch from 'node-fetch';
 
@@ -40,6 +41,9 @@ app.use("/localee", CommonRoutes);
 
 // Vendor Routes
 app.use("/vendor", VendorRoutes);
+
+// Chat Routes
+app.use("/api", ChatRoutes);
 
 
 

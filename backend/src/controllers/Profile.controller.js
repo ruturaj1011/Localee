@@ -9,7 +9,7 @@ const profileInfo = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const data = await User.findById(id);
+        const data = await User.findById(id).populate('bookings').populate('servicesOffered');
 
         if(!data) {
             return res.status(404).json({ error: "User not found" });

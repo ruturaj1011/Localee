@@ -18,6 +18,7 @@ const Profile = () => {
       const res = await axios.get(`http://localhost:8000/profile/${id}`);
       setData(res.data);
       setIsLoading(false);
+      console.log(res.data);
     } catch (err) {
       addFlashMessage("Failed to load profile data. Please try again.", "error");
       console.error("Error fetching user data:", err);

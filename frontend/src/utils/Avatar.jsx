@@ -3,10 +3,13 @@ import { Avatar, Menu, MenuItem, Divider, IconButton, Tooltip } from "@mui/mater
 import { Logout } from "@mui/icons-material";
 import { Calendar, User, Logs } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useFlash } from '../contexts/flashContext';
 
 import { AuthContext } from "../contexts/authContext.jsx";
 
 export default function AccountMenu() {
+
+  const { addFlashMessage } = useFlash();
 
   const { id } = useContext(AuthContext);
 
