@@ -23,17 +23,57 @@ Reply concisely using markdown-style bullet points or numbered lists:
 • Only use emojis for greetings or friendly tone—not in lists
 `;
 
+  context += `
+Project Name: Localee
+
+Tech Stack: MERN Stack (MongoDB, Express.js, React.js, Node.js)
+
+Overview:
+Localee is a full-stack web app that connects users with local service providers such as electricians, plumbers, beauticians, lawyers, tutors, brokers, photographers, and more. It aims to digitize local services and offer users a fast, trusted, and location-based booking experience.
+
+User Features:
+- Explore services based on category, location, rating, and pricing
+- Adjustable radius filter using geolocation
+- View vendor profiles with service details, images, ratings, and reviews
+- Book/cancel/reschedule services
+- Rate and review vendors
+- Access booking history
+
+Vendor Features:
+- Register/login via a separate vendor portal
+- Add/edit/delete service listings with full details
+- Set pricing, descriptions, working hours, and availability
+- Dedicated dashboard to manage bookings and reviews
+- Receive user feedback for quality improvement
+
+Additional Integrations:
+- Google Map for map-based service location filtering
+- Tailwind CSS for responsive design
+- AI chatbot planned for user/vendor assistance
+- Future: Payment gateway integration
+
+Goal:
+Localee aims to empower local service providers with digital tools and provide users with a simple, fast, and secure way to access trustworthy nearby services. It addresses real-world needs such as home repairs, tutoring, legal advice, grooming, and freelance bookings.
+
+`;
+
   if (user) {
     context += `The user is logged in as a ${user.role}. Name: ${user.name}. Email: ${user.email}.\n`;
 
     // Add services offered by the user
     if (user.servicesOffered && user.servicesOffered.length > 0) {
       context += `\n**Services Offered**:\n`;
-      user.servicesOffered.forEach(service => {
+      user.servicesOffered.forEach((service) => {
         context += `- **Service Name**: ${service.serviceName}\n`;
         context += `  **Category**: ${service.category}\n`;
-        context += `  **Description**: ${service.description || "Not provided"}\n`;
-        context += `  **Location**: ${service.location ? `${service.location.city}, ${service.location.state}` : "Not provided"}\n\n`;
+        context += `  **Description**: ${
+          service.description || "Not provided"
+        }\n`;
+        context += `  **Location**: ${
+          service.location
+            ? `${service.location.city}, ${service.location.state}`
+            : "Not provided"
+        }\n\n`;
       });
     }
 
@@ -44,7 +84,9 @@ Reply concisely using markdown-style bullet points or numbered lists:
       context += `- **Customer Name**: ${recentBooking.customerName}\n`;
       context += `- **Service**: ${recentBooking.serviceCategory}\n`;
       context += `- **Status**: ${recentBooking.status}\n`;
-      context += `- **Date**: ${new Date(recentBooking.date).toLocaleDateString()}\n`;
+      context += `- **Date**: ${new Date(
+        recentBooking.date
+      ).toLocaleDateString()}\n`;
       context += `- **Time**: ${recentBooking.time}\n`;
       context += `- **Notes**: ${recentBooking.notes || "No notes"}\n\n`;
     }
@@ -75,7 +117,9 @@ Reply concisely using markdown-style bullet points or numbered lists:
       }
     );
 
-    const reply = response.data.choices?.[0]?.message?.content || "Sorry, I couldn't understand that.";
+    const reply =
+      response.data.choices?.[0]?.message?.content ||
+      "Sorry, I couldn't understand that.";
     res.json({ reply });
   } catch (err) {
     console.error("AI Chat Error:", err?.response?.data || err.message);

@@ -33,7 +33,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <div className="py-16 bg-gradient-to-br from-gray-50 to-gray-100">
+    <div id='how-it-works' className="py-16 bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-12">
           <span className="inline-block px-4 py-1 rounded-full bg-blue-100 text-blue-700 font-medium text-sm mb-4">

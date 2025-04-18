@@ -16,13 +16,25 @@ const ChatBot = ({ user }) => {
     setOpen((prev) => {
       const newOpen = !prev;
 
-      if (newOpen && !hasWelcomed.current && user?.name) {
-        const welcomeMsg = {
-          sender: "bot",
-          text: `Hi ${user.name}, how can I help you today? 😊`,
-        };
-        setChat((prevChat) => [...prevChat, welcomeMsg]);
-        hasWelcomed.current = true;
+      if (newOpen && !hasWelcomed.current) {
+
+        if(user?.name){
+          const welcomeMsg = {
+            sender: "bot",
+            text: `Hi ${user.name}, how can I help you today? 😊`,
+          };
+          setChat((prevChat) => [...prevChat, welcomeMsg]);
+          hasWelcomed.current = true;
+        }
+        else{
+          const welcomeMsg = {
+            sender: "bot",
+            text: `Hi, how can I help you today? 😊`,
+          };
+          setChat((prevChat) => [...prevChat, welcomeMsg]);
+          hasWelcomed.current = true;
+        }
+        
       }
 
       return newOpen;

@@ -38,22 +38,12 @@ const UserPanel = () => {
     setIsMobileMenuOpen(false);
   };
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar />
       
       <div className="flex flex-1">
-        {/* Mobile Menu Toggle */}
-        <button 
-          className="fixed top-20 left-4 z-50 p-2 bg-indigo-600 text-white rounded-full shadow-lg md:hidden"
-          onClick={toggleMobileMenu}
-        >
-          {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
 
         {/* Sidebar - Desktop always visible, Mobile conditional */}
         <aside 
@@ -68,6 +58,19 @@ const UserPanel = () => {
           </div>
           
           <nav className="flex-1 p-4 space-y-2">
+
+          <Link 
+              to={`/user/${id}/profile`} 
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 
+                ${selectedMenu === 1 
+                  ? 'bg-indigo-800 text-white shadow-md' 
+                  : 'hover:bg-indigo-600 text-indigo-100'}`}
+              onClick={() => handleMenuClick(1)}
+            >
+              <User className="w-5 h-5" />
+              <span className="font-medium">Profile</span>
+            </Link>
+
             <Link 
               to={`/user/${id}/bookings`} 
               className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 
@@ -80,17 +83,6 @@ const UserPanel = () => {
               <span className="font-medium">My Bookings</span>
             </Link>
             
-            <Link 
-              to={`/user/${id}/profile`} 
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 
-                ${selectedMenu === 1 
-                  ? 'bg-indigo-800 text-white shadow-md' 
-                  : 'hover:bg-indigo-600 text-indigo-100'}`}
-              onClick={() => handleMenuClick(1)}
-            >
-              <User className="w-5 h-5" />
-              <span className="font-medium">Profile</span>
-            </Link>
           </nav>
           
           <div className="p-4 text-xs text-indigo-300 text-center">

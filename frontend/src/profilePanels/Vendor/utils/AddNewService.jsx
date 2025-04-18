@@ -19,8 +19,23 @@ const services = [
   { title: "Courier Services" }, { title: "Laundry Services" }, { title: "Xerox & Printing Shop" },
   { title: "Security Guard Services" }, { title: "Old Age Care Services" }, { title: "Baby Care Services" },
   { title: "House Construction" }, { title: "Property Developer" }, { title: "Tour & Travel Agent" },
-  { title: "Tailor" }, { title: "Pet Grooming" }, { title: "Cook & Chef Services" }
+  { title: "Tailor" }, { title: "Pet Grooming" }, { title: "Cook & Chef Services" },
+
+  // Newly Added Services
+  { title: "Stationery Shop" }, { title: "Medical Store" }, { title: "Grocery Store" }, { title: "Bakery" },
+  { title: "Sweet Shop" }, { title: "Mobile Repair" }, { title: "Laptop Repair" }, { title: "Hardware Store" },
+  { title: "Flower Shop" }, { title: "Gift Shop" }, { title: "Bookstore" }, { title: "Cyber Cafe" },
+  { title: "Internet Cafe" }, { title: "Coaching Institute" }, { title: "School" }, { title: "College" },
+  { title: "Play School" }, { title: "Daycare Center" }, { title: "PG/Hostel" },
+  { title: "Restaurant" }, { title: "Cafe" }, { title: "Hotel" }, { title: "Resort" }, { title: "Lodge" },
+  { title: "Petrol Pump" }, { title: "Diesel Bunk" }, { title: "CNG Station" }, { title: "ATM" },
+  { title: "Bank Branch" }, { title: "Clinic" }, { title: "Hospital" }, { title: "Diagnostic Lab" },
+  { title: "Blood Bank" }, { title: "Pharmacy" }, { title: "Insurance Agent" },
+  { title: "Repair & Maintenance" }, { title: "Shoe Repair" }, { title: "Watch Repair" },
+  { title: "Photocopy & Lamination" }, { title: "Delivery Services" }, { title: "Furniture Store" },
+  { title: "Electronics Store" }, { title: "Mobile Store" }, { title: "Supermarket" }, { title: "Mini Mart" }
 ];
+
 
 const AddService = () => {
   const navigate = useNavigate();

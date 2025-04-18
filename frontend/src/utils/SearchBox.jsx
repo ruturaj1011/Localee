@@ -2,28 +2,37 @@ import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 
 const services = [
-  // Home Services
   { title: "Electrician" }, { title: "Plumber" }, { title: "Carpenter" }, { title: "Home Cleaning" },
   { title: "Pest Control" }, { title: "Home Painter" }, { title: "Interior Designer" }, { title: "Architect" },
-  // Vehicle Services
   { title: "Bike Mechanic" }, { title: "Car Mechanic" }, { title: "Car Wash Service" },
   { title: "Bike Rental" }, { title: "Car Rental" }, { title: "Car Dealer" }, { title: "Garage Service" },
-  // Personal Care
   { title: "Salon for Men" }, { title: "Salon for Women" }, { title: "Makeup Artist" }, { title: "Mehendi Artist" },
   { title: "Tattoo Artist" }, { title: "Massage Therapist" }, { title: "Physiotherapist" },
-  // Education & Training
   { title: "Tuition Teacher" }, { title: "Music Teacher" }, { title: "Dance Instructor" },
   { title: "Yoga Trainer" }, { title: "Gym Trainer" }, { title: "Driving Instructor" },
-  // Professional Services
   { title: "Legal Consultant" }, { title: "Tax Consultant" }, { title: "CA Services" },
   { title: "Real Estate Broker" }, { title: "Packers and Movers" }, { title: "Event Planner" },
   { title: "Wedding Photographer" }, { title: "Caterer" }, { title: "DJ Services" },
-  // Miscellaneous Small Services
   { title: "Courier Services" }, { title: "Laundry Services" }, { title: "Xerox & Printing Shop" },
   { title: "Security Guard Services" }, { title: "Old Age Care Services" }, { title: "Baby Care Services" },
   { title: "House Construction" }, { title: "Property Developer" }, { title: "Tour & Travel Agent" },
-  { title: "Tailor" }, { title: "Pet Grooming" }, { title: "Cook & Chef Services" }
+  { title: "Tailor" }, { title: "Pet Grooming" }, { title: "Cook & Chef Services" },
+
+  // Newly Added Services
+  { title: "Stationery Shop" }, { title: "Medical Store" }, { title: "Grocery Store" }, { title: "Bakery" },
+  { title: "Sweet Shop" }, { title: "Mobile Repair" }, { title: "Laptop Repair" }, { title: "Hardware Store" },
+  { title: "Flower Shop" }, { title: "Gift Shop" }, { title: "Bookstore" }, { title: "Cyber Cafe" },
+  { title: "Internet Cafe" }, { title: "Coaching Institute" }, { title: "School" }, { title: "College" },
+  { title: "Play School" }, { title: "Daycare Center" }, { title: "PG/Hostel" },
+  { title: "Restaurant" }, { title: "Cafe" }, { title: "Hotel" }, { title: "Resort" }, { title: "Lodge" },
+  { title: "Petrol Pump" }, { title: "Diesel Bunk" }, { title: "CNG Station" }, { title: "ATM" },
+  { title: "Bank Branch" }, { title: "Clinic" }, { title: "Hospital" }, { title: "Diagnostic Lab" },
+  { title: "Blood Bank" }, { title: "Pharmacy" }, { title: "Insurance Agent" },
+  { title: "Repair & Maintenance" }, { title: "Shoe Repair" }, { title: "Watch Repair" },
+  { title: "Photocopy & Lamination" }, { title: "Delivery Services" }, { title: "Furniture Store" },
+  { title: "Electronics Store" }, { title: "Mobile Store" }, { title: "Supermarket" }, { title: "Mini Mart" }
 ];
+
 
 export default function SearchBox({ service, onServiceSelect }) {
   const [query, setQuery] = useState(service || "");

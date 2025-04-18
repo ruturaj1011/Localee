@@ -1,6 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
+
+  const navigate = useNavigate();
+
   return (
     <div className="bg-gradient-to-r from-blue-800 to-indigo-900 py-16 px-4">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between">
@@ -13,10 +17,16 @@ const Header = () => {
             Expand your business by connecting with local customers looking for trusted providers.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <button className="px-6 py-3 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-semibold rounded-lg shadow-lg transition duration-300">
+            <button className="px-6 py-3 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-semibold rounded-lg shadow-lg transition duration-300"
+            onClick={() => navigate('/auth/vendor/register')}>
               Get Started
             </button>
-            <button className="px-6 py-3 bg-transparent border-2 border-white hover:bg-white/10 text-white font-semibold rounded-lg transition duration-300">
+            <button className="px-6 py-3 bg-transparent border-2 border-white hover:bg-white/10 text-white font-semibold rounded-lg transition duration-300" onClick={() => {
+              const element = document.getElementById('how-it-works');
+              if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}>
               Learn More
             </button>
           </div>

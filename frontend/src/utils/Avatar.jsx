@@ -52,12 +52,14 @@ export default function AccountMenu() {
             sx={{
               width: 37,
               height: 37,
-              bgcolor: "primary.mian",
+              bgcolor: "white",
+              color: "black",
+              border: "1px solid #3f51b5",
               fontSize: 15,
               fontWeight: "bold",
             }}
           >
-            M
+            <img src="/user_profile.png" alt="user" className="w-6" />
           </Avatar>
         </IconButton>
       </Tooltip>

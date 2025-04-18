@@ -51,15 +51,7 @@ const VendorPanel = () => {
             <Navbar />
             
             <div className="flex flex-1">
-                {/* Mobile sidebar toggle */}
-                <button 
-                    className="md:hidden fixed bottom-4 right-4 z-20 bg-indigo-600 text-white p-3 rounded-full shadow-lg"
-                    onClick={toggleSidebar}
-                    aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}
-                >
-                    <Menu className="w-5 h-5" />
-                </button>
-
+                
                 {/* Sidebar */}
                 <aside 
                     id="vendor-sideBar" 
@@ -125,12 +117,7 @@ const VendorPanel = () => {
                 </aside>
 
                 {/* Overlay for mobile when sidebar is open */}
-                {sidebarOpen && (
-                    <div 
-                        className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-0"
-                        onClick={toggleSidebar}
-                    ></div>
-                )}
+              
 
                 {/* Main Content */}
                 <main className="flex-1 p-4 md:p-6 overflow-auto">
