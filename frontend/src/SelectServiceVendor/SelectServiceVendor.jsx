@@ -63,6 +63,7 @@ const SelectServiceVendor = () => {
         .filter((provider) => provider.rating >= minRating);
 
       setServiceProviders([...storedProviders, ...googleProviders]);
+      console.log(serviceProviders);
     } catch (error) {
       console.error('Error fetching service providers:', error);
       addFlashMessage('Failed to load service providers. Please try again.', 'error');
@@ -115,7 +116,7 @@ const SelectServiceVendor = () => {
       <div className="bg-gray-100 min-h-screen flex flex-col md:flex-row">
         <div className="w-full md:w-1/3 p-4 bg-blue-600 shadow-lg">
           <ServiceHeading title={`${service} `} reviews="(200+ reviews)" />
-          <Filters />
+          <Filters serviceProviders={serviceProviders} />
         </div>
 
         <div className="w-full md:w-2/3 p-4">

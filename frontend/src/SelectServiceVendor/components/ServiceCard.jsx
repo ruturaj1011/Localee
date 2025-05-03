@@ -95,12 +95,11 @@ const ServiceCard = ({ provider }) => {
       {/* Image Section - wider with 40% width */}
       <div className="w-2/5 h-auto flex-shrink-0 overflow-hidden">
         <img
-          src={provider.imageUrl}
+          src={provider.imageUrl == 
+            "https://placehold.co/400" ? "/service_placeholder.png" : provider.imageUrl}
           alt={provider.name}
           className="h-52 w-full object-cover transition-transform duration-500 hover:scale-105"
-          onError={(e) => {
-            e.target.src = 'https://via.placeholder.com/400x300?text=Service+Image';
-          }}
+          loading="lazy"
         />
       </div>
 

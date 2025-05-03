@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Footer() {
     return ( 
@@ -12,14 +13,14 @@ function Footer() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             <div>
               <h3 className="text-lg font-semibold text-white mb-4">About Us</h3>
-              <p className="text-gray-400">
+              <p className="text-gray-400 hover:text-white">
                 Localee connects you with trusted local service providers, making it easy to find and book the help you need.
               </p>
             </div>
             <div>
               <h3 className="text-lg font-semibold text-white mb-4">Contact Us</h3>
-              <p className="text-gray-400">Email: contact@locallink.com</p>
-              <p className="text-gray-400">Phone: +91-123-456-7890</p>
+              <p className="text-gray-400 hover:text-white">Email: <a href='mailto:ruturaj10shinde@gmail.com' >ruturaj10shinde@gmail.com</a></p>
+              <p className="text-gray-400 hover:text-white">Phone: <a href="tel: 8591086614">+91 8591086614</a></p>
             </div>
             <div>
               <h3 className="text-lg font-semibold text-white mb-4">Follow Us</h3>

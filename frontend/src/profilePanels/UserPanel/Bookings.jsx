@@ -134,8 +134,8 @@ const Bookings = () => {
           </div>
         )}
         <div className="flex items-center my-1">
-          <MapPin className="w-4 h-4 mr-2 text-gray-500" />
-          <span className="truncate">{booking.address || booking.location}</span>
+          <div><MapPin className="w-4 h-4 mr-2 text-gray-500" /></div>
+          <div><p className="">{booking.address || booking.location}</p></div>
         </div>
         <div className="flex items-center my-1">
           <Phone className="w-4 h-4 mr-2 text-gray-500" />
@@ -145,29 +145,6 @@ const Bookings = () => {
     </div>
   );
 
-  const renderHistoryCard = (history) => (
-    <div
-      key={history._id}
-      className="p-5 mb-4 bg-white rounded-xl border border-gray-200 hover:shadow-sm transition"
-    >
-      <div className="flex justify-between items-center">
-        <p className="font-medium text-lg text-gray-800">{history.name}</p>
-        <button
-          className="text-gray-400 hover:text-red-500 p-1 rounded-full hover:bg-gray-100"
-          aria-label="Remove from history"
-        >
-          <Trash size={16} strokeWidth={1.25} />
-        </button>
-      </div>
-      <p className="text-gray-600 mt-1">
-        <span className="font-medium">{history.service}</span>
-      </p>
-      <div className="flex justify-between items-center mt-2">
-        <p className="text-gray-500 text-sm">{history.date}</p>
-        {getStatusBadge(history.status)}
-      </div>
-    </div>
-  );
 
   return (
     <div className="bg-gray-50 min-h-screen pb-10">

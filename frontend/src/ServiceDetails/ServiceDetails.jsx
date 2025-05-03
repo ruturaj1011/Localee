@@ -113,20 +113,47 @@ const ProviderDetailsPage = () => {
                         {/* Contact Options */}
                         <div className="pt-6 space-y-3">
                             <p className="flex items-center text-gray-600">
-                                <MapPinCheckIcon className="mr-2 w-6 h-6 text-green-600" />{data.address}
+                                <MapPinCheckIcon className="mr-2 w-6 h-6 text-green-600" />
+                                <a 
+                                    href={`https://maps.google.com/?q=${encodeURIComponent(data.address)}`} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="hover:text-green-600 hover:underline"
+                                >
+                                    {data.address}
+                                </a>
                             </p>
                             <p className="flex items-center text-gray-600">
                                 <Phone className="mr-2 w-5 h-5 text-indigo-500" />
-                                {data.phone}
+                                <a 
+                                    href={`tel:${data.phone}`} 
+                                    className="hover:text-indigo-500 hover:underline"
+                                >
+                                    {data.phone}
+                                </a>
                             </p>
                             <p className="flex items-center text-gray-600">
                                 <MessageSquare className="mr-2 w-5 h-5 text-green-500" />
-                                WhatsApp: {data.whatsapp}
+                                <a 
+                                    href={`https://wa.me/${data.whatsapp.replace(/\D/g, '')}`} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="hover:text-green-500 hover:underline"
+                                >
+                                    WhatsApp: {data.whatsapp}
+                                </a>
                             </p>
-                            {data.email && <p className="flex items-center text-gray-600">
-                                <Mail className="mr-2 w-5 h-5 text-gray-500" />
-                                {data.email}
-                            </p>}
+                            {data.email && 
+                                <p className="flex items-center text-gray-600">
+                                    <Mail className="mr-2 w-5 h-5 text-gray-500" />
+                                    <a 
+                                        href={`mailto:${data.email}`} 
+                                        className="hover:text-gray-700 hover:underline"
+                                    >
+                                        {data.email}
+                                    </a>
+                                </p>
+                            }
                         </div>
 
 

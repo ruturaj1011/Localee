@@ -4,7 +4,7 @@ import SearchBox from '../../utils/SearchBox';
 import { useNavigate } from 'react-router-dom';
 import { MapPin, Search, Star, Sliders } from 'lucide-react';
 
-const Filters = () => {
+const Filters = (serviceProviders) => {
   // Maintain the same state management
   const [location, setLocation] = useState('');
   const [coordinates, setCoordinates] = useState({ lat: null, lng: null });

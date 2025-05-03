@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowRight, ArrowLeft, ChevronRight } from "lucide-react";
 import { Link } from 'react-router-dom';
+import { useFlash } from '../contexts/flashContext';
+import { useNavigate } from 'react-router-dom';
 
 const ServicesCards = ({ services, category, subHeading, eleId }) => {
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -9,6 +11,9 @@ const ServicesCards = ({ services, category, subHeading, eleId }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
+
+  const { addFlashMessage } = useFlash();
+  const navigate = useNavigate();
   
   const containerRef = useRef(null);
 
@@ -56,6 +61,20 @@ const ServicesCards = ({ services, category, subHeading, eleId }) => {
       return () => container.removeEventListener('scroll', handleScroll);
     }
   }, []);
+
+  const onBPClick = (service) => {
+    if(localStorage.getItem('location') == null || localStorage.getItem('coordinates') == null) {
+      addFlashMessage("Please select a location first", "info");
+      return;
+    }
+
+    const location = localStorage.getItem('location');
+    const coordinates = JSON.parse(localStorage.getItem('coordinates'));
+
+    localStorage.setItem('service', service);
+
+    navigate(`/services/${service}`, { state: { service, location, coordinates, minRating : 1 } });
+  }
 
   const progressPercentage = maxScroll === 0 ? 0 : (scrollPosition / maxScroll) * 100;
 
@@ -149,6 +168,7 @@ const ServicesCards = ({ services, category, subHeading, eleId }) => {
                 className="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 min-w-[280px] max-w-[320px] flex-shrink-0 snap-start group relative overflow-hidden"
                 onMouseEnter={() => setIsHovering(index)}
                 onMouseLeave={() => setIsHovering(null)}
+                onClick={() => onBPClick(service.name.toLowerCase())}
               >
                 {/* Top accent line with animation */}
                 <div 
@@ -165,7 +185,6 @@ const ServicesCards = ({ services, category, subHeading, eleId }) => {
                   
                   <Link
                     className="text-indigo-600 hover:text-indigo-800 font-medium text-sm inline-flex items-center py-2 pr-1 border-b border-transparent hover:border-indigo-600 transition-all duration-300"
-                    to="/services"
                   >
                     Browse Providers
                     <ChevronRight className={`ml-1 h-4 w-4 transition-transform duration-300 ${isHovering === index ? 'translate-x-1' : ''}`} />
