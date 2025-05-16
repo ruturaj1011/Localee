@@ -132,7 +132,7 @@ const ServiceCard = ({ provider }) => {
           <div className="flex items-center bg-blue-50 px-3 py-1 rounded-full">
             <FontAwesomeIcon icon={faStar} className="text-yellow-400 w-4 h-4" />
             <span className="text-sm font-semibold text-gray-700 ml-1">
-              {provider.rating ? provider.rating.toFixed(1) : "-"}
+              {provider.rating ? provider.rating : "-"}
             </span>
             {provider.rating && (
               <span className="text-xs text-gray-500 ml-1">/5</span>
