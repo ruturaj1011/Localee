@@ -104,6 +104,7 @@ const vendorRegister = async (req, res) => {
 
     res.status(httpStatus.CREATED).json({ message: "Vendor Registered Successfully!" });
   } catch (e) {
+    console.error("Error in vendor registration:", e.message);
     res.status(500).json({ message: `Something went wrong! ${e.message}` });
   }
 };

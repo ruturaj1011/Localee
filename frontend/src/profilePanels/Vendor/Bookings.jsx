@@ -176,18 +176,18 @@ function Bookings() {
 
           {isPending && (
             <div className="p-3 bg-gray-50 flex justify-end gap-2 border-t">
-              <button
-                onClick={(e) => handleReject(booking._id, e)}
+              <div
+                
                 className="px-4 py-1.5 rounded-lg font-medium text-gray-700 border border-gray-300 hover:bg-gray-100 text-sm"
               >
                 Reject
-              </button>
-              <button
-                onClick={(e) => handleAccept(booking._id, e)}
+              </div>
+              <div
+                
                 className="px-4 py-1.5 rounded-lg font-medium text-white bg-green-600 hover:bg-green-700 text-sm"
               >
                 Accept
-              </button>
+              </div>
             </div>
           )}
           
