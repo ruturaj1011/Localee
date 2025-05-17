@@ -3,6 +3,8 @@ dotenv.config();
 
 import Booking from "../models/bookingModel.js";
 import { User } from "../models/userModel.js";
+import { Service } from "../models/serviceModel.js";
+import {Booking} from "../models/bookingModel.js";
 
 import sendEmail from "../utils/sendEmail.js";
 
@@ -60,6 +62,7 @@ const bookService = async (req, res) => {
     // Get user and vendor email
     const user = await User.findById(userId);
     const vendor = vendorId ? await User.findById(vendorId) : null;
+    const vendorEmail = vendor ? (await Service.findById(serviceId))?.email : null;
 
     const message = `
         Hi ${customerName},
@@ -79,14 +82,14 @@ const bookService = async (req, res) => {
         You will be notified once the vendor accepts your request.
 
         Thanks,  
-        Team LocalLee
+        Team Locallee
     `;
 
     if (user?.email) {
       await sendEmail(user.email, "Appointment Request Submitted", message);
     }
 
-    if (vendor?.email) {
+    if (vendorEmail) {
       const vendorMessage = `
         Hi ${vendor.name},
 
@@ -104,9 +107,9 @@ const bookService = async (req, res) => {
         Please log in to your account to accept or manage the booking.
 
         Thanks,  
-        Team LocalLee
+        Team Locallee
     `;
-      await sendEmail(vendor.email, "New Appointment Request", vendorMessage);
+      await sendEmail(vendorEmail, "New Appointment Request", vendorMessage);
     }
     // ✅ EMAIL LOGIC ENDS HERE
 
@@ -181,7 +184,6 @@ const updateBookingStatus = async (req, res) => {
 
 
     const user = await User.findById(booking.userId);
-    const vendor = booking.vendorId ? await User.findById(booking.vendorId) : null;
 
     if (user?.email) {
       const message = `

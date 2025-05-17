@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 const sendEmail = async (to, subject, text) => {
   try {
     const info = await transporter.sendMail({
-      from: `"LocalLee" <${process.env.EMAIL}>`,
+      from: `"Locallee" <${process.env.EMAIL}>`,
       to,
       subject,
       html: `<p>${text.replace(/\n/g, "<br>")}</p>`, // HTML version
