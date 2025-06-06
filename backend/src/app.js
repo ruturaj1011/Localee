@@ -149,7 +149,7 @@ app.get("/google/:service/:place_id", async (req, res) => {
 
 
 
-const PORT = 8000;
+const PORT = process.env.PORT || 5000;
 const MONGO_URL = process.env.MONGO_URL;
 
 const start = async () => {
