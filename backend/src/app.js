@@ -45,6 +45,38 @@ app.use("/vendor", VendorRoutes);
 // Chat Routes
 app.use("/api", ChatRoutes);
 
+// get call back
+// app.post('/send-whatsapp', async (req, res) => {
+
+//   const { name, phone, service } = req.body;
+
+//   const userMessage = `Hello ${name},\n\nThank you for your interest in our services. We will get back to you shortly.\n\nBest regards,\n${service.name}`;
+
+//   const vendorNumber = service.whatsapp;
+
+//   const vendorMessage = `Hello Vendor,\n\nYou have a new callback request from ${name}, who is interested in your ${service.name} services. Please reach out to them at ${phone}.\n\nBest regards,\nLocalee`;
+
+//   if (!vendorNumber) {
+//     return res.status(400).json({ error: "Vendor number is required" });
+//   }
+
+  // try {
+  //   // Send message to user
+  //   // const response1 = await axios.get(`https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${encodeURIComponent(userMessage)}&apikey=${process.env.CALLMEBOT_API_KEY}`);
+    
+  //   // Send message to vendor
+  //   const response2 = await axios.get(`https://api.callmebot.com/whatsapp.php?phone=${vendorNumber}&text=${encodeURIComponent(vendorMessage)}&apikey=${process.env.CALLMEBOT_API_KEY}`);
+
+  //   res.status(200).json({ 
+  //     success: true, 
+  //     userMessageResponse: response1.data,
+  //     vendorMessageResponse: response2.data 
+  //   });
+
+  // } catch (err) {
+  //   res.status(500).json({ success: false, error: err.message });
+  // }
+// });
 
 
 

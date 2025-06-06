@@ -45,7 +45,7 @@ const ProviderDetailsPage = () => {
     }, [data.isStored, data.place_id]);
 
 
-    // console.log(data);
+    console.log(data);
 
     useAuth();
 
@@ -84,16 +84,32 @@ const ProviderDetailsPage = () => {
         })
 
     }
-    const handleCallBackSubmit = (event) => {
-        event.preventDefault();
-        console.log(callBackFormData);
 
-        setCallBackFormData({
-            name: "",
-            phone: "",
-            time: ""
-        })
+    const handleCallBackSubmit = async (event) => {
+    event.preventDefault();
+    console.log(callBackFormData);
+
+    try {
+        // const res = await axios.post("http://localhost:8000/send-whatsapp", {
+        //     name: callBackFormData.name,
+        //     phone: callBackFormData.phone,
+        //     time: callBackFormData.time,
+        //     service: data
+        // });
+        console.log(res.data);
+        addFlashMessage("Callback request submitted successfully.", "success");
+    } catch (error) {
+        console.error("Error submitting callback request:", error);
+        addFlashMessage("Failed to submit callback request.", "error");
     }
+
+    setCallBackFormData({
+        name: "",
+        phone: "",
+        time: ""
+    });
+};
+
 
     return (
         <>

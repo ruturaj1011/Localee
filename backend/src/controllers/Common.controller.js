@@ -4,7 +4,6 @@ dotenv.config();
 import Booking from "../models/bookingModel.js";
 import { User } from "../models/userModel.js";
 import { Service } from "../models/serviceModel.js";
-import {Booking} from "../models/bookingModel.js";
 
 import sendEmail from "../utils/sendEmail.js";
 
