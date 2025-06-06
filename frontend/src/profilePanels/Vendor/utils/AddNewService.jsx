@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaTrash } from "react-icons/fa"; // Icon for removing images
-import { useFlash } from "../../../contexts/flashContext.jsx";
+import { useFlash } from "../../../contexts/FlashContext.jsx";
 
 const services = [
   { title: "Electrician" }, { title: "Plumber" }, { title: "Carpenter" }, { title: "Home Cleaning" },

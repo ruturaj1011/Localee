@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ConfirmationCard from "./ConfirmationCard.jsx";
 import axios from "axios";
-import { useFlash } from "../contexts/flashContext.jsx";
+import { useFlash } from "../contexts/FlashContext.jsx";
 
 const BookingDetails = ({ role }) => {
   const { state: booking } = useLocation();

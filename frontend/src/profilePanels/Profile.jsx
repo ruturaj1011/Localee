@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../contexts/authContext.jsx";
-import { useFlash } from "../contexts/flashContext.jsx";
+import { useFlash } from "../contexts/FlashContext.jsx";
 
 const Profile = () => {
   const [data, setData] = useState({});
