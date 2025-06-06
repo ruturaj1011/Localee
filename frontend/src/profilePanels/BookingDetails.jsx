@@ -33,7 +33,7 @@ const BookingDetails = ({ role }) => {
 
   async function handleConfirm() {
     try {
-      const isConfirm = await axios.post(`http://localhost:8000/localee/${role}/${id}/bookings/${booking._id}/${btnRole}`);
+      const isConfirm = await axios.post(`${import.meta.env.VITE_BASE_URL}/localee/${role}/${id}/bookings/${booking._id}/${btnRole}`);
 
       if (isConfirm.status === 200) {
         console.log(`Booking ${btnRole} successfully.`);

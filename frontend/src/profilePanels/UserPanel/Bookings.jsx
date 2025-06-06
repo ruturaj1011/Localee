@@ -29,7 +29,7 @@ const Bookings = () => {
     try {
       setLoading(true);
       const bookings = await axios.get(
-        `http://localhost:8000/localee/${role}/${id}/bookingslist`
+        `${import.meta.env.VITE_BASE_URL}/localee/${role}/${id}/bookingslist`
       );
       setPendingBookings(bookings.data.pendingBookings);
       setAcceptedBookings(bookings.data.acceptedBookings);
@@ -49,7 +49,7 @@ const Bookings = () => {
   const onClearAll = async () => {
     try {
       const res = await axios.delete(
-        `http://localhost:8000/localee/${role}/${id}/bookings/clearHistory`
+        `${import.meta.env.VITE_BASE_URL}/localee/${role}/${id}/bookings/clearHistory`
       );
 
       setBookingHistory([]);

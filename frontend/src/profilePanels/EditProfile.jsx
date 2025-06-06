@@ -25,7 +25,7 @@ const EditProfile = () => {
     async function fetchUserData() {
       setIsLoading(true);
       try {
-        const res = await axios.get(`http://localhost:8000/profile/${id}`);
+        const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/profile/${id}`);
         setFormData({
           name: res.data.name || "",
           phone: res.data.phone || "",
@@ -63,7 +63,7 @@ const EditProfile = () => {
 
   const handleSave = async () => {
     try {
-      await axios.post(`http://localhost:8000/profile/${id}/update`, formData);
+      await axios.post(`${import.meta.env.VITE_BASE_URL}/profile/${id}/update`, formData);
       addFlashMessage("Profile updated successfully.", "success");
       navigate(-1);
     } catch (error) {

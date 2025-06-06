@@ -32,7 +32,7 @@ const ProviderDetailsPage = () => {
         const fetchReviews = async () => {
             if (data.isStored === true) {
                 try {
-                    const res = await axios.get(`http://localhost:8000/reviews/${data.place_id}`);
+                    const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/reviews/${data.place_id}`);
                     setReviews(res.data);
                 } catch (err) {
                     console.error("Error fetching reviews:", err);
@@ -90,7 +90,7 @@ const ProviderDetailsPage = () => {
     console.log(callBackFormData);
 
     try {
-        // const res = await axios.post("http://localhost:8000/send-whatsapp", {
+        // const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/send-whatsapp`, {
         //     name: callBackFormData.name,
         //     phone: callBackFormData.phone,
         //     time: callBackFormData.time,

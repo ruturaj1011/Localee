@@ -37,7 +37,7 @@ function BookHomeVisitForm({ showForm, vendorId, serviceId, details }) {
             event.preventDefault();
             console.log(formData);
 
-            await axios.post(`http://localhost:8000/localee/${serviceId}/book`, formData, {
+            await axios.post(`${import.meta.env.VITE_BASE_URL}/localee/${serviceId}/book`, formData, {
                 headers: { "Content-Type": "application/json" }
             });
 

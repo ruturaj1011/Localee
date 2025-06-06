@@ -43,7 +43,7 @@ function Bookings() {
   const fetchBookings = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`http://localhost:8000/localee/${role}/${id}/bookingslist`);
+      const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/localee/${role}/${id}/bookingslist`);
       setBookings({
         pending: res.data.pendingBookings,
         accepted: res.data.acceptedBookings,
@@ -61,41 +61,12 @@ function Bookings() {
     fetchBookings();
   }, []);
 
-  const handleAccept = async (bookingId, e) => {
-    e.stopPropagation();
-    try {
-      setLoading(true);
-      await axios.patch(`http://localhost:8000/localee/${role}/${id}/acceptBooking/${bookingId}`);
-      fetchBookings();
-      addFlashMessage("Booking accepted successfuly", "success");
-    } catch (err) {
-      console.error(err);
-      addFlashMessage("Failed to accept booking", "error");
-      setLoading(false);
-    }
-  };
-
-  const handleReject = async (bookingId, e) => {
-    e.stopPropagation();
-    if (window.confirm("Are you sure you want to reject this booking?")) {
-      try {
-        setLoading(true);
-        await axios.patch(`http://localhost:8000/localee/${role}/${id}/rejectBooking/${bookingId}`);
-        addFlashMessage("Booking rejected successfully", "success");
-        fetchBookings();
-      } catch (err) {
-        console.error(err);
-        addFlashMessage("Failed to reject booking", "error");
-        setLoading(false);
-      }
-    }
-  };
 
   const onClearHistory = async () => {
     if (window.confirm("Are you sure you want to clear all history? This cannot be undone.")) {
       try {
         setLoading(true);
-        const res = await axios.delete(`http://localhost:8000/localee/${role}/${id}/bookings/clearHistory`);
+        const res = await axios.delete(`${import.meta.env.VITE_BASE_URL}/localee/${role}/${id}/bookings/clearHistory`);
         addFlashMessage("booking history cleared successfully", "success");
         fetchBookings();
       } catch (error) {

@@ -98,7 +98,7 @@ const AddService = () => {
 
     try {
       const service = await axios.post(
-        `http://localhost:8000/vendor/${id}/addNewService`,
+        `${import.meta.env.VITE_BASE_URL}/vendor/${id}/addNewService`,
         formData2,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

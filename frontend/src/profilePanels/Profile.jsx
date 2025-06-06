@@ -15,7 +15,7 @@ const Profile = () => {
   async function fetchUser() {
     setIsLoading(true);
     try {
-      const res = await axios.get(`http://localhost:8000/profile/${id}`);
+      const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/profile/${id}`);
       setData(res.data);
       setIsLoading(false);
       console.log(res.data);

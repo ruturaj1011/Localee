@@ -21,7 +21,7 @@ const YourServices = () => {
 
   async function fetchServices() {
     try {
-      const response = await axios.get(`http://localhost:8000/vendor/${id}/services`);
+      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/vendor/${id}/services`);
       setServices(response.data);
     } catch (error) {
       console.error("Error fetching services:", error);

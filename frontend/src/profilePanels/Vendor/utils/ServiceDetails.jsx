@@ -20,7 +20,7 @@ const ServiceDetails = () => {
         const fetchServiceDetails = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:8000/vendor/${id}/${serviceId}`
+                    `${import.meta.env.VITE_BASE_URL}/vendor/${id}/${serviceId}`
                 );
                 setService(response.data);
             } catch (err) {
@@ -35,7 +35,7 @@ const ServiceDetails = () => {
         const fetchReviews = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:8000/reviews/${serviceId}`
+                    `${import.meta.env.VITE_BASE_URL}/reviews/${serviceId}`
                 );
                 setReviews(response.data);
             } catch (err) {
@@ -54,7 +54,7 @@ const ServiceDetails = () => {
     const handleRemoveService = async () => {
         try {
             await axios.delete(
-                `http://localhost:8000/vendor/${id}/services/${serviceId}/delete`
+                `${import.meta.env.VITE_BASE_URL}/vendor/${id}/services/${serviceId}/delete`
             );
             addFlashMessage("Service removed successfully.", "success");
             navigate(`/vendor/${id}/yourServices`); // Redirect to vendor dashboard

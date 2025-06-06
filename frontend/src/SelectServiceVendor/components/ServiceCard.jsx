@@ -13,7 +13,7 @@ const ServiceCard = ({ provider }) => {
     try {
       if (!provider.owner) {
         const response = await fetch(
-          `http://localhost:8000/google/${provider.service}/${placeId}`
+          `${import.meta.env.VITE_BASE_URL}/google/${provider.service}/${placeId}`
         );
         const data = await response.json();
         const details = simplifyGoogleData(data);

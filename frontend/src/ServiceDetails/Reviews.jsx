@@ -32,7 +32,7 @@ function Reviews({ reviews, rating, totalRatings, serviceId, owner, isStored }) 
         console.log(review);
 
         try {
-            await axios.post("http://localhost:8000/reviews/add", review)
+            await axios.post(`${import.meta.env.VITE_BASE_URL}/reviews/add`, review)
             addFlashMessage("Review added successfully.", "success");
         }
         catch (err) {
@@ -52,7 +52,7 @@ function Reviews({ reviews, rating, totalRatings, serviceId, owner, isStored }) 
 
     const deleteReview = async (id) => {
         try {
-            await axios.delete(`http://localhost:8000/reviews/${id}/delete`, { serviceId, owner: id });
+            await axios.delete(`${import.meta.env.VITE_BASE_URL}/reviews/${id}/delete`, { serviceId, owner: id });
             addFlashMessage("Review deleted successfully.", "success");
         }
         catch (err) {

@@ -74,7 +74,7 @@ const EditService = () => {
 
       // Send the request
       const response = await axios.put(
-        `http://localhost:8000/vendor/${id}/services/${serviceId}/edit`,
+        `${import.meta.env.VITE_BASE_URL}/vendor/${id}/services/${serviceId}/edit`,
         formData2,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

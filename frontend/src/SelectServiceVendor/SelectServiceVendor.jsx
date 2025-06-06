@@ -20,7 +20,7 @@ const SelectServiceVendor = () => {
     setLoading(true); // Start loading
     try {
       const response = await fetch(
-        `http://localhost:8000/fetch/nearby/services?lat=${coordinates.lat}&lng=${coordinates.lng}&service=${service}`
+        `${import.meta.env.VITE_BASE_URL}/fetch/nearby/services?lat=${coordinates.lat}&lng=${coordinates.lng}&service=${service}`
       );
 
       if (!response.ok) {

@@ -49,7 +49,7 @@ const ChatBot = ({ user }) => {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:8000/api/chat", {
+      const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/chat`, {
         prompt: input,
         user,
       });

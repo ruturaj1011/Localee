@@ -39,7 +39,7 @@ const UpdateBooking = () => {
     // console.log("Updated Booking:", updatedBooking);
 
     try{
-      const update = await axios.patch(`http://localhost:8000/localee/user/${booking.userId}/bookings/${booking._id}/update`, updatedBooking);
+      const update = await axios.patch(`${import.meta.env.VITE_BASE_URL}/localee/user/${booking.userId}/bookings/${booking._id}/update`, updatedBooking);
 
       addFlashMessage("Booking updated successfully.", "success");
       console.log("Booking updated successfully:", update.data);
