@@ -13,7 +13,7 @@ import SelectServiceVendor from "./SelectServiceVendor/SelectServiceVendor.jsx";
 import BecomeAProvider from "./BecomeA_Provider/BecomeAProvider/BecomeAProvider.jsx";
 
 import UserLogin from './authComponents/UserLogin.jsx';
-import VendorLogin from './authComponents/vendorLogin.jsx';
+import VendorLogin from './authComponents/VendorLogin.jsx';
 import UserRegister from './authComponents/UserRegister.jsx';
 import VendorRegister from './authComponents/VendorRegister.jsx';
 
