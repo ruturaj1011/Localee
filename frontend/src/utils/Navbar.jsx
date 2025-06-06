@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import AccountMenu from "./Avatar";
 import "../App.css";
 import { AuthContext } from "../contexts/authContext.jsx";
-import { useFlash } from "../contexts/flashContext.jsx";
+import { useFlash } from "../contexts/FlashContext.jsx";
 
 function Navbar({ idx }) {
   const [navOption, setNavOption] = useState(idx);

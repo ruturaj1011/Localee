@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Search, MapPin } from 'lucide-react';
 import LocationSelector from '../utils/LocationSelector.jsx';
 import { useNavigate } from "react-router-dom";
-import { useFlash } from '../contexts/flashContext.jsx';
+import { useFlash } from '../contexts/FlashContext.jsx';
 
 function SearchServices() {
   const [location, setLocation] = useState('');

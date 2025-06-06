@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Phone, Mail, MessageSquare, MapPinCheckIcon } from "lucide-react";
 import Reviews from "./Reviews.jsx";
 import BookAppointmentForm from "./BookAppointmentForm.jsx";
@@ -7,7 +7,7 @@ import Navbar from "../utils/Navbar.jsx";
 import Footer from "../utils/Footer.jsx";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import { useFlash } from "../contexts/flashContext.jsx";
+import { useFlash } from "../contexts/FlashContext.jsx";
 
 import useAuth from "../utils/authMiddleware.js";
 

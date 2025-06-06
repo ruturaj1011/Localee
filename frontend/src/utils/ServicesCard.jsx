@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { ArrowRight, ArrowLeft, ChevronRight } from "lucide-react";
 import { Link } from 'react-router-dom';
-import { useFlash } from '../contexts/flashContext.jsx';
+import { useFlash } from '../contexts/FlashContext.jsx';
 import { useNavigate } from 'react-router-dom';
 
 const ServicesCards = ({ services, category, subHeading, eleId }) => {

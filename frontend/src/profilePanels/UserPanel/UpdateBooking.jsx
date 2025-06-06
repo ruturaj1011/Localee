@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useFlash } from "../../contexts/flashContext.jsx";
+import { useFlash } from "../../contexts/FlashContext.jsx";
 
 const UpdateBooking = () => {
   const { state } = useLocation();

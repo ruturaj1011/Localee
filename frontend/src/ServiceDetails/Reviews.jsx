@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { PenIcon, Star, Trash } from 'lucide-react';
 import axios from 'axios';
-import { useFlash } from '../contexts/flashContext.jsx';
+import { useFlash } from '../contexts/FlashContext.jsx';
 
 function Reviews({ reviews, rating, totalRatings, serviceId, owner, isStored }) {
 

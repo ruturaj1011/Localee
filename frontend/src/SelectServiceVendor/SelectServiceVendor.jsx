@@ -5,7 +5,7 @@ import ServiceCard from './components/ServiceCard.jsx';
 import Navbar from '../utils/Navbar.jsx';
 import Footer from '../utils/Footer.jsx';
 import { useLocation } from 'react-router-dom';
-import { useFlash } from '../contexts/flashContext.jsx';
+import { useFlash } from '../contexts/FlashContext.jsx';
 
 const SelectServiceVendor = () => {
   const { addFlashMessage } = useFlash();

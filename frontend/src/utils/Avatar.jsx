@@ -3,7 +3,7 @@ import { Avatar, Menu, MenuItem, Divider, IconButton, Tooltip } from "@mui/mater
 import { Logout } from "@mui/icons-material";
 import { Calendar, User, Logs } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useFlash } from '../contexts/flashContext.jsx';
+import { useFlash } from '../contexts/FlashContext.jsx';
 
 import { AuthContext } from "../contexts/authContext.jsx";
 

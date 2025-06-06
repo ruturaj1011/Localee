@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
 import axios from 'axios';
-import { useFlash } from '../contexts/flashContext.jsx';
+import { useFlash } from '../contexts/FlashContext.jsx';
 
 function BookAppointmentForm({ showForm, vendorId, serviceId, details }) {
     
