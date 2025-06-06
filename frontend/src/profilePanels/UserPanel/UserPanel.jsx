@@ -1,16 +1,16 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Calendar, User, Menu, X } from "lucide-react";
-import Profile from "../Profile";
-import Bookings from "./Bookings";
+import { useState, useContext, useEffect } from "react";
+import { Calendar, User} from "lucide-react";
+import Profile from "../Profile.jsx";
+import Bookings from "./Bookings.jsx";
 import { Route, Routes, useLocation, Link } from "react-router-dom";
-import Navbar from "../../utils/Navbar";
-import Footer from "../../utils/Footer";
-import EditProfile from "../EditProfile";
+import Navbar from "../../utils/Navbar.jsx";
+import Footer from "../../utils/Footer.jsx";
+import EditProfile from "../EditProfile.jsx";
 
-import { AuthContext } from "../../contexts/authContext";
-import useAuth from "../../utils/authMiddleware";
-import BookingDetails from "../BookingDetails";
-import UpdateBooking from "./UpdateBooking";
+import { AuthContext } from "../../contexts/authContext.jsx";
+import useAuth from "../../utils/authMiddleware.js";
+import BookingDetails from "../BookingDetails.jsx";
+import UpdateBooking from "./UpdateBooking.jsx";
 
 const UserPanel = () => {
   useAuth();

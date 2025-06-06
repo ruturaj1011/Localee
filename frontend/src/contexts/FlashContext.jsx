@@ -1,6 +1,6 @@
 // context/FlashContext.jsx
 import { createContext, useContext, useState } from 'react';
-import FlashMessage from '../utils/FlashMessage';
+import FlashMessage from '../utils/FlashMessage.jsx';
 const FlashContext = createContext();
 
 export const FlashProvider = ({ children }) => {

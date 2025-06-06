@@ -2,7 +2,7 @@ import { Edit, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useFlash } from "../../contexts/flashContext";
+import { useFlash } from "../../contexts/flashContext.jsx";
 
 const YourServices = () => {
   const id = localStorage.getItem("id");

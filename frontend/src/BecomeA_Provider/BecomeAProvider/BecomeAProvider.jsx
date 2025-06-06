@@ -1,10 +1,10 @@
-import React from 'react'
-import Header from '../components/Header'
-import WhyJoin from '../components/WhyJoin'
-import HowItWorks from '../components/HowItWorks'
-import RegistrationForm from '../components/RegistrationForm'
-import Footer from '../components/Footer';
-import Navbar from '../../utils/Navbar'
+
+import Header from '../components/Header.jsx'
+import WhyJoin from '../components/WhyJoin.jsx'
+import HowItWorks from '../components/HowItWorks.jsx'
+import RegistrationForm from '../components/RegistrationForm.jsx'
+import Footer from '../components/Footer.jsx';
+import Navbar from '../../utils/Navbar.jsx'
 
 const BecomeAProvider = () => {
   return (

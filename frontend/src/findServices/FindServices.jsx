@@ -1,10 +1,10 @@
-import React from 'react';
-import Hero from './Hero';
-import ServicesCards from '../utils/ServicesCard';
+
+import Hero from './Hero.jsx';
+import ServicesCards from '../utils/ServicesCard.jsx';
 
 import { Wrench, Camera, Home, Scissors, Car, Heart } from 'lucide-react';
-import Navbar from '../utils/Navbar';
-import Footer from '../utils/Footer';
+import Navbar from '../utils/Navbar.jsx';
+import Footer from '../utils/Footer.jsx';
 
 const services = [
     { icon: Wrench, name: 'Plumbing', count: '250+ Providers' },

@@ -1,10 +1,10 @@
-import React from 'react';
 
-import Hero from './Hero';
-import PopularServices from './PopularServices';
-import HowItWorks from './HowItWorks';
-import Navbar from '../utils/Navbar';
-import Footer from '../utils/Footer';
+
+import Hero from './Hero.jsx';
+import PopularServices from './PopularServices.jsx';
+import HowItWorks from './HowItWorks.jsx';
+import Navbar from '../utils/Navbar.jsx';
+import Footer from '../utils/Footer.jsx';
 
 function LandingPage() {
     return ( 

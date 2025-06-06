@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Wrench, Camera, Home, Scissors, Car, Heart, Star, ChevronRight } from 'lucide-react';
 
 const services = [

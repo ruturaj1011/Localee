@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import ServiceHeading from './components/ServiceHeading';
-import Filters from './components/Filters';
-import ServiceCard from './components/ServiceCard';
-import Navbar from '../utils/Navbar';
-import Footer from '../utils/Footer';
+import { useEffect, useState } from 'react';
+import ServiceHeading from './components/ServiceHeading.jsx';
+import Filters from './components/Filters.jsx';
+import ServiceCard from './components/ServiceCard.jsx';
+import Navbar from '../utils/Navbar.jsx';
+import Footer from '../utils/Footer.jsx';
 import { useLocation } from 'react-router-dom';
-import { useFlash } from '../contexts/flashContext';
+import { useFlash } from '../contexts/flashContext.jsx';
 
 const SelectServiceVendor = () => {
   const { addFlashMessage } = useFlash();

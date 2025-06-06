@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { Edit, Trash2, Trash, MapPin, CalendarDays, Clock, Phone, Type } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useFlash } from "../../contexts/flashContext";
+import { useFlash } from "../../contexts/flashContext.jsx";
 
 const SkeletonCard = () => (
   <div className="animate-pulse p-5 mb-4 bg-gray-100 rounded-xl border">

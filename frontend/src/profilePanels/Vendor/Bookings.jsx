@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useFlash } from "../../contexts/flashContext";
+import { useFlash } from "../../contexts/flashContext.jsx";
 
 import { 
   CalendarDays, 
@@ -12,8 +12,6 @@ import {
   Trash2, 
   Clock, 
   CheckCircle, 
-  AlertCircle, 
-  ChevronRight, 
   RefreshCw,
   Info,
   Filter

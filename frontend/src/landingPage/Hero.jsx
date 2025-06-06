@@ -1,5 +1,5 @@
-import React from 'react';
-import SearchServices from './SerachServices';
+
+import SearchServices from './SerachServices.jsx';
 import { CheckCircle, Star, Users, ShieldCheck } from 'lucide-react';
 
 function Hero() {

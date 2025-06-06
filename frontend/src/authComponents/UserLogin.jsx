@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../contexts/authContext";
-import { useFlash } from "../contexts/flashContext";
+import { AuthContext } from "../contexts/authContext.jsx";
+import { useFlash } from "../contexts/flashContext.jsx";
 import { useContext } from "react";
 
 const UserLogin = () => {

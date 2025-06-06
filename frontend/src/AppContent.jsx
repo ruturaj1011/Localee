@@ -1,23 +1,23 @@
 // AppContent.jsx
-import {React, useState, useEffect, useContext} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
-import LandingPage from './landingPage/LandingPage';
-import FindServices from "./findServices/FindServices";
-import ServiceDetails from "./ServiceDetails/ServiceDetails";
+import LandingPage from './landingPage/LandingPage.jsx';
+import FindServices from "./findServices/FindServices.jsx";
+import ServiceDetails from "./ServiceDetails/ServiceDetails.jsx";
 
-import VendorPanel from './profilePanels/Vendor/VendorPanel';
-import UserPanel from './profilePanels/UserPanel/UserPanel';
-import SelectServiceVendor from "./SelectServiceVendor/SelectServiceVendor";
-import BecomeAProvider from "./BecomeA_Provider/BecomeAProvider/BecomeAProvider";
+import VendorPanel from './profilePanels/Vendor/VendorPanel.jsx';
+import UserPanel from './profilePanels/UserPanel/UserPanel.jsx';
+import SelectServiceVendor from "./SelectServiceVendor/SelectServiceVendor.jsx";
+import BecomeAProvider from "./BecomeA_Provider/BecomeAProvider/BecomeAProvider.jsx";
 
-import UserLogin from './authComponents/UserLogin';
-import VendorLogin from './authComponents/vendorLogin';
-import UserRegister from './authComponents/UserRegister';
-import VendorRegister from './authComponents/VendorRegister';
+import UserLogin from './authComponents/UserLogin.jsx';
+import VendorLogin from './authComponents/vendorLogin.jsx';
+import UserRegister from './authComponents/UserRegister.jsx';
+import VendorRegister from './authComponents/VendorRegister.jsx';
 
-import ChatBot from './utils/ChatBot';
+import ChatBot from './utils/ChatBot.jsx';
 import { AuthContext } from './contexts/authContext.jsx';
 
 const AppContent = () => {

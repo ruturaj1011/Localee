@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Search, ArrowRight } from 'lucide-react';
-import LocationSelector from '../utils/LocationSelector';
+import { useState, useEffect } from 'react';
+import {  ArrowRight } from 'lucide-react';
+import LocationSelector from '../utils/LocationSelector.jsx';
 import { useNavigate } from 'react-router-dom';
-import SearchBox from '../utils/SearchBox';
-import { useFlash } from '../contexts/flashContext';
+import SearchBox from '../utils/SearchBox.jsx';
+import { useFlash } from '../contexts/flashContext.jsx';
 
 function SearchServices() {
   const navigate = useNavigate();

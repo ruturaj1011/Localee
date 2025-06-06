@@ -1,9 +1,9 @@
-import React from "react";
+
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt, faStar } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import { useFlash } from "../../contexts/flashContext";
+import { useFlash } from "../../contexts/flashContext.jsx";
 
 const ServiceCard = ({ provider }) => {
   const { addFlashMessage } = useFlash();

@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../contexts/authContext";
+import { AuthContext } from "../contexts/authContext.jsx";
 import { useContext, useEffect, useState } from "react";
 import { Save, User, X } from "lucide-react";
 import axios from "axios";
-import { useFlash } from "../contexts/flashContext";
+import { useFlash } from "../contexts/flashContext.jsx";
 
 const EditProfile = () => {
   const navigate = useNavigate();

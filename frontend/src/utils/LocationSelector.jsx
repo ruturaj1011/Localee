@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { MapPin, Search } from 'lucide-react';
-import { useFlash } from '../contexts/flashContext';
+import { useFlash } from '../contexts/flashContext.jsx';
 
 const LocationSelector = ({ location, setLocation }) => {
   const [isOpen, setIsOpen] = useState(false);

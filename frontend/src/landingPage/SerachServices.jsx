@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Search, ArrowRight, MapPin } from 'lucide-react';
-import LocationSelector from '../utils/LocationSelector';
+import { useState } from 'react';
+import { Search, MapPin } from 'lucide-react';
+import LocationSelector from '../utils/LocationSelector.jsx';
 import { useNavigate } from "react-router-dom";
-import { useFlash } from '../contexts/flashContext';
+import { useFlash } from '../contexts/flashContext.jsx';
 
 function SearchServices() {
   const [location, setLocation] = useState('');

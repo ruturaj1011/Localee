@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../contexts/authContext";
+import { AuthContext } from "../contexts/authContext.jsx";
 import { useContext } from "react";
-import { useFlash } from "../contexts/flashContext";
+import { useFlash } from "../contexts/flashContext.jsx";
 
 const VendorLogin = () => {
     const { handleVendorLogin } = useContext(AuthContext);

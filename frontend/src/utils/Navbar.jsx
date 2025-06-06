@@ -1,9 +1,9 @@
-import React, { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AccountMenu from "./Avatar";
 import "../App.css";
-import { AuthContext } from "../contexts/authContext";
-import { useFlash } from "../contexts/flashContext";
+import { AuthContext } from "../contexts/authContext.jsx";
+import { useFlash } from "../contexts/flashContext.jsx";
 
 function Navbar({ idx }) {
   const [navOption, setNavOption] = useState(idx);

@@ -1,9 +1,9 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { Avatar, Menu, MenuItem, Divider, IconButton, Tooltip } from "@mui/material";
 import { Logout } from "@mui/icons-material";
 import { Calendar, User, Logs } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useFlash } from '../contexts/flashContext';
+import { useFlash } from '../contexts/flashContext.jsx';
 
 import { AuthContext } from "../contexts/authContext.jsx";
 

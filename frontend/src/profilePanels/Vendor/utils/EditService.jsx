@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FaTrash, FaUpload } from "react-icons/fa"; // Icons for actions
-import { useFlash } from "../../../contexts/flashContext";
+import { useFlash } from "../../../contexts/flashContext.jsx";
 
 const EditService = () => {
   const { id, serviceId } = useParams();

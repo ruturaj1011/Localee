@@ -2,8 +2,8 @@ import { Edit, Mail, Phone, MapPin, LogOut, User, Clock, Shield } from "lucide-r
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AuthContext } from "../contexts/authContext";
-import { useFlash } from "../contexts/flashContext";
+import { AuthContext } from "../contexts/authContext.jsx";
+import { useFlash } from "../contexts/flashContext.jsx";
 
 const Profile = () => {
   const [data, setData] = useState({});

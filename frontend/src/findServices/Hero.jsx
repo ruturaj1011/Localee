@@ -1,5 +1,5 @@
-import React from 'react';
-import SearchServices from './SearchServices';
+
+import SearchServices from './SearchServices.jsx';
 import { Shield, Star, Award } from 'lucide-react';
 
 const HeroSection = () => {

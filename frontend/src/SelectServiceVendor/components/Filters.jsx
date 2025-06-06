@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import LocationSelector from '../../utils/LocationSelector';
-import SearchBox from '../../utils/SearchBox';
+import  { useState, useEffect } from 'react';
+import LocationSelector from '../../utils/LocationSelector.jsx';
+import SearchBox from '../../utils/SearchBox.jsx';
 import { useNavigate } from 'react-router-dom';
 import { MapPin, Search, Star, Sliders } from 'lucide-react';
 

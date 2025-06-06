@@ -3,7 +3,7 @@ import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaEdit, FaTrash, FaStar } from "react-icons/fa"; // Icons for actions and rating
 import { Email, LocationCity, Phone, WhatsApp } from "@mui/icons-material";
-import { useFlash } from "../../../contexts/flashContext";
+import { useFlash } from "../../../contexts/flashContext.jsx";
 
 
 const ServiceDetails = () => {

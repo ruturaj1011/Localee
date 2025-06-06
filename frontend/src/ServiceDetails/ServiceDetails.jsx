@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Phone, Mail, MessageSquare, MapPinCheckIcon } from "lucide-react";
-import Reviews from "./Reviews";
-import BookAppointmentForm from "./BookAppointmentForm";
-import BookHomeVisitForm from "./BookHomeVisit";
-import Navbar from "../utils/Navbar";
-import Footer from "../utils/Footer";
+import Reviews from "./Reviews.jsx";
+import BookAppointmentForm from "./BookAppointmentForm.jsx";
+import BookHomeVisitForm from "./BookHomeVisit.jsx";
+import Navbar from "../utils/Navbar.jsx";
+import Footer from "../utils/Footer.jsx";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import { useFlash } from "../contexts/flashContext";
+import { useFlash } from "../contexts/flashContext.jsx";
 
-import useAuth from "../utils/authMiddleware";
+import useAuth from "../utils/authMiddleware.js";
 
 const ProviderDetailsPage = () => {
 

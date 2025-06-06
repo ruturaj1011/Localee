@@ -1,19 +1,19 @@
-import React, { useContext, useState, useEffect } from "react";
-import { Calendar, User, Logs, Menu, ChevronLeft } from "lucide-react";
+import { useContext, useState, useEffect } from "react";
+import { Calendar, User, Logs, ChevronLeft } from "lucide-react";
 import { Route, Routes, Link, useLocation } from "react-router-dom";
 
-import Bookings from "./Bookings";
-import Profile from "../Profile";
-import YourServices from "./YourServices";
-import EditServiceForm from "./utils/EditService";
-import AddNewService from "./utils/AddNewService";
-import ServiceDetails from "./utils/ServiceDetails";
-import Navbar from "../../utils/Navbar";
-import Footer from "../../utils/Footer";
-import BookingDetails from "../BookingDetails";
-import EditProfile from "../EditProfile";
-import { AuthContext } from "../../contexts/authContext";
-import useAuth from "../../utils/authMiddleware";
+import Bookings from "./Bookings.jsx";
+import Profile from "../Profile.jsx";
+import YourServices from "./YourServices.jsx";
+import EditServiceForm from "./utils/EditService.jsx";
+import AddNewService from "./utils/AddNewService.jsx";
+import ServiceDetails from "./utils/ServiceDetails.jsx";
+import Navbar from "../../utils/Navbar.jsx";
+import Footer from "../../utils/Footer.jsx";
+import BookingDetails from "../BookingDetails.jsx";
+import EditProfile from "../EditProfile.jsx";
+import { AuthContext } from "../../contexts/authContext.jsx";
+import useAuth from "../../utils/authMiddleware.js";
 
 const VendorPanel = () => {
     const { id } = useContext(AuthContext);

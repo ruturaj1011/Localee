@@ -1,11 +1,10 @@
 // App.js
-import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import './App.css';
-import { AuthProvider } from "./contexts/authContext";
-import { FlashProvider } from './contexts/FlashContext';
-import AppContent from './AppContent';
+import { AuthProvider } from "./contexts/authContext.jsx";
+import { FlashProvider } from './contexts/FlashContext.jsx';
+import AppContent from './AppContent.jsx';
 
 function App() {
   return (
