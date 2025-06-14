@@ -1,5 +1,5 @@
 import  { useState, useEffect } from "react";
-import { Edit, Trash2, Trash, MapPin, CalendarDays, Clock, Phone, Type } from "lucide-react";
+import { Edit, Trash2, Trash, MapPin, CalendarDays, Clock, Phone, Type, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useFlash } from "../../contexts/FlashContext.jsx";
@@ -18,6 +18,8 @@ const Bookings = () => {
   const [acceptedBookings, setAcceptedBookings] = useState([]);
   const [bookingHistory, setBookingHistory] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [clearingHistory, setClearingHistory] = useState(false);
+  const [processingBookings, setProcessingBookings] = useState(new Set());
   const [activeTab, setActiveTab] = useState("upcoming");
 
   const { addFlashMessage } = useFlash();
@@ -48,6 +50,7 @@ const Bookings = () => {
 
   const onClearAll = async () => {
     try {
+      setClearingHistory(true);
       const res = await axios.delete(
         `${import.meta.env.VITE_BASE_URL}/localee/${role}/${id}/bookings/clearHistory`
       );
@@ -64,11 +67,43 @@ const Bookings = () => {
         error.response?.data?.message || "Failed to clear booking history",
         "error"
       );
+    } finally {
+      setClearingHistory(false);
     }
   };
 
   const onBookingClick = (booking) => {
+    // Don't navigate if booking is being processed
+    if (processingBookings.has(booking._id)) {
+      return;
+    }
     navigate(`/user/${id}/bookings/${booking.id}/details`, { state: booking });
+  };
+
+  const handleBookingStatusUpdate = async (bookingId, action) => {
+    setProcessingBookings(prev => new Set(prev).add(bookingId));
+    
+    try {
+      // Simulate API call for booking status update
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Here you would make your actual API call
+      // const response = await axios.put(${import.meta.env.VITE_BASE_URL}/localee/${role}/${id}/bookings/${bookingId}/${action});
+      
+      // Refresh bookings after status update
+      await fetchBookings();
+      
+      addFlashMessage(`Booking ${action} successfully!`, "success");
+    } catch (error) {
+      console.error(`Error ${action} booking:`, error);
+      addFlashMessage(`Failed to ${action} booking. Please try again.`, "error");
+    } finally {
+      setProcessingBookings(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(bookingId);
+        return newSet;
+      });
+    }
   };
 
   const getStatusBadge = (status) => {
@@ -89,62 +124,107 @@ const Bookings = () => {
     );
   };
 
-  const renderBookingCard = (booking) => (
-    <div
-      key={booking._id}
-      className="p-5 mb-4 bg-white rounded-xl border border-gray-200 hover:shadow-md cursor-pointer transition-all duration-200 transform hover:-translate-y-1"
-      onClick={() => onBookingClick(booking)}
-    >
-      <div className="flex justify-between items-center">
-        <h3 className="text-lg font-bold text-gray-800">
-          {booking.serviceCategory || booking.service}
-        </h3>
-        <div className="flex items-center space-x-2">
-          {getStatusBadge(booking.status)}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/user/${id}/bookings/${booking.id}/edit`, { state: booking });
-            }}
-            className="text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-1 rounded-full"
-            aria-label="Edit booking"
-          >
-            <Edit className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-
-      <p className="text-gray-600 mt-1 mb-3">
-        <span className="font-medium">{booking.vendorName || booking.vendor}</span>
-      </p>
-
-      <div className="grid grid-cols-2 gap-2 text-gray-700 text-sm">
-        <div className="flex items-center my-1">
-          <Type className="w-4 h-4 mr-2 text-gray-500" />
-          <span>{booking.type}</span>
-        </div>
-        <div className="flex items-center my-1">
-          <CalendarDays className="w-4 h-4 mr-2 text-gray-500" />
-          <span>{booking.date}</span>
-        </div>
-        {booking.time && (
-          <div className="flex items-center my-1">
-            <Clock className="w-4 h-4 mr-2 text-gray-500" />
-            <span>{booking.time}</span>
+  const renderBookingCard = (booking) => {
+    const isProcessing = processingBookings.has(booking._id);
+    
+    return (
+      <div
+        key={booking._id}
+        className={`p-5 mb-4 bg-white rounded-xl border border-gray-200 transition-all duration-200 ${
+          isProcessing 
+            ? "opacity-75 cursor-not-allowed" 
+            : "hover:shadow-md cursor-pointer transform hover:-translate-y-1"
+        }`}
+        onClick={() => onBookingClick(booking)}
+      >
+        <div className="flex justify-between items-center">
+          <h3 className="text-lg font-bold text-gray-800">
+            {booking.serviceCategory || booking.service}
+          </h3>
+          <div className="flex items-center space-x-2">
+            {isProcessing ? (
+              <div className="flex items-center space-x-2">
+                <Loader2 className="w-4 h-4 animate-spin text-blue-500" />
+                <span className="text-sm text-blue-600">Processing...</span>
+              </div>
+            ) : (
+              getStatusBadge(booking.status)
+            )}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!isProcessing) {
+                  navigate(`/user/${id}/bookings/${booking.id}/edit`, { state: booking });
+                }
+              }}
+              className={`p-1 rounded-full ${
+                isProcessing 
+                  ? "text-gray-300 cursor-not-allowed" 
+                  : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+              }`}
+              aria-label="Edit booking"
+              disabled={isProcessing}
+            >
+              <Edit className="w-4 h-4" />
+            </button>
           </div>
-        )}
-        <div className="flex items-center my-1">
-          <div><MapPin className="w-4 h-4 mr-2 text-gray-500" /></div>
-          <div><p className="">{booking.address || booking.location}</p></div>
         </div>
-        <div className="flex items-center my-1">
-          <Phone className="w-4 h-4 mr-2 text-gray-500" />
-          <span>{booking.phone}</span>
-        </div>
-      </div>
-    </div>
-  );
 
+        <p className="text-gray-600 mt-1 mb-3">
+          <span className="font-medium">{booking.vendorName || booking.vendor}</span>
+        </p>
+
+        <div className="grid grid-cols-2 gap-2 text-gray-700 text-sm">
+          <div className="flex items-center my-1">
+            <Type className="w-4 h-4 mr-2 text-gray-500" />
+            <span>{booking.type}</span>
+          </div>
+          <div className="flex items-center my-1">
+            <CalendarDays className="w-4 h-4 mr-2 text-gray-500" />
+            <span>{booking.date}</span>
+          </div>
+          {booking.time && (
+            <div className="flex items-center my-1">
+              <Clock className="w-4 h-4 mr-2 text-gray-500" />
+              <span>{booking.time}</span>
+            </div>
+          )}
+          <div className="flex items-center my-1">
+            <div><MapPin className="w-4 h-4 mr-2 text-gray-500" /></div>
+            <div><p className="">{booking.address || booking.location}</p></div>
+          </div>
+          <div className="flex items-center my-1">
+            <Phone className="w-4 h-4 mr-2 text-gray-500" />
+            <span>{booking.phone}</span>
+          </div>
+        </div>
+
+        {/* Example status update buttons - uncomment and modify as needed */}
+        {/* {booking.status === 'pending' && !isProcessing && (
+          <div className="flex space-x-2 mt-4 pt-4 border-t border-gray-100">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleBookingStatusUpdate(booking._id, 'accept');
+              }}
+              className="px-3 py-1 bg-green-500 text-white text-sm rounded hover:bg-green-600 transition-colors"
+            >
+              Accept
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleBookingStatusUpdate(booking._id, 'reject');
+              }}
+              className="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600 transition-colors"
+            >
+              Reject
+            </button>
+          </div>
+        )} */}
+      </div>
+    );
+  };
 
   return (
     <div className="bg-gray-50 min-h-screen pb-10">
@@ -206,10 +286,24 @@ const Bookings = () => {
               <h2 className="text-xl font-semibold text-gray-800">Booking History</h2>
               {bookingHistory.length > 0 && (
                 <button
-                  className="flex items-center text-sm font-medium px-3 py-1.5 rounded-full border border-gray-300 hover:bg-gray-100 transition-colors"
+                  className={`flex items-center text-sm font-medium px-3 py-1.5 rounded-full border transition-all ${
+                    clearingHistory
+                      ? "border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed"
+                      : "border-gray-300 hover:bg-gray-100"
+                  }`}
                   onClick={onClearAll}
+                  disabled={clearingHistory}
                 >
-                  Clear All <Trash2 size={16} className="ml-2" />
+                  {clearingHistory ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                      Clearing...
+                    </>
+                  ) : (
+                    <>
+                      Clear All <Trash2 size={16} className="ml-2" />
+                    </>
+                  )}
                 </button>
               )}
             </div>

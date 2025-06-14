@@ -7,6 +7,7 @@ function BookHomeVisitForm({ showForm, vendorId, serviceId, details }) {
 
     const userId = localStorage.getItem('id');
     const { addFlashMessage } = useFlash();
+    const [isLoading, setIsLoading] = useState(false);
 
     // console.log(vendorId);
 
@@ -35,6 +36,7 @@ function BookHomeVisitForm({ showForm, vendorId, serviceId, details }) {
     let handleSubmit = async (event) => {
         try {
             event.preventDefault();
+            setIsLoading(true);
             console.log(formData);
 
             await axios.post(`${import.meta.env.VITE_BASE_URL}/localee/${serviceId}/book`, formData, {
@@ -62,6 +64,9 @@ function BookHomeVisitForm({ showForm, vendorId, serviceId, details }) {
             console.error(err);
             addFlashMessage("Failed to book home visit. Please try again.", "error");
         }
+        finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -73,6 +78,7 @@ function BookHomeVisitForm({ showForm, vendorId, serviceId, details }) {
                 <button
                     onClick={() => showForm(false)}
                     className="absolute top-2 right-2 text-gray-800 hover:text-gray-700"
+                    disabled={isLoading}
                 >
                     <ClearIcon />
                 </button>
@@ -90,6 +96,7 @@ function BookHomeVisitForm({ showForm, vendorId, serviceId, details }) {
                             onChange={handleInputChange}
                             className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             placeholder="Enter your name"
+                            disabled={isLoading}
                         />
                     </div>
 
@@ -105,6 +112,7 @@ function BookHomeVisitForm({ showForm, vendorId, serviceId, details }) {
                             onChange={handleInputChange}
                             className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             placeholder="Enter your phone number"
+                            disabled={isLoading}
                         />
                     </div>
 
@@ -120,6 +128,7 @@ function BookHomeVisitForm({ showForm, vendorId, serviceId, details }) {
                             value={formData.date}
                             onChange={handleInputChange}
                             className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            disabled={isLoading}
                         />
 
                     </div>
@@ -132,6 +141,7 @@ function BookHomeVisitForm({ showForm, vendorId, serviceId, details }) {
                             value={formData.address}
                             onChange={handleInputChange}
                             className="w-full px-4 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                            disabled={isLoading}
                         ></textarea>
                     </div>
 
@@ -147,14 +157,42 @@ function BookHomeVisitForm({ showForm, vendorId, serviceId, details }) {
                             onChange={handleInputChange}
                             className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             placeholder="Provide any additional details"
+                            disabled={isLoading}
                         ></textarea>
                     </div>
 
                     <button
                         type="submit"
-                        className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                        disabled={isLoading}
                     >
-                        Confirm Home Visit
+                        {isLoading ? (
+                            <>
+                                <svg 
+                                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" 
+                                    xmlns="http://www.w3.org/2000/svg" 
+                                    fill="none" 
+                                    viewBox="0 0 24 24"
+                                >
+                                    <circle 
+                                        className="opacity-25" 
+                                        cx="12" 
+                                        cy="12" 
+                                        r="10" 
+                                        stroke="currentColor" 
+                                        strokeWidth="4"
+                                    ></circle>
+                                    <path 
+                                        className="opacity-75" 
+                                        fill="currentColor" 
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                    ></path>
+                                </svg>
+                                Booking...
+                            </>
+                        ) : (
+                            'Confirm Home Visit'
+                        )}
                     </button>
                 </form>
             </div>
