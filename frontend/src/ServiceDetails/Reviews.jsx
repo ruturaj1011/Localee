@@ -6,6 +6,7 @@ import { useFlash } from '../contexts/FlashContext.jsx';
 function Reviews({ reviews, rating, totalRatings, serviceId, owner, isStored }) {
 
     let [showReviewForm, setShowReviewForm] = useState(false);
+    let [isSubmitting, setIsSubmitting] = useState(false);
     const { addFlashMessage } = useFlash();
 
     // console.log("rev" , reviews);
@@ -31,12 +32,17 @@ function Reviews({ reviews, rating, totalRatings, serviceId, owner, isStored }) 
         e.preventDefault();
         console.log(review);
 
+        setIsSubmitting(true);
+
         try {
             await axios.post(`${import.meta.env.VITE_BASE_URL}/reviews/add`, review)
             addFlashMessage("Review added successfully.", "success");
         }
         catch (err) {
             addFlashMessage("Failed to add review. Please try again.", "error");
+        }
+        finally {
+            setIsSubmitting(false);
         }
 
         setReview({
@@ -162,6 +168,7 @@ function Reviews({ reviews, rating, totalRatings, serviceId, owner, isStored }) 
                                 value={review.message}
                                 onChange={handleChange}
                                 required
+                                disabled={isSubmitting}
                             ></textarea>
                         </div>
                         <div>
@@ -173,12 +180,12 @@ function Reviews({ reviews, rating, totalRatings, serviceId, owner, isStored }) 
                                         <Star
                                             key={index}
                                             size={24}
-                                            className="cursor-pointer"
+                                            className={`cursor-pointer ${isSubmitting ? 'pointer-events-none opacity-50' : ''}`}
                                             fill={starValue <= (hover || review.rating) ? '#FACC15' : '#E5E7EB'} // Yellow for filled, Gray for empty
                                             stroke={starValue <= (hover || review.rating) ? '#FACC15' : '#E5E7EB'}
-                                            onClick={() => setReview({ ...review, rating: starValue })}
-                                            onMouseEnter={() => setHover(starValue)}
-                                            onMouseLeave={() => setHover(null)}
+                                            onClick={() => !isSubmitting && setReview({ ...review, rating: starValue })}
+                                            onMouseEnter={() => !isSubmitting && setHover(starValue)}
+                                            onMouseLeave={() => !isSubmitting && setHover(null)}
                                         />
 
                                     );
@@ -186,8 +193,19 @@ function Reviews({ reviews, rating, totalRatings, serviceId, owner, isStored }) 
                             </div>
                         </div>
                         <div>
-                            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none">
-                                Submit Review
+                            <button 
+                                type="submit" 
+                                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? (
+                                    <>
+                                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                                        Submitting...
+                                    </>
+                                ) : (
+                                    'Submit Review'
+                                )}
                             </button>
                         </div>
                     </form>

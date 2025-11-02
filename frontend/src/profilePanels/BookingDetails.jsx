@@ -11,6 +11,7 @@ const BookingDetails = ({ role }) => {
 
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [btnRole, setBtnRole] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   if (!booking) {
     return <div className="text-center text-gray-500">No booking details available.</div>;
@@ -32,6 +33,7 @@ const BookingDetails = ({ role }) => {
   }
 
   async function handleConfirm() {
+    setIsLoading(true);
     try {
       const isConfirm = await axios.post(`${import.meta.env.VITE_BASE_URL}/localee/${role}/${id}/bookings/${booking._id}/${btnRole}`);
 
@@ -49,8 +51,21 @@ const BookingDetails = ({ role }) => {
       addFlashMessage(`Error while ${btnRole} booking. Please try again.`, "error");
       console.log(err);
       setIsConfirmationOpen(false);
+    } finally {
+      setIsLoading(false);
     }
   }
+
+  // Loader component
+  const Loader = () => (
+    <div className="inline-flex items-center">
+      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      Processing...
+    </div>
+  );
 
   return (
     <div className="max-w-3xl mx-auto bg-white shadow-md rounded-2xl p-8 mt-10 space-y-6">
@@ -74,15 +89,21 @@ const BookingDetails = ({ role }) => {
       {/* User Actions */}
       {role === "user" && booking.status !== "cancelled" && booking.status !== "rejected" && (
         <div className="flex gap-4 pt-4">
-          <button className="bg-red-500 text-white px-6 py-2 rounded-xl hover:bg-red-600 transition" onClick={() => onBtnClick("cancel")}>
-            Cancel Booking
+          <button 
+            className={`bg-red-500 text-white px-6 py-2 rounded-xl transition ${
+              isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"
+            }`}
+            onClick={() => onBtnClick("cancel")}
+            disabled={isLoading}
+          >
+            {isLoading && btnRole === "cancel" ? <Loader /> : "Cancel Booking"}
           </button>
           <button
             className={`border border-gray-300 text-gray-700 px-6 py-2 rounded-xl ${
-              booking.status === "cancelled" ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-100 transition"
+              booking.status === "cancelled" || isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-100 transition"
             }`}
             onClick={onUpdateClick}
-            disabled={booking.status === "cancelled"}
+            disabled={booking.status === "cancelled" || isLoading}
           >
             Update Booking
           </button>
@@ -92,11 +113,23 @@ const BookingDetails = ({ role }) => {
       {/* Vendor Actions */}
       {role === "vendor" && booking.status === "pending" && (
         <div className="flex gap-4 pt-4">
-          <button className="bg-green-500 text-white px-6 py-2 rounded-xl hover:bg-green-600 transition" onClick={() => onBtnClick("accept")}>
-            Accept Booking
+          <button 
+            className={`bg-green-500 text-white px-6 py-2 rounded-xl transition ${
+              isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-green-600"
+            }`}
+            onClick={() => onBtnClick("accept")}
+            disabled={isLoading}
+          >
+            {isLoading && btnRole === "accept" ? <Loader /> : "Accept Booking"}
           </button>
-          <button className="bg-red-500 text-white px-6 py-2 rounded-xl hover:bg-red-600 transition" onClick={() => onBtnClick("reject")}>
-            Reject Booking
+          <button 
+            className={`bg-red-500 text-white px-6 py-2 rounded-xl transition ${
+              isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"
+            }`}
+            onClick={() => onBtnClick("reject")}
+            disabled={isLoading}
+          >
+            {isLoading && btnRole === "reject" ? <Loader /> : "Reject Booking"}
           </button>
         </div>
       )}
@@ -111,7 +144,12 @@ const BookingDetails = ({ role }) => {
       {/* Confirmation Modal */}
       {isConfirmationOpen && btnRole !== "" && (
         <div className="z-20 fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <ConfirmationCard btnRole={btnRole} onClose={() => setIsConfirmationOpen(false)} onConfirm={handleConfirm} />
+          <ConfirmationCard 
+            btnRole={btnRole} 
+            onClose={() => setIsConfirmationOpen(false)} 
+            onConfirm={handleConfirm}
+            isLoading={isLoading}
+          />
         </div>
       )}
     </div>
