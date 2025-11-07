@@ -3,8 +3,6 @@ dotenv.config();
 
 import Booking from "../models/bookingModel.js";
 import { User } from "../models/userModel.js";
-import { Service } from "../models/serviceModel.js";
-
 import sendEmail from "../utils/sendEmail.js";
 
 // book service
@@ -58,63 +56,35 @@ const bookService = async (req, res) => {
       });
     }
 
-    // Get user and vendor email
+    // ✅ Only send confirmation email to the customer
     const user = await User.findById(userId);
-    const vendor = vendorId ? await User.findById(vendorId) : null;
-    const vendorEmail = vendor ? (await Service.findById(serviceId))?.email : null;
 
     const message = `
-        Hi ${customerName},
+      Hi ${customerName},
 
-        Your appointment request for the service "${serviceCategory}" has been submitted successfully.
+      Your appointment request for the service "${serviceCategory}" has been submitted successfully.
 
-        Booking Details:
-        Type: ${type}
-        Customer Name: ${customerName}
-        Notes: ${notes || "None"}
-        Phone: ${phone}
-        Vendor: ${vendorName}
-        Date: ${date}
-        Time: ${time || "Not specified"}
-        Address: ${address || "Not provided"}
+      Booking Details:
+      Type: ${type}
+      Customer Name: ${customerName}
+      Notes: ${notes || "None"}
+      Phone: ${phone}
+      Vendor: ${vendorName}
+      Date: ${date}
+      Time: ${time || "Not specified"}
+      Address: ${address || "Not provided"}
 
-        You will be notified once the vendor accepts your request.
+      You will be notified once the vendor accepts your request.
 
-        Thanks,  
-        Team Locallee
+      Thanks,  
+      Team Locallee
     `;
 
     if (user?.email) {
       await sendEmail(user.email, "Appointment Request Submitted", message);
     }
 
-    if (vendorEmail) {
-      const vendorMessage = `
-        Hi ${vendor.name},
-
-        You have received a new appointment request for your service "${serviceCategory}".
-
-        Booking Details:
-        Type: ${type}
-        Customer Name: ${customerName}
-        Notes: ${notes || "None"}
-        Phone: ${phone}
-        Date: ${date}
-        Time: ${time || "Not specified"}
-        Address: ${address || "Not provided"}
-
-        Please log in to your account to accept or manage the booking.
-
-        Thanks,  
-        Team Locallee
-    `;
-      await sendEmail(vendorEmail, "New Appointment Request", vendorMessage);
-    }
-    // ✅ EMAIL LOGIC ENDS HERE
-
-    res
-      .status(201)
-      .json({ message: "Booking successful", booking: newBooking });
+    res.status(201).json({ message: "Booking successful", booking: newBooking });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server error", error: error.message });
@@ -125,7 +95,6 @@ const bookService = async (req, res) => {
 const bookingHistoryAndUpcoming = async (req, res) => {
   try {
     const { id } = req.params;
-
     const vendor = await User.findById(id).populate("bookings");
 
     const pendingBookings = vendor.bookings.filter(
@@ -134,14 +103,9 @@ const bookingHistoryAndUpcoming = async (req, res) => {
     const acceptedBookings = vendor.bookings.filter(
       (booking) => booking.status === "accepted"
     );
-    const bookingHistory = vendor.bookings.filter(
-      (booking) =>
-        booking.status === "completed" ||
-        booking.status === "cancelled" ||
-        booking.status === "rejected"
+    const bookingHistory = vendor.bookings.filter((booking) =>
+      ["completed", "cancelled", "rejected"].includes(booking.status)
     );
-
-    // console.log(pendingBookings, acceptedBookings, bookingHistory);
 
     res.json({ pendingBookings, acceptedBookings, bookingHistory });
   } catch (error) {
@@ -152,43 +116,38 @@ const bookingHistoryAndUpcoming = async (req, res) => {
 
 // update booking status
 const updateBookingStatus = async (req, res) => {
-  const { id, bookingId, status } = req.params;
+  const { bookingId, status } = req.params;
 
   try {
     const booking = await Booking.findById(bookingId);
-
     if (!booking) {
       return res.status(404).json({ message: "Booking not found" });
     }
 
-    if (booking.status === "completed" || booking.status === "cancelled") {
+    if (["completed", "cancelled"].includes(booking.status)) {
       return res
         .status(400)
         .json({ message: "Booking already completed or cancelled" });
     }
 
     let updatedStatus;
-    if (status === "accept") {
-      updatedStatus = "accepted";
-    } else if (status === "reject") {
-      updatedStatus = "rejected";
-    } else if (status === "cancel") {
-      updatedStatus = "cancelled";
-    } else {
-      return res.status(400).json({ message: "Invalid status" });
-    }
+    if (status === "accept") updatedStatus = "accepted";
+    else if (status === "reject") updatedStatus = "rejected";
+    else if (status === "cancel") updatedStatus = "cancelled";
+    else return res.status(400).json({ message: "Invalid status" });
 
     booking.status = updatedStatus;
     await booking.save();
 
-
+    // Send email only to user (not vendor)
     const user = await User.findById(booking.userId);
-
     if (user?.email) {
       const message = `
         Hi ${booking.customerName},
 
-        Your booking request for the service "${booking.serviceCategory}" has been ${updatedStatus} by ${updatedStatus == "cancelled" ? "you" : "the Vendor"}.
+        Your booking request for the service "${booking.serviceCategory}" has been ${updatedStatus} by ${
+        updatedStatus === "cancelled" ? "you" : "the Vendor"
+      }.
 
         Booking Details:
         Type: ${booking.type}
@@ -201,8 +160,7 @@ const updateBookingStatus = async (req, res) => {
         Status: ${updatedStatus.toUpperCase()}
 
         Thank you for using LocalLee!
-        `;
-
+      `;
       await sendEmail(user.email, `Booking ${updatedStatus}`, message);
     }
 
@@ -215,19 +173,16 @@ const updateBookingStatus = async (req, res) => {
   }
 };
 
-
 // clear booking history
 const clearBookingHistory = async (req, res) => {
   const { id } = req.params;
 
   try {
     const user = await User.findById(id).populate("bookings");
-
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Filter out completed, cancelled, or rejected bookings
     const removableBookings = user.bookings.filter((booking) =>
       ["completed", "cancelled", "rejected"].includes(booking.status)
     );
@@ -236,16 +191,13 @@ const clearBookingHistory = async (req, res) => {
       return res.status(200).json({ message: "No booking history to clear." });
     }
 
-    // Extract booking IDs for deletion
-    const removableBookingIds = removableBookings.map((booking) => booking._id);
+    const removableBookingIds = removableBookings.map((b) => b._id);
 
-    // Remove from user's bookings
     user.bookings = user.bookings.filter(
-      (booking) => !removableBookingIds.includes(booking._id)
+      (b) => !removableBookingIds.includes(b._id)
     );
     await user.save();
 
-    // Delete bookings if no other users have them
     await Booking.deleteMany({
       _id: { $in: removableBookingIds },
       $nor: [
